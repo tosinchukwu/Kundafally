@@ -1,7 +1,7 @@
 import { defaultWagmiConfig } from "@web3modal/wagmi";
 import { mainnet, base, polygon, arbitrum, optimism, bsc } from "viem/chains";
 
-export const projectId = "YOUR_WALLETCONNECT_PROJECT_ID";
+export const projectId = "0ea293214c93b8a691e3411953009293";
 
 const metadata = {
   name: "Kunda Fall",

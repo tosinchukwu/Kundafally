@@ -9,6 +9,8 @@ interface PlatformProps {
   tokens: number;
   isSelected: boolean;
   isFalling?: boolean;
+  isCorrect?: boolean;
+  isTrapdoorOpen?: boolean;
   onClick: () => void;
   index: number;
 }
@@ -19,6 +21,8 @@ export default function Platform({
   tokens, 
   isSelected, 
   isFalling, 
+  isCorrect,
+  isTrapdoorOpen,
   onClick, 
   index 
 }: PlatformProps) {
@@ -34,8 +38,10 @@ export default function Platform({
       <button
         onClick={onClick}
         className={`
-          platform-top relative w-full p-6 text-left transition-transform duration-200
+          platform-top relative w-full p-6 text-left transition-all duration-300
           ${isSelected ? "scale-[1.02] border-accent" : "hover:translate-y-[-2px]"}
+          ${isCorrect ? "correct-platform-glow" : ""}
+          ${isTrapdoorOpen ? "trapdoor-animate" : ""}
         `}
       >
         <div className="flex items-center justify-between">

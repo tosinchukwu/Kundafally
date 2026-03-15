@@ -9,6 +9,21 @@ const PRESETS = [10, 25, 50, 100];
 export default function GameplayScreen() {
   const { state, dispatch, currentQuestion } = useGame();
   const [selectedPlate, setSelectedPlate] = useState<string | null>(null);
+  const [prevTokens, setPrevTokens] = useState(state.tokens);
+  const [showBonus, setShowBonus] = useState<{ amount: number; id: number } | null>(null);
+
+  React.useEffect(() => {
+    if (state.tokens > prevTokens) {
+      const bonus = state.tokens - prevTokens;
+      // Only show if it matches the 10% bonus pattern (simplified) or any increase
+      setShowBonus({ amount: bonus, id: Date.now() });
+      const timer = setTimeout(() => setShowBonus(null), 1500);
+      setPrevTokens(state.tokens);
+      return () => clearTimeout(timer);
+    } else if (state.tokens < prevTokens) {
+      setPrevTokens(state.tokens);
+    }
+  }, [state.tokens, prevTokens]);
 
   const totalDistributed = useMemo(
     () => Object.values(state.distribution).reduce((a: number, b: number) => a + b, 0),
@@ -43,18 +58,28 @@ export default function GameplayScreen() {
             </div>
             <span className="font-data text-2xl font-black text-white">{state.tokens.toLocaleString()}</span>
           </div>
-          <AnimatePresence>
-            {totalDistributed > 0 && (
-              <motion.span 
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0 }}
-                className="ml-2 font-data text-sm font-bold text-green-400"
-              >
-                +{totalDistributed}
-              </motion.span>
-            )}
-          </AnimatePresence>
+          <div className="relative h-6">
+            <AnimatePresence>
+              {showBonus && (
+                <motion.span 
+                  key={showBonus.id}
+                  className="absolute left-4 font-data text-lg font-bold text-bonus animate-bonus"
+                >
+                  +{showBonus.amount} BONUS
+                </motion.span>
+              )}
+              {totalDistributed > 0 && !showBonus && (
+                <motion.span 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute left-4 font-data text-sm font-bold text-accent"
+                >
+                  -{totalDistributed} PLACED
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Branding (Center) */}
@@ -122,7 +147,9 @@ export default function GameplayScreen() {
               text={opt.text}
               tokens={state.distribution[opt.label] || 0}
               isSelected={selectedPlate === opt.label}
-              isFalling={state.revealResult?.incorrectLabels.includes(opt.label)}
+              isCorrect={false}
+              isTrapdoorOpen={false}
+              isFalling={false}
               index={i}
               onClick={() => setSelectedPlate(selectedPlate === opt.label ? null : opt.label)}
             />

@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useGame } from "@/context/GameContext";
 import Platform from "./Platform";
 
 export default function RevealScreen() {
   const { state, dispatch, currentQuestion } = useGame();
+  const [showTrapdoor, setShowTrapdoor] = useState(false);
+
+  useEffect(() => {
+    // Stage 1: Reveal correct answer (happens immediately on mount)
+    
+    // Stage 2: After 1.5s, trigger trapdoor for incorrect answers
+    const timer = setTimeout(() => {
+      setShowTrapdoor(true);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!currentQuestion) return null;
 
@@ -36,7 +48,7 @@ export default function RevealScreen() {
           {currentQuestion.options.map((opt, i) => {
             const isCorrect = opt.label === correctLabel;
             const tokensOn = state.distribution[opt.label] || 0;
-            const isFalling = !isCorrect;
+            const isTrapdoorOpen = showTrapdoor && !isCorrect;
 
             return (
               <Platform
@@ -44,8 +56,10 @@ export default function RevealScreen() {
                 label={opt.label}
                 text={opt.text}
                 tokens={tokensOn}
-                isSelected={isCorrect}
-                isFalling={isFalling}
+                isSelected={false}
+                isCorrect={isCorrect}
+                isTrapdoorOpen={isTrapdoorOpen}
+                isFalling={isTrapdoorOpen}
                 index={i}
                 onClick={() => {}}
               />
@@ -55,8 +69,8 @@ export default function RevealScreen() {
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
+          animate={showTrapdoor ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ duration: 0.8 }}
           className="mt-20 flex flex-col items-center text-center"
         >
           {state.isEliminated ? (
@@ -67,7 +81,7 @@ export default function RevealScreen() {
             <div className="glass-card px-12 py-8 flex flex-col items-center">
               {lastHistory.correct ? (
                 <div className="font-display text-xl font-bold text-accent">
-                  STABLE. <span className="text-white">+{lastHistory.bonus}</span> BONUS APPLIED.
+                  STABLE. <span className="text-bonus">+{lastHistory.bonus}</span> BONUS APPLIED.
                 </div>
               ) : (
                 <div className="font-display text-xl font-bold text-red-400">
@@ -77,8 +91,8 @@ export default function RevealScreen() {
               
               <motion.div
                 initial={{ scale: 1 }}
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ delay: 0.5, duration: 0.4 }}
+                animate={showTrapdoor ? { scale: [1, 1.1, 1] } : {}}
+                transition={{ duration: 0.4 }}
                 className="mt-6 flex items-center gap-4"
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-yellow-600 to-yellow-400 border border-yellow-300/50">
@@ -91,8 +105,7 @@ export default function RevealScreen() {
 
           <motion.button
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2.2 }}
+            animate={showTrapdoor ? { opacity: 1 } : { opacity: 0 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => dispatch({ type: "NEXT_QUESTION" })}
