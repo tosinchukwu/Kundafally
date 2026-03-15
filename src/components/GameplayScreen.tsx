@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGame } from "@/context/GameContext";
+import WalletButton from "./WalletButton";
 
 const PRESETS = [10, 25, 50, 100];
 
@@ -32,18 +33,21 @@ export default function GameplayScreen() {
   const canLock = totalDistributed > 0;
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col spotlight">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 sm:px-8">
         <div>
           <span className="font-data text-xs text-muted-foreground">{cat.icon} {cat.name.toUpperCase()}</span>
-          <span className="font-data ml-3 text-xs text-muted-foreground">
+          <span className="font-data ml-3 text-xs text-accent">
             Q{globalQuestionNum}/{totalQuestions}
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="h-2.5 w-2.5 rounded-full token-gradient" />
-          <span className="font-data text-sm text-gold">{state.tokens.toLocaleString()}</span>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className="h-2.5 w-2.5 rounded-full token-gradient" />
+            <span className="font-data text-sm text-gold">{state.tokens.toLocaleString()}</span>
+          </div>
+          <WalletButton />
         </div>
       </div>
 
@@ -75,15 +79,15 @@ export default function GameplayScreen() {
                 onClick={() => setSelectedPlate(isSelected ? null : opt.label)}
                 className={`
                   relative flex flex-col items-start rounded-xl p-5 text-left
-                  plate-border transition-all duration-200 cursor-pointer min-h-[100px]
+                  transition-all duration-200 cursor-pointer min-h-[100px]
                   ${isSelected
-                    ? "bg-surface-elevated glow-gold"
-                    : "bg-surface hover:bg-surface-elevated"
+                    ? "bg-surface-elevated neon-border"
+                    : "bg-surface plate-border hover:bg-surface-elevated"
                   }
                 `}
               >
                 <div className="flex w-full items-start justify-between">
-                  <span className="font-data text-xs text-muted-foreground">{opt.label}</span>
+                  <span className={`font-data text-xs ${isSelected ? 'text-accent' : 'text-muted-foreground'}`}>{opt.label}</span>
                   {tokensOn > 0 && (
                     <span className="font-data text-xs text-gold">{tokensOn}</span>
                   )}
@@ -116,7 +120,7 @@ export default function GameplayScreen() {
                     key={pct}
                     onClick={() => addTokens(selectedPlate, actualAmt)}
                     disabled={available <= 0}
-                    className="rounded-lg bg-surface-elevated px-4 py-2 font-data text-xs text-foreground plate-border transition-all hover:bg-muted disabled:opacity-30"
+                    className="rounded-lg bg-surface-elevated px-4 py-2 font-data text-xs text-foreground plate-border transition-all hover:bg-accent/20 hover:text-accent disabled:opacity-30"
                   >
                     +{pct}%
                   </button>
@@ -125,7 +129,7 @@ export default function GameplayScreen() {
               <button
                 onClick={() => addTokens(selectedPlate, available)}
                 disabled={available <= 0}
-                className="rounded-lg bg-primary/20 px-4 py-2 font-data text-xs text-gold plate-border transition-all hover:bg-primary/30 disabled:opacity-30"
+                className="rounded-lg bg-primary/20 px-4 py-2 font-data text-xs text-gold gold-border transition-all hover:bg-primary/30 disabled:opacity-30"
               >
                 ALL IN
               </button>
@@ -135,7 +139,7 @@ export default function GameplayScreen() {
       </div>
 
       {/* Token Tray (Bottom Bar) */}
-      <div className="sticky bottom-0 flex h-28 items-center justify-between border-t border-border/50 bg-background/80 px-4 backdrop-blur-lg sm:px-8">
+      <div className="sticky bottom-0 flex h-28 items-center justify-between border-t border-accent/20 bg-background/80 px-4 backdrop-blur-lg sm:px-8">
         <div>
           <div className="font-data text-xs text-muted-foreground">AVAILABLE</div>
           <div className="font-data text-xl text-gold">{available.toLocaleString()}</div>
@@ -155,10 +159,10 @@ export default function GameplayScreen() {
           }}
           disabled={!canLock}
           className={`
-            rounded-xl px-8 py-3 font-display text-sm font-bold plate-border transition-all
+            rounded-xl px-8 py-3 font-display text-sm font-bold transition-all
             ${canLock
-              ? "bg-primary text-primary-foreground glow-gold"
-              : "bg-surface text-muted-foreground cursor-not-allowed"
+              ? "bg-primary text-primary-foreground gold-border"
+              : "bg-surface text-muted-foreground plate-border cursor-not-allowed"
             }
           `}
         >

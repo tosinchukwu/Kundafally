@@ -10,7 +10,7 @@ export default function RevealScreen() {
   const lastHistory = state.history[state.history.length - 1];
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-4">
+    <div className="flex min-h-screen flex-col items-center justify-center px-4 spotlight">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -18,15 +18,13 @@ export default function RevealScreen() {
         className="w-full max-w-2xl"
       >
         <div className="mb-8 text-center">
-          <span className="font-data text-xs text-muted-foreground">RESULT</span>
+          <span className="font-data text-xs text-accent">RESULT</span>
         </div>
 
-        {/* Question replay */}
         <h2 className="font-display mb-8 text-center text-xl font-bold text-muted-foreground md:text-2xl" style={{ textWrap: "balance" } as React.CSSProperties}>
           {currentQuestion.question}
         </h2>
 
-        {/* Answer plates with reveal */}
         <div className="grid grid-cols-2 gap-4 md:gap-8">
           {currentQuestion.options.map((opt, i) => {
             const isCorrect = opt.label === correctLabel;
@@ -50,16 +48,16 @@ export default function RevealScreen() {
                     : { duration: 0.6, delay: 1.2 }
                 }
                 className={`
-                  relative flex flex-col items-start rounded-xl p-5 plate-border min-h-[100px]
-                  ${isCorrect ? "bg-surface-elevated glow-cyan" : "bg-surface"}
+                  relative flex flex-col items-start rounded-xl p-5 min-h-[100px]
+                  ${isCorrect ? "bg-surface-elevated neon-border" : "bg-surface plate-border"}
                 `}
               >
                 <div className="flex w-full items-start justify-between">
-                  <span className={`font-data text-xs ${isCorrect ? "text-cyan" : "text-muted-foreground"}`}>
+                  <span className={`font-data text-xs ${isCorrect ? "text-accent" : "text-muted-foreground"}`}>
                     {opt.label}
                   </span>
                   {tokensOn > 0 && (
-                    <span className={`font-data text-xs ${isCorrect ? "text-cyan" : "text-void"}`}>
+                    <span className={`font-data text-xs ${isCorrect ? "text-accent" : "text-void"}`}>
                       {isCorrect ? `+${tokensOn}` : `-${tokensOn}`}
                     </span>
                   )}
@@ -68,14 +66,13 @@ export default function RevealScreen() {
                   {opt.text}
                 </span>
                 {isCorrect && (
-                  <div className="absolute bottom-0 left-0 h-1 w-full rounded-b-xl bg-cyan" />
+                  <div className="absolute bottom-0 left-0 h-1 w-full rounded-b-xl bg-accent" />
                 )}
               </motion.div>
             );
           })}
         </div>
 
-        {/* Status readout */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -83,13 +80,11 @@ export default function RevealScreen() {
           className="mt-10 text-center"
         >
           {state.isEliminated ? (
-            <>
-              <div className="font-data text-sm text-void">VAULT EMPTY. SESSION TERMINATED.</div>
-            </>
+            <div className="font-data text-sm text-void">VAULT EMPTY. SESSION TERMINATED.</div>
           ) : (
             <>
               {lastHistory.correct ? (
-                <div className="font-data text-sm text-cyan">
+                <div className="font-data text-sm text-accent">
                   STABLE. +{lastHistory.bonus} TOKENS APPLIED.
                 </div>
               ) : (
@@ -116,7 +111,7 @@ export default function RevealScreen() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => dispatch({ type: "NEXT_QUESTION" })}
-            className="mt-8 rounded-xl bg-primary px-10 py-4 font-display text-sm font-bold text-primary-foreground plate-border glow-gold transition-all"
+            className="mt-8 rounded-xl bg-primary px-10 py-4 font-display text-sm font-bold text-primary-foreground gold-border transition-all"
           >
             {state.isEliminated ? "VIEW RESULTS" : "CONTINUE"}
           </motion.button>
