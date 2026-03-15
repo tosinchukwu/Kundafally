@@ -1,14 +1,33 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { GameProvider, useGame } from "@/context/GameContext";
+import MenuScreen from "@/components/MenuScreen";
+import CategorySelect from "@/components/CategorySelect";
+import GameplayScreen from "@/components/GameplayScreen";
+import RevealScreen from "@/components/RevealScreen";
+import ResultsScreen from "@/components/ResultsScreen";
 
-const Index = () => {
+function GameRouter() {
+  const { state } = useGame();
+
+  switch (state.phase) {
+    case "menu":
+      return <MenuScreen />;
+    case "category":
+      return <CategorySelect />;
+    case "playing":
+      return <GameplayScreen />;
+    case "reveal":
+      return <RevealScreen />;
+    case "results":
+      return <ResultsScreen />;
+    default:
+      return <MenuScreen />;
+  }
+}
+
+export default function Index() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <GameProvider>
+      <GameRouter />
+    </GameProvider>
   );
-};
-
-export default Index;
+}
