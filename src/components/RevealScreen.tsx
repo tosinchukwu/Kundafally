@@ -1,5 +1,7 @@
+import React from "react";
 import { motion } from "framer-motion";
 import { useGame } from "@/context/GameContext";
+import Platform from "./Platform";
 
 export default function RevealScreen() {
   const { state, dispatch, currentQuestion } = useGame();
@@ -10,108 +12,97 @@ export default function RevealScreen() {
   const lastHistory = state.history[state.history.length - 1];
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-4 spotlight">
+    <div className="game-container flex flex-col items-center justify-center px-4">
+      <div className="spotlight-main" />
+      <div className="absolute inset-0 circuitry-bg opacity-20 pointer-events-none" />
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.4 }}
-        className="w-full max-w-2xl"
+        transition={{ duration: 0.6 }}
+        className="relative z-10 w-full max-w-6xl"
       >
-        <div className="mb-8 text-center">
-          <span className="font-data text-xs text-accent">RESULT</span>
+        <div className="mb-12 text-center">
+          <div className="inline-block glass-card px-6 py-2 border-accent/40">
+            <span className="font-display text-sm font-black tracking-[0.2em] text-accent uppercase">Reveal Phase</span>
+          </div>
         </div>
 
-        <h2 className="font-display mb-8 text-center text-xl font-bold text-muted-foreground md:text-2xl" style={{ textWrap: "balance" } as React.CSSProperties}>
+        <h2 className="font-display mb-16 text-center text-3xl font-bold text-white leading-tight md:text-4xl" style={{ textWrap: "balance" } as React.CSSProperties}>
           {currentQuestion.question}
         </h2>
 
-        <div className="grid grid-cols-2 gap-4 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 items-end">
           {currentQuestion.options.map((opt, i) => {
             const isCorrect = opt.label === correctLabel;
             const tokensOn = state.distribution[opt.label] || 0;
-            const isWrong = !isCorrect && tokensOn > 0;
+            const isFalling = !isCorrect;
 
             return (
-              <motion.div
+              <Platform
                 key={opt.label}
-                initial={isWrong ? { y: 0, opacity: 1, rotateX: 0 } : {}}
-                animate={
-                  isWrong
-                    ? { y: 300, opacity: 0, rotateX: 45 }
-                    : isCorrect
-                    ? { scale: [1, 1.03, 1] }
-                    : {}
-                }
-                transition={
-                  isWrong
-                    ? { duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.5 }
-                    : { duration: 0.6, delay: 1.2 }
-                }
-                className={`
-                  relative flex flex-col items-start rounded-xl p-5 min-h-[100px]
-                  ${isCorrect ? "bg-surface-elevated neon-border" : "bg-surface plate-border"}
-                `}
-              >
-                <div className="flex w-full items-start justify-between">
-                  <span className={`font-data text-xs ${isCorrect ? "text-accent" : "text-muted-foreground"}`}>
-                    {opt.label}
-                  </span>
-                  {tokensOn > 0 && (
-                    <span className={`font-data text-xs ${isCorrect ? "text-accent" : "text-void"}`}>
-                      {isCorrect ? `+${tokensOn}` : `-${tokensOn}`}
-                    </span>
-                  )}
-                </div>
-                <span className={`mt-2 font-display text-sm font-semibold md:text-base ${isCorrect ? "text-foreground" : "text-muted-foreground"}`}>
-                  {opt.text}
-                </span>
-                {isCorrect && (
-                  <div className="absolute bottom-0 left-0 h-1 w-full rounded-b-xl bg-accent" />
-                )}
-              </motion.div>
+                label={opt.label}
+                text={opt.text}
+                tokens={tokensOn}
+                isSelected={isCorrect}
+                isFalling={isFalling}
+                index={i}
+                onClick={() => {}}
+              />
             );
           })}
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.4, duration: 0.5 }}
-          className="mt-10 text-center"
+          transition={{ delay: 1.5, duration: 0.8 }}
+          className="mt-20 flex flex-col items-center text-center"
         >
           {state.isEliminated ? (
-            <div className="font-data text-sm text-void">VAULT EMPTY. SESSION TERMINATED.</div>
+            <div className="glass-card px-10 py-6 border-red-500/50 bg-red-500/10">
+              <div className="font-display text-2xl font-black text-red-500 neon-text-glow">VAULT EMPTY. SESSION TERMINATED.</div>
+            </div>
           ) : (
-            <>
+            <div className="glass-card px-12 py-8 flex flex-col items-center">
               {lastHistory.correct ? (
-                <div className="font-data text-sm text-accent">
-                  STABLE. +{lastHistory.bonus} TOKENS APPLIED.
+                <div className="font-display text-xl font-bold text-accent">
+                  STABLE. <span className="text-white">+{lastHistory.bonus}</span> BONUS APPLIED.
                 </div>
               ) : (
-                <div className="font-data text-sm text-void">
-                  UNSTABLE. {lastHistory.tokensLost} TOKENS LOST.
+                <div className="font-display text-xl font-bold text-red-400">
+                  UNSTABLE. <span className="text-white">-{lastHistory.tokensLost}</span> TOKENS LOST.
                 </div>
               )}
+              
               <motion.div
                 initial={{ scale: 1 }}
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ delay: 1.6, duration: 0.3 }}
-                className="mt-4 flex items-center justify-center gap-2"
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ delay: 0.5, duration: 0.4 }}
+                className="mt-6 flex items-center gap-4"
               >
-                <div className="h-3 w-3 rounded-full token-gradient" />
-                <span className="font-data text-lg text-gold">{state.tokens.toLocaleString()}</span>
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-yellow-600 to-yellow-400 border border-yellow-300/50">
+                  <span className="text-lg font-bold text-white">₿</span>
+                </div>
+                <span className="font-data text-4xl font-black text-white">{state.tokens.toLocaleString()}</span>
               </motion.div>
-            </>
+            </div>
           )}
 
           <motion.button
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            transition={{ delay: 2.2 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => dispatch({ type: "NEXT_QUESTION" })}
-            className="mt-8 rounded-xl bg-primary px-10 py-4 font-display text-sm font-bold text-primary-foreground gold-border transition-all"
+            className={`
+              mt-12 rounded-full px-16 py-5 font-display text-xl font-black tracking-widest transition-all
+              ${state.isEliminated 
+                ? "bg-red-500 text-white shadow-[0_0_30px_rgba(239,68,68,0.4)]" 
+                : "bg-accent text-black shadow-[0_0_30px_rgba(34,211,238,0.4)]"
+              }
+            `}
           >
             {state.isEliminated ? "VIEW RESULTS" : "CONTINUE"}
           </motion.button>
@@ -120,3 +111,4 @@ export default function RevealScreen() {
     </div>
   );
 }
+
