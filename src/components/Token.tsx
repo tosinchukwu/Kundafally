@@ -6,9 +6,10 @@ interface TokenProps {
   label: string;
   className?: string;
   delay?: number;
+  style?: React.CSSProperties;
 }
 
-export default function Token({ label, className = "", delay = 0 }: TokenProps) {
+export default function Token({ label, className = "", delay = 0, style = {} }: TokenProps) {
   return (
     <motion.div
       initial={{ scale: 0, y: -20, opacity: 0 }}
@@ -20,6 +21,7 @@ export default function Token({ label, className = "", delay = 0 }: TokenProps) 
         damping: 20 
       }}
       className={`relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-yellow-300/50 token-bitcoin shadow-lg ${className}`}
+      style={style}
     >
       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-yellow-600 to-yellow-400">
         <span className="font-display text-lg font-bold text-white drop-shadow-md">

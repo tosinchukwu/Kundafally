@@ -44,27 +44,36 @@ export default function RevealScreen() {
           {currentQuestion.question}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 items-end">
+        {/* Platforms Area - Semi-circle spatial layout */}
+        <div className="mt-24 flex items-end justify-center gap-12 w-full max-w-7xl px-8 relative">
           {currentQuestion.options.map((opt, i) => {
             const isCorrect = opt.label === correctLabel;
             const tokensOn = state.distribution[opt.label] || 0;
             const isTrapdoorOpen = showTrapdoor && !isCorrect;
+            const isOutside = i === 0 || i === 3;
 
             return (
-              <Platform
-                key={opt.label}
-                label={opt.label}
-                text={opt.text}
-                tokens={tokensOn}
-                isSelected={false}
-                isCorrect={isCorrect}
-                isTrapdoorOpen={isTrapdoorOpen}
-                isFalling={isTrapdoorOpen}
-                index={i}
-                onClick={() => {}}
-              />
+              <div 
+                key={opt.label} 
+                className={`transition-all duration-500 ${isOutside ? "scale-110 mb-[-20px]" : "scale-90 opacity-80"}`}
+              >
+                <Platform
+                  label={opt.label}
+                  text={opt.text}
+                  tokens={tokensOn}
+                  isSelected={false}
+                  isCorrect={isCorrect}
+                  isTrapdoorOpen={isTrapdoorOpen}
+                  isFalling={isTrapdoorOpen}
+                  index={i}
+                  onClick={() => {}}
+                />
+              </div>
             );
           })}
+          
+          {/* Abyss Pit Glow */}
+          <div className="absolute bottom-[-150px] left-1/2 -translate-x-1/2 w-[120%] h-[400px] bg-gradient-to-t from-purple-600/30 to-transparent blur-[120px] pointer-events-none" />
         </div>
 
         <motion.div
@@ -73,39 +82,32 @@ export default function RevealScreen() {
           transition={{ duration: 0.8 }}
           className="mt-20 flex flex-col items-center text-center"
         >
-          {state.isEliminated ? (
-            <div className="glass-card px-10 py-6 border-red-500/50 bg-red-500/10">
-              <div className="font-display text-2xl font-black text-red-500 neon-text-glow">VAULT EMPTY. SESSION TERMINATED.</div>
-            </div>
-          ) : (
+          {!state.isEliminated ? (
             <div className="glass-card px-12 py-8 flex flex-col items-center">
-              {lastHistory.correct ? (
+              {lastHistory?.correct ? (
                 <div className="font-display text-xl font-bold text-accent">
                   STABLE. <span className="text-bonus">+{lastHistory.bonus}</span> BONUS APPLIED.
                 </div>
               ) : (
                 <div className="font-display text-xl font-bold text-red-400">
-                  UNSTABLE. <span className="text-white">-{lastHistory.tokensLost}</span> TOKENS LOST.
+                  UNSTABLE. <span className="text-white">-{lastHistory?.tokensLost}</span> TOKENS LOST.
                 </div>
               )}
               
-              <motion.div
-                initial={{ scale: 1 }}
-                animate={showTrapdoor ? { scale: [1, 1.1, 1] } : {}}
-                transition={{ duration: 0.4 }}
-                className="mt-6 flex items-center gap-4"
-              >
+              <div className="mt-6 flex items-center gap-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-yellow-600 to-yellow-400 border border-yellow-300/50">
                   <span className="text-lg font-bold text-white">₿</span>
                 </div>
                 <span className="font-data text-4xl font-black text-white">{state.tokens.toLocaleString()}</span>
-              </motion.div>
+              </div>
             </div>
+          ) : (
+             <div className="glass-card px-10 py-6 border-red-500/50 bg-red-500/10">
+               <div className="font-display text-2xl font-black text-red-500 neon-text-glow">VAULT EMPTY. SESSION TERMINATED.</div>
+             </div>
           )}
 
           <motion.button
-            initial={{ opacity: 0 }}
-            animate={showTrapdoor ? { opacity: 1 } : { opacity: 0 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => dispatch({ type: "NEXT_QUESTION" })}
@@ -124,4 +126,3 @@ export default function RevealScreen() {
     </div>
   );
 }
-

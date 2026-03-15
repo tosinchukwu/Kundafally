@@ -85,8 +85,7 @@ export default function GameplayScreen() {
         {/* Branding (Center) */}
         <div className="flex flex-col items-center">
           <div className="relative">
-            <div className="absolute -inset-4 bg-accent/20 blur-2xl rounded-full" />
-            <div className="relative glass-card px-8 py-4 flex flex-col items-center border-t-2 border-accent/50">
+            <div className="logo-frame">
               <h1 className="font-display text-4xl md:text-5xl font-black italic tracking-tighter text-white neon-text-glow">
                 KUNDA
               </h1>
@@ -95,7 +94,7 @@ export default function GameplayScreen() {
               </h1>
             </div>
           </div>
-          <p className="mt-4 font-display text-sm font-bold text-white/60 uppercase tracking-widest">
+          <p className="mt-4 font-display text-sm font-bold text-white/60 uppercase tracking-widest text-center">
             Protect Your Tokens • Let the Wrong Ones Fall
           </p>
         </div>
@@ -138,23 +137,34 @@ export default function GameplayScreen() {
           </div>
         </div>
 
-        {/* Platforms Area */}
-        <div className="mt-16 grid w-full max-w-6xl grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 items-end">
-          {currentQuestion.options.map((opt, i) => (
-            <Platform
-              key={opt.label}
-              label={opt.label}
-              text={opt.text}
-              tokens={state.distribution[opt.label] || 0}
-              isSelected={selectedPlate === opt.label}
-              isCorrect={false}
-              isTrapdoorOpen={false}
-              isFalling={false}
-              index={i}
-              onClick={() => setSelectedPlate(selectedPlate === opt.label ? null : opt.label)}
-            />
-          ))}
+        {/* Platforms Area - Semi-circle spatial layout */}
+        <div className="mt-24 flex items-end justify-center gap-12 w-full max-w-7xl px-8">
+          {currentQuestion.options.map((opt, i) => {
+            // Apply different scaling and positioning for outside (A, D) vs inside (B, C)
+            const isOutside = i === 0 || i === 3;
+            return (
+              <div 
+                key={opt.label} 
+                className={`transition-all duration-500 ${isOutside ? "scale-110 mb-[-20px]" : "scale-90 opacity-80"}`}
+              >
+                <Platform
+                  label={opt.label}
+                  text={opt.text}
+                  tokens={state.distribution[opt.label] || 0}
+                  isSelected={selectedPlate === opt.label}
+                  isCorrect={false}
+                  isTrapdoorOpen={false}
+                  isFalling={false}
+                  index={i}
+                  onClick={() => setSelectedPlate(selectedPlate === opt.label ? null : opt.label)}
+                />
+              </div>
+            );
+          })}
         </div>
+
+        {/* The Pit / Abyss Glow (Center Bottom) */}
+        <div className="absolute bottom-[-150px] left-1/2 -translate-x-1/2 w-[120%] h-[400px] bg-gradient-to-t from-purple-600/30 to-transparent blur-[120px] pointer-events-none" />
       </main>
 
       {/* Footer Controls */}

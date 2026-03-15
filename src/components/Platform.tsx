@@ -30,53 +30,62 @@ export default function Platform({
 
   return (
     <motion.div
-      className={`platform-3d relative w-full ${isFalling ? "animate-fall" : ""}`}
+      className={`relative flex flex-col items-center ${isFalling ? "animate-fall" : ""}`}
+      style={{ perspective: "1000px" }}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1, duration: 0.6, ease: "easeOut" }}
     >
-      <button
+      {/* Vertical Backboard */}
+      <div className={`
+        relative mb-[-10px] flex h-24 w-20 items-center justify-center rounded-lg border-2 bg-black/40 backdrop-blur-md transition-all duration-300
+        ${isSelected ? "border-accent shadow-[0_0_20px_rgba(34,211,238,0.5)]" : "border-white/10"}
+        ${isCorrect ? "border-green-400 shadow-[0_0_25px_rgba(74,222,128,0.6)]" : ""}
+      `}>
+        <span className={`font-display text-5xl font-black ${isSelected ? "text-accent" : isCorrect ? "text-green-400" : "text-white/40"}`}>
+          {label}
+        </span>
+      </div>
+
+      {/* Horizontal Base (Trapdoor) */}
+      <div 
         onClick={onClick}
         className={`
-          platform-top relative w-full p-6 text-left transition-all duration-300
-          ${isSelected ? "scale-[1.02] border-accent" : "hover:translate-y-[-2px]"}
+          platform-top relative h-16 w-32 cursor-pointer transition-all duration-300
           ${isCorrect ? "correct-platform-glow" : ""}
           ${isTrapdoorOpen ? "trapdoor-animate" : ""}
         `}
+        style={{ transform: "rotateX(60deg)" }}
       >
-        <div className="flex items-center justify-between">
-          <span className={`font-display text-4xl font-black ${isSelected ? "text-accent" : "text-white/40"}`}>
-            {label}
-          </span>
+        <div className="absolute inset-0 flex items-center justify-center">
           {tokens > 0 && (
-            <div className="flex -space-x-4">
+            <div className="relative h-12 w-12 -translate-y-6">
               {tokenLabels.map((l, i) => (
-                <Token key={i} label={l} className="scale-75" />
+                <Token 
+                  key={i} 
+                  label={l} 
+                  className="absolute scale-75 shadow-2xl" 
+                  style={{ 
+                    left: `${i * 4}px`, 
+                    top: `${-i * 6}px`, 
+                    zIndex: i,
+                    transform: `rotate(${i * 5}deg)`
+                  } as React.CSSProperties}
+                />
               ))}
-              {tokens > 5 && (
-                <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-yellow-300/20 bg-black/40 text-xs font-bold text-gold backdrop-blur-sm">
-                  +{tokens - 5}
-                </div>
-              )}
             </div>
           )}
         </div>
-        <p className="mt-4 font-display text-lg font-bold text-white neon-text-glow">
-          {text}
-        </p>
-        
-        {/* Answer Selection Indicator */}
-        {isSelected && (
-          <motion.div 
-            layoutId="selection-glow"
-            className="absolute -inset-1 rounded-xl bg-accent/20 blur-md pointer-events-none"
-          />
-        )}
-      </button>
+      </div>
       
-      {/* Platform side for 3D effect */}
-      <div className="platform-side" />
-      
+      {/* Side of the base for 3D look */}
+      <div className="platform-side h-6 w-32 mt-[-8px]" style={{ transform: "rotateX(0deg)" }} />
+
+      {/* Answer Text Label (Below) */}
+      <p className="mt-4 max-w-[120px] text-center font-display text-sm font-bold text-white/80 neon-text-glow">
+        {text}
+      </p>
+
       {/* Bottom shadow/glow */}
       <div className="absolute -bottom-10 left-1/2 h-4 w-3/4 -translate-x-1/2 bg-accent/20 blur-2xl opacity-50" />
     </motion.div>
