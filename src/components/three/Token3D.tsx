@@ -63,7 +63,7 @@ export default function Token3D({ position, label = "₿", falling = false, onFa
   if (fallen) return null;
 
   return (
-    <group ref={groupRef} position={position}>
+    <group ref={ref}>
       {/* Coin cylinder */}
       <mesh rotation={[Math.PI / 2, 0, 0]} castShadow>
         <cylinderGeometry args={[0.28, 0.28, 0.08, 32]} />
