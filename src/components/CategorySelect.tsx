@@ -28,7 +28,7 @@ export default function CategorySelect() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-4 spotlight">
+    <div className="flex min-h-screen flex-col items-center justify-center px-4 spotlight pointer-events-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

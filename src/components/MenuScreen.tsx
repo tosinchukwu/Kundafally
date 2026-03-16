@@ -6,7 +6,7 @@ export default function MenuScreen() {
   const { dispatch } = useGame();
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-4 spotlight">
+    <div className="flex min-h-screen flex-col items-center justify-center px-4 spotlight pointer-events-auto">
       {/* Top bar with wallet */}
       <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-2">

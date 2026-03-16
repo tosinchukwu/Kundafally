@@ -9,7 +9,7 @@ export default function ResultsScreen() {
   const totalBonus = state.history.reduce((a, h) => a + h.bonus, 0);
 
   return (
-    <div className="game-container flex flex-col items-center justify-center px-4">
+    <div className="game-container flex flex-col items-center justify-center px-4 pointer-events-auto">
       <div className="spotlight-main" />
       <div className="absolute inset-0 circuitry-bg opacity-20 pointer-events-none" />
 
