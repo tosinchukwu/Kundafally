@@ -109,7 +109,7 @@ export default function GameplayScreen() {
         {/* Token Balance */}
         <div className="pointer-events-auto flex flex-col items-start gap-1">
           <div className="glass-card flex items-center gap-3 px-4 py-2 border-white/5 bg-white/5 shadow-2xl">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-yellow-600 to-yellow-400 border border-yellow-300/50 shadow-[0_0_15px_rgba(234,179,8,0.3)]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-yellow-600 to-yellow-400 border border-yellow-300/50">
               <span className="text-sm font-bold text-white">₿</span>
             </div>
             <span className="font-data text-2xl font-black text-white">{state.tokens.toLocaleString()}</span>
@@ -122,7 +122,7 @@ export default function GameplayScreen() {
                    initial={{ opacity: 0, y: 10 }}
                    animate={{ opacity: 1, y: 0 }}
                    exit={{ opacity: 0, y: -10 }}
-                   className="font-data text-sm font-bold text-bonus drop-shadow-[0_0_8px_rgba(34,197,94,0.4)]"
+                   className="font-data text-sm font-bold text-bonus"
                 >
                   +{showBonus.amount} BONUS
                 </motion.span>
@@ -132,7 +132,7 @@ export default function GameplayScreen() {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0 }}
-                  className="font-data text-[10px] font-bold text-accent tracking-tighter"
+                  className="font-data text-[10px] font-bold text-accent"
                 >
                   -{totalDistributed} PLACED
                 </motion.span>
@@ -141,176 +141,188 @@ export default function GameplayScreen() {
           </div>
         </div>
 
-        {/* Logo/Branding */}
+        {/* Branding */}
         <div className="flex flex-col items-center">
-          <div className="logo-frame bg-gradient-to-br from-indigo-950/80 to-black/90 backdrop-blur-2xl border border-white/5 px-6 py-2 shadow-2xl">
-            <h1 className="font-display text-3xl font-black italic tracking-tighter text-white neon-text-glow">KUNDA FALL</h1>
+          <div className="logo-frame bg-black/40 backdrop-blur-xl border border-white/5 px-6 py-2 shadow-2xl">
+            <h1 className="font-display text-3xl font-black italic tracking-tighter text-white">KUNDA FALL</h1>
           </div>
-          <p className="mt-2 font-display text-[8px] font-bold text-white/30 uppercase tracking-[0.6em]">
+          <p className="mt-2 font-display text-[8px] font-bold text-white/30 uppercase tracking-[0.4em]">
             Shield Your Stack
           </p>
         </div>
 
-        {/* Empty space to balance layout */}
-        <div className="w-40" />
+        {/* Utility Icons (Top Right) */}
+        <div className="pointer-events-auto flex gap-2">
+          <button 
+            onClick={() => setIsSoundOn(!isSoundOn)}
+            className={`h-10 w-10 flex items-center justify-center glass-card border-white/10 transition-all ${isSoundOn ? "text-accent" : "text-white/20"}`}
+          >
+            <IconSound muted={!isSoundOn} />
+          </button>
+          <button 
+            onClick={() => setShowSettings(true)}
+            className="h-10 w-10 flex items-center justify-center glass-card border-white/10 text-white/60"
+          >
+            <IconSettings />
+          </button>
+        </div>
       </header>
 
       {/* Main Gameplay HUD */}
-      <main className="flex-1 flex w-full relative z-10 overflow-hidden">
+      <main className="flex-1 flex w-full relative z-10 pointer-events-none">
         
-        {/* Left/Center Space for 3D Scene */}
-        <div className="flex-1 flex flex-col items-center pt-2 md:pt-6 pointer-events-none">
-          {/* Question Display */}
+        {/* Left Options (A & B) */}
+        <div className="absolute left-4 md:left-10 top-1/2 -translate-y-1/2 flex flex-col gap-8 pointer-events-auto">
+          {currentQuestion.options.filter(o => o.label === "A" || o.label === "B").map((opt) => {
+            const isSelected = state.selectedPlatform === opt.label;
+            const hasTokens = (state.distribution[opt.label] || 0) > 0;
+            return (
+              <button
+                key={opt.label}
+                onClick={() => dispatch({ type: "SELECT_PLATFORM", label: isSelected ? null : opt.label })}
+                className={`
+                  relative h-24 w-24 md:h-32 md:w-32 flex flex-col items-center justify-center rounded-2xl border-4 transition-all duration-300
+                  ${isSelected 
+                    ? "bg-accent/20 border-accent shadow-[0_0_40px_rgba(34,211,238,0.4)] scale-110" 
+                    : "bg-white/5 border-white/10 hover:bg-white/10 text-white/20"
+                  }
+                `}
+              >
+                <span className={`font-display text-5xl md:text-7xl font-black ${isSelected ? "text-accent" : "text-white/10"}`}>{opt.label}</span>
+                {hasTokens && (
+                  <div className="absolute top-2 right-2 bg-gold px-2 py-0.5 rounded-full text-[10px] font-bold text-black border border-black/20">
+                    {state.distribution[opt.label].toLocaleString()}
+                  </div>
+                )}
+                <div className="absolute -bottom-6 left-0 right-0 text-center whitespace-nowrap overflow-hidden text-ellipsis px-2 py-1">
+                   <span className="font-display text-[10px] font-bold text-white/40 uppercase tracking-tighter">
+                     {opt.text}
+                   </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Right Options (C & D) */}
+        <div className="absolute right-4 md:right-10 top-1/2 -translate-y-1/2 flex flex-col gap-8 pointer-events-auto">
+          {currentQuestion.options.filter(o => o.label === "C" || o.label === "D").map((opt) => {
+            const isSelected = state.selectedPlatform === opt.label;
+            const hasTokens = (state.distribution[opt.label] || 0) > 0;
+            return (
+              <button
+                key={opt.label}
+                onClick={() => dispatch({ type: "SELECT_PLATFORM", label: isSelected ? null : opt.label })}
+                className={`
+                  relative h-24 w-24 md:h-32 md:w-32 flex flex-col items-center justify-center rounded-2xl border-4 transition-all duration-300
+                  ${isSelected 
+                    ? "bg-accent/20 border-accent shadow-[0_0_40px_rgba(34,211,238,0.4)] scale-110" 
+                    : "bg-white/5 border-white/10 hover:bg-white/10 text-white/20"
+                  }
+                `}
+              >
+                <span className={`font-display text-5xl md:text-7xl font-black ${isSelected ? "text-accent" : "text-white/10"}`}>{opt.label}</span>
+                {hasTokens && (
+                  <div className="absolute top-2 right-2 bg-gold px-2 py-0.5 rounded-full text-[10px] font-bold text-black border border-black/20">
+                    {state.distribution[opt.label].toLocaleString()}
+                  </div>
+                )}
+                 <div className="absolute -bottom-6 left-0 right-0 text-center whitespace-nowrap overflow-hidden text-ellipsis px-2 py-1">
+                   <span className="font-display text-[10px] font-bold text-white/40 uppercase tracking-tighter">
+                     {opt.text}
+                   </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Center Space for 3D and Question */}
+        <div className="flex-1 flex flex-col items-center pt-2 md:pt-6">
           <motion.div 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="w-full max-w-2xl px-4 mb-4"
+            className="w-full max-w-xl px-4"
           >
-            <div className="glass-card relative overflow-hidden group border-white/5 bg-black/20 backdrop-blur-xl shadow-2xl p-6 md:p-8">
-              <div className="absolute top-0 left-0 w-1 h-full bg-accent animate-pulse" />
-              <h2 className="text-center font-display text-lg md:text-2xl font-bold text-white leading-relaxed tracking-tight underline-offset-4 decoration-accent/20">
+            <div className="glass-card border-white/5 bg-black/40 backdrop-blur-2xl shadow-2xl p-6 md:p-8">
+              <h2 className="text-center font-display text-lg md:text-2xl font-bold text-white leading-relaxed tracking-tight">
                 {currentQuestion.question}
               </h2>
             </div>
           </motion.div>
-
-          {/* Token Tray / Percentage Dist - Moved UP for visibility */}
-          <AnimatePresence>
-            {selectedPlate && available > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                className="pointer-events-auto glass-card mb-4 flex items-center gap-2 p-2 border-accent/20 bg-accent/5 backdrop-blur-md"
-              >
-                <div className="px-3 py-1.5 bg-white/10 rounded-lg flex items-center gap-3">
-                  <span className="font-display text-xs font-black text-accent uppercase tracking-widest">{selectedPlate}</span>
-                  <span className="font-data text-xs font-bold text-gold">{available.toLocaleString()} AVAIL</span>
-                </div>
-                <div className="flex gap-1.5">
-                  {PRESETS.map((pct) => (
-                    <button
-                      key={pct}
-                      onClick={() => addTokens(selectedPlate, Math.min(Math.floor(state.tokens * (pct / 100)), available))}
-                      className="rounded-lg bg-white/5 px-3 py-1.5 font-data text-[10px] font-bold text-white border border-white/5 hover:bg-accent/20 hover:border-accent/40 transition-all font-mono"
-                    >
-                      +{pct}%
-                    </button>
-                  ))}
-                  <button
-                    onClick={() => addTokens(selectedPlate, available)}
-                    className="rounded-lg bg-accent px-4 py-1.5 font-display text-[10px] font-black text-black hover:scale-105 active:scale-95 transition-all"
-                  >
-                    MAX
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
-
-        {/* RIGHT CONTROL PANEL */}
-        <aside className="w-24 md:w-32 flex flex-col items-center justify-center p-4 gap-6 bg-black/10 backdrop-blur-sm border-l border-white/5 relative z-20">
-          
-          {/* Utility Icons */}
-          <div className="flex flex-col gap-3 mb-auto">
-            <button 
-              onClick={() => setIsSoundOn(!isSoundOn)}
-              className={`h-12 w-12 flex items-center justify-center glass-card border-white/10 transition-all ${isSoundOn ? "text-accent border-accent/30" : "text-white/20"}`}
-            >
-              <IconSound muted={!isSoundOn} />
-            </button>
-            <button 
-              onClick={() => setShowSettings(true)}
-              className="h-12 w-12 flex items-center justify-center glass-card border-white/10 hover:border-white/20 text-white/60 hover:text-white"
-            >
-              <IconSettings />
-            </button>
-          </div>
-
-          {/* Option Selector (A, B, C, D) */}
-          <div className="flex flex-col gap-3 py-8 border-y border-white/5">
-            {currentQuestion.options.map((opt) => {
-              const isSelected = state.selectedPlatform === opt.label;
-              const hasTokens = (state.distribution[opt.label] || 0) > 0;
-              return (
-                <button
-                  key={opt.label}
-                  onClick={() => dispatch({ type: "SELECT_PLATFORM", label: isSelected ? null : opt.label })}
-                  className={`
-                    relative h-14 w-14 flex flex-col items-center justify-center rounded-xl border transition-all duration-300
-                    ${isSelected 
-                      ? "bg-accent text-black border-accent shadow-[0_0_20px_rgba(34,211,238,0.4)] scale-110 z-10" 
-                      : "bg-white/5 border-white/10 hover:bg-white/10 text-white"
-                    }
-                  `}
-                >
-                  <span className="font-display text-xl font-black">{opt.label}</span>
-                  {hasTokens && (
-                    <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-gold border-2 border-black flex items-center justify-center">
-                      <div className="h-1.5 w-1.5 rounded-full bg-black" />
-                    </div>
-                  )}
-                  {/* Option Tooltip (Text) - Shows on right panel hover for desktop */}
-                  <div className="absolute right-16 hidden md:group-hover:block transition-opacity pointer-events-none">
-                    <div className="glass-card px-4 py-2 whitespace-nowrap bg-black text-xs font-bold border-white/10">
-                      {opt.text}
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* FALL (Confirm) Button */}
-          <div className="mt-auto group">
-             <button
-              onClick={() => canLock && dispatch({ type: "LOCK_ANSWERS" })}
-              disabled={!canLock}
-              className={`
-                relative h-16 w-16 md:h-20 md:w-20 rounded-2xl flex flex-col items-center justify-center transition-all duration-500
-                ${canLock 
-                  ? "bg-red-500 shadow-[0_0_30px_rgba(239,68,68,0.6)] cursor-pointer hover:scale-105 active:scale-95" 
-                  : "bg-white/5 grayscale opacity-30 cursor-not-allowed border border-white/10"
-                }
-              `}
-            >
-              <div className="absolute -top-6 text-[10px] font-black text-white/40 tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-                CONFIRM
-              </div>
-              <IconFall active={canLock} />
-              <span className={`mt-1 font-display text-[10px] font-black ${canLock ? "text-white" : "text-white/20"}`}>
-                FALL
-              </span>
-            </button>
-          </div>
-        </aside>
       </main>
 
-      {/* Dynamic Status Bar (Footer) */}
-      <footer className="w-full relative z-10 px-6 py-4 flex items-center justify-between border-t border-white/5 bg-black/10">
-         <div className="flex items-center gap-6">
-            <div className="flex flex-col">
-              <span className="font-data text-[8px] text-white/30 uppercase tracking-widest mb-1">Total Placed</span>
-              <span className="font-data text-lg font-black text-accent">{totalDistributed.toLocaleString()}</span>
-            </div>
-            <div className="h-8 w-px bg-white/5" />
-            <div className="flex flex-col">
-              <span className="font-data text-[8px] text-white/30 uppercase tracking-widest mb-1">Quest No.</span>
-              <span className="font-data text-lg font-black text-white">{state.questionsAnswered + 1}</span>
-            </div>
-         </div>
-         
-         {/* Instruction / Tip */}
-         <div className="hidden lg:block">
-            <p className="font-display text-[10px] font-bold text-white/20 italic">
-              "Divide your tokens carefully. Undistributed funds will be lost in the fall."
-            </p>
-         </div>
-         
-         <div className="flex items-center gap-3">
-            <WalletButton />
-         </div>
+      {/* Footer Area - Token distribution and Fall Button */}
+      <footer className="relative z-20 w-full flex flex-col items-center p-6 gap-6 bg-gradient-to-t from-black/80 to-transparent">
+        
+        {/* Token Distribution Tray */}
+        <AnimatePresence>
+          {selectedPlate && available > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="flex items-center gap-2 p-2 glass-card bg-white/5 backdrop-blur-md border-white/10"
+            >
+              <div className="px-3 py-1.5 bg-accent/20 rounded-lg">
+                <span className="font-display text-xs font-black text-white">{selectedPlate}: {available.toLocaleString()}</span>
+              </div>
+              <div className="flex gap-1.5">
+                {PRESETS.map((pct) => (
+                  <button
+                    key={pct}
+                    onClick={() => addTokens(selectedPlate, Math.min(Math.floor(state.tokens * (pct / 100)), available))}
+                    className="rounded-lg bg-white/5 px-3 py-1.5 font-data text-[10px] font-bold text-white border border-white/5 hover:bg-white/20 transition-all"
+                  >
+                    {pct}%
+                  </button>
+                ))}
+                <button
+                  onClick={() => addTokens(selectedPlate, available)}
+                  className="rounded-lg bg-accent px-4 py-1.5 font-display text-[10px] font-black text-black hover:scale-105 transition-all"
+                >
+                  MAX
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* LOCK SESSION Button */}
+        <div className="flex flex-col items-center gap-2">
+          <button
+            onClick={() => canLock && dispatch({ type: "LOCK_ANSWERS" })}
+            disabled={!canLock}
+            className={`
+              relative group flex items-center justify-center rounded-2xl px-12 py-5 font-display text-2xl font-black tracking-[0.2em] transition-all duration-500
+              ${canLock 
+                ? "bg-red-600 text-white shadow-[0_0_50px_rgba(220,38,38,0.5)] hover:scale-105 active:scale-95" 
+                : "bg-white/5 text-white/10 border border-white/5 opacity-50 cursor-not-allowed"
+              }
+            `}
+          >
+            LOCK SESSION
+            {canLock && (
+              <motion.div 
+                animate={{ opacity: [0, 0.4, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="absolute inset-0 rounded-2xl bg-white" 
+              />
+            )}
+          </button>
+          <p className="font-display text-[10px] font-bold text-white/20 uppercase tracking-widest text-glow italic">
+             "Divide your tokens carefully. Undistributed funds will be lost in the fall."
+          </p>
+        </div>
+
+        <div className="w-full flex items-center justify-between mt-2 opacity-40">
+           <div className="flex flex-col">
+              <span className="font-data text-[8px] uppercase tracking-widest">PROGRESS</span>
+              <span className="font-data text-sm font-black text-white">{state.questionsAnswered + 1} QUESTIONS</span>
+           </div>
+           <WalletButton />
+        </div>
       </footer>
 
     </div>

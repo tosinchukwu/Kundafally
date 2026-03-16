@@ -37,7 +37,7 @@ const initialState: GameState = {
   phase: "menu",
   tokens: STARTING_TOKENS,
   startingTokens: STARTING_TOKENS,
-  sponsor: "BASE",
+  sponsor: "KUNDAFALL",
   selectedCategories: [],
   currentCategoryIndex: 0,
   currentQuestionIndex: 0,
