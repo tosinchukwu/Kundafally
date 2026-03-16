@@ -23,7 +23,7 @@ export default function Environment() {
             outlineWidth={0.1}
             outlineColor="#0891b2"
           >
-            BASE
+            KUNDA FALL
           </Text>
           <pointLight intensity={5} distance={15} color="#06B6D4" />
         </group>

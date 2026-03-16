@@ -24,7 +24,7 @@ export default function MenuScreen() {
       >
         <div className="mb-6">
           <span className="font-data text-xs text-muted-foreground">TOKENS PROVIDED BY</span>
-          <div className="mt-1 font-data text-sm text-gold">BASE</div>
+          <div className="mt-1 font-data text-sm text-gold">KUNDAFALL</div>
         </div>
 
         <h1 className="font-display text-5xl font-black text-foreground md:text-8xl">

@@ -67,7 +67,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         ...initialState,
         phase: "playing",
         selectedCategories: randomizedCategories,
-        sponsor: action.sponsor || "BASE",
+        sponsor: action.sponsor || "KUNDAFALL",
       };
     }
 
