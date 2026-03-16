@@ -62,14 +62,13 @@ export default function GameplayScreen() {
 
 
   return (
-    <div className="game-container flex flex-col items-center" style={{ overflow: "hidden" }}>
+    <div className="game-container flex flex-col items-center bg-transparent" style={{ overflow: "hidden" }}>
 
 
       {/* === HTML UI OVERLAY === */}
 
       {/* Header Section */}
-      <header className="pointer-events-none relative z-10 flex w-full items-start justify-between p-6 md:p-10">
-        {/* Score Display (Top Left) */}
+      <header className="relative z-10 flex w-full items-start justify-between p-6 md:p-10 pointer-events-none">
         <div className="pointer-events-auto flex flex-col gap-1">
           <div className="glass-card flex items-center gap-3 px-4 py-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-yellow-600 to-yellow-400 border border-yellow-300/50">
@@ -106,8 +105,12 @@ export default function GameplayScreen() {
 
         {/* Branding (Center) */}
         <div className="flex flex-col items-center">
-          <div className="relative">
-            <div className="logo-frame">
+          <motion.div 
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="relative"
+          >
+            <div className="logo-frame bg-gradient-to-br from-indigo-900/90 to-black/95 backdrop-blur-3xl border-t border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
               <h1 className="font-display text-4xl md:text-5xl font-black italic tracking-tighter text-white neon-text-glow">
                 KUNDA
               </h1>
@@ -115,9 +118,9 @@ export default function GameplayScreen() {
                 FALL
               </h1>
             </div>
-          </div>
-          <p className="mt-4 font-display text-sm font-bold text-white/60 uppercase tracking-widest text-center">
-            Protect Your Tokens • Let the Wrong Ones Fall
+          </motion.div>
+          <p className="mt-4 font-display text-[10px] font-black text-white/40 uppercase tracking-[0.4em] text-center pointer-events-auto">
+            Protect the Stack • Let the Error Fall
           </p>
         </div>
 
@@ -137,24 +140,31 @@ export default function GameplayScreen() {
 
       {/* Question Box - pinned near top of the 3D scene */}
       <main className="pointer-events-none relative z-10 flex w-full flex-col items-center px-4 mt-2">
-        <div className="pointer-events-auto group relative w-full max-w-3xl">
-          <div className="absolute -inset-1 bg-gradient-to-r from-accent/50 to-primary/50 blur opacity-25 group-hover:opacity-40 transition" />
-          <div className="glass-card flex items-center gap-4 p-6 md:p-8">
-            <h2 className="flex-1 text-center font-display text-xl md:text-2xl font-bold text-white leading-tight">
+        <motion.div 
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="pointer-events-auto group relative w-full max-w-3xl"
+        >
+          <div className="absolute -inset-1 bg-gradient-to-r from-accent/30 to-primary/30 blur-2xl opacity-20 group-hover:opacity-40 transition" />
+          <div className="glass-card flex items-center justify-center p-8 md:p-10 border-white/5 bg-white/[0.02] backdrop-blur-3xl shadow-2xl">
+            <h2 className="text-center font-display text-2xl md:text-3xl font-bold text-white leading-snug tracking-tight drop-shadow-sm">
               {currentQuestion.question}
             </h2>
           </div>
           {/* Question counter dots */}
-          <div className="mt-3 flex justify-center gap-2">
-            <div className="h-1 w-8 rounded-full bg-accent" />
-            <div className="h-1 w-8 rounded-full bg-white/10" />
-            <div className="h-1 w-8 rounded-full bg-white/10" />
+          <div className="mt-6 flex justify-center gap-3">
+            {[...Array(3)].map((_, i) => (
+              <div 
+                key={i} 
+                className={`h-1.5 w-10 rounded-full transition-all duration-500 ${i === 0 ? "bg-accent shadow-[0_0_10px_rgba(34,211,238,0.5)]" : "bg-white/10"}`} 
+              />
+            ))}
           </div>
-        </div>
+        </motion.div>
       </main>
 
       {/* Footer Controls */}
-      <footer className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center p-6 bg-gradient-to-t from-background/90 via-background/50 to-transparent pt-20">
+      <footer className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center p-6 bg-transparent pt-20">
         {/* Token Tray (Appears when platform selected) */}
         <AnimatePresence>
           {selectedPlate && (
@@ -202,7 +212,7 @@ export default function GameplayScreen() {
           </div>
 
           <motion.button
-            whileHover={canLock ? { scale: 1.05 } : {}}
+            whileHover={canLock ? { scale: 1.05, boxShadow: "0 0 50px rgba(34,211,238,0.3)" } : {}}
             whileTap={canLock ? { scale: 0.95 } : {}}
             onClick={() => {
               if (canLock) {
@@ -211,17 +221,21 @@ export default function GameplayScreen() {
             }}
             disabled={!canLock}
             className={`
-              relative group flex items-center gap-3 rounded-full px-12 py-5 font-display text-xl font-black tracking-widest transition-all
+              relative group flex items-center gap-3 rounded-2xl px-16 py-5 font-display text-xl font-black tracking-[0.2em] transition-all
               ${canLock
-                ? "bg-accent text-black shadow-[0_0_30px_rgba(34,211,238,0.4)]"
-                : "bg-white/5 text-white/20 cursor-not-allowed"
+                ? "bg-accent text-black shadow-[0_0_30px_rgba(34,211,238,0.3)]"
+                : "bg-white/5 text-white/20 border border-white/5"
               }
             `}
           >
             {canLock && (
-              <div className="absolute inset-0 rounded-full bg-white opacity-0 group-hover:opacity-20 transition" />
+              <motion.div 
+                animate={{ opacity: [0.1, 0.4, 0.1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="absolute inset-0 rounded-2xl bg-white" 
+              />
             )}
-            LOCK
+            <span className="relative z-10">LOCK SESSION</span>
           </motion.button>
 
           <div className="text-right">

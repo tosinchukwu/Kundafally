@@ -23,7 +23,12 @@ export default function Token3D({ position, label = "₿", falling = false, onFa
   const bounce = 0.4;
   const floorY = -8;
 
-  // Float animation when not falling
+  const rotVel = useRef(new THREE.Vector3(
+    Math.random() * 0.2,
+    Math.random() * 0.2,
+    Math.random() * 0.2
+  ));
+  const bounceVar = useRef(bounce * (0.8 + Math.random() * 0.4));
   const floatOffset = useRef(Math.random() * Math.PI * 2);
 
   useFrame((state) => {
@@ -38,9 +43,11 @@ export default function Token3D({ position, label = "₿", falling = false, onFa
 
       // Bounce on "floor" before disappearing
       if (pos.y < floorY && Math.abs(vel.y) > 0.01) {
-        vel.y *= -bounce;
+        vel.y *= -bounceVar.current;
         vel.x *= 0.8;
         vel.z *= 0.8;
+        // Add random spin on bounce
+        rotVel.current.multiplyScalar(1.2);
       }
 
       if (pos.y < floorY - 3) {
@@ -49,20 +56,19 @@ export default function Token3D({ position, label = "₿", falling = false, onFa
       }
 
       groupRef.current.position.copy(pos);
-      groupRef.current.rotation.z += 0.05;
-      groupRef.current.rotation.x += 0.03;
+      groupRef.current.rotation.x += rotVel.current.x;
+      groupRef.current.rotation.y += rotVel.current.y;
+      groupRef.current.rotation.z += rotVel.current.z;
 
       // Fade out as it falls
-      if (groupRef.current) {
-        const opacity = Math.max(0, 1 - (floorY - pos.y) / 5);
-        groupRef.current.traverse((child) => {
-          if (child instanceof THREE.Mesh) {
-            if (child.material && (child.material as THREE.MeshStandardMaterial).transparent !== undefined) {
-              (child.material as THREE.MeshStandardMaterial).opacity = opacity;
-            }
+      const opacity = Math.max(0, 1 - (floorY - pos.y) / 5);
+      groupRef.current.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          if (child.material && (child.material as THREE.MeshStandardMaterial).transparent !== undefined) {
+            (child.material as THREE.MeshStandardMaterial).opacity = opacity;
           }
-        });
-      }
+        }
+      });
     } else {
       // Gentle floating
       const t = state.clock.elapsedTime + floatOffset.current;
@@ -71,6 +77,7 @@ export default function Token3D({ position, label = "₿", falling = false, onFa
         position[1] + Math.sin(t) * 0.05,
         position[2]
       );
+      groupRef.current.rotation.y = Math.sin(t * 0.5) * 0.1;
     }
   });
 

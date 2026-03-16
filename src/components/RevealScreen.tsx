@@ -18,7 +18,7 @@ export default function RevealScreen() {
   const showTrapdoor = state.trapdoorsOpen;
 
   return (
-    <div className="game-container flex flex-col items-center" style={{ overflow: "hidden" }}>
+    <div className="game-container flex flex-col items-center pointer-events-auto bg-transparent" style={{ overflow: "hidden" }}>
       {/* === HTML UI OVERLAY === */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -41,13 +41,20 @@ export default function RevealScreen() {
 
         {/* Correct Answer Badge */}
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
+          initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.4, type: "spring" }}
-          className="glass-card px-8 py-3 border-green-400/60 bg-green-400/10"
+          transition={{ delay: 0.4, type: "spring", damping: 12 }}
+          className="glass-card px-10 py-5 border-green-400/50 bg-green-500/5 relative overflow-hidden"
         >
-          <span className="font-display text-sm font-black tracking-widest text-green-400 uppercase">
-            ✓ Correct Answer: <span className="text-white">{correctLabel}</span>
+          {/* Internal Glow Pulse */}
+          <motion.div
+            animate={{ opacity: [0.1, 0.3, 0.1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="absolute inset-0 bg-green-400/20 blur-xl"
+          />
+          <span className="relative z-10 font-display text-sm font-black tracking-[0.25em] text-green-400 uppercase flex items-center gap-3">
+            <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+            Correct Answer: <span className="text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">{correctLabel}</span>
             {" — "}
             {currentQuestion.options.find(o => o.label === correctLabel)?.text}
           </span>
@@ -62,26 +69,37 @@ export default function RevealScreen() {
         className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center p-8 bg-gradient-to-t from-background/95 via-background/60 to-transparent"
       >
         {!state.isEliminated ? (
-          <div className="pointer-events-auto glass-card px-10 py-6 flex flex-col items-center mb-6">
+          <motion.div 
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            className="pointer-events-auto glass-card px-12 py-8 flex flex-col items-center mb-8 border-white/5 shadow-2xl backdrop-blur-3xl"
+          >
             {lastHistory?.correct ? (
-              <div className="font-display text-xl font-bold text-accent">
-                STABLE. <span className="text-bonus">+{lastHistory.bonus}</span> BONUS APPLIED.
+              <div className="font-display text-2xl font-black text-accent tracking-tight flex items-center gap-2">
+                STABLE <span className="text-bonus animate-bounce">+{lastHistory.bonus}</span>
               </div>
             ) : (
-              <div className="font-display text-xl font-bold text-red-400">
-                UNSTABLE. <span className="text-white">-{lastHistory?.tokensLost}</span> TOKENS LOST.
+              <div className="font-display text-2xl font-black text-red-500 tracking-tight">
+                UNSTABLE <span className="text-white/80">-{lastHistory?.tokensLost}</span>
               </div>
             )}
-            <div className="mt-4 flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-yellow-600 to-yellow-400 border border-yellow-300/50">
-                <span className="text-lg font-bold text-white">₿</span>
+            
+            <div className="mt-6 flex flex-col items-center">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-2">Vault Balance</span>
+              <div className="flex items-center gap-5">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-yellow-600 to-yellow-300 shadow-[0_0_20px_rgba(234,179,8,0.3)]">
+                  <span className="text-2xl font-bold text-white drop-shadow-md">₿</span>
+                </div>
+                <span className="font-data text-5xl font-black text-white tracking-tighter">
+                  {state.tokens.toLocaleString()}
+                </span>
               </div>
-              <span className="font-data text-4xl font-black text-white">{state.tokens.toLocaleString()}</span>
             </div>
-          </div>
+          </motion.div>
         ) : (
-          <div className="glass-card px-10 py-6 border-red-500/50 bg-red-500/10 mb-6">
-            <div className="font-display text-2xl font-black text-red-500 neon-text-glow">VAULT EMPTY. SESSION TERMINATED.</div>
+          <div className="glass-card px-12 py-10 border-red-500/40 bg-red-500/5 mb-8 flex flex-col items-center backdrop-blur-2xl">
+            <div className="font-display text-3xl font-black text-red-500 neon-text-glow tracking-tighter uppercase mb-2">Vault Breach</div>
+            <div className="text-white/60 font-medium tracking-wide">SESSION TERMINATED</div>
           </div>
         )}
 

@@ -35,15 +35,24 @@ export default function Platform3D({
   const emissiveIntensity = isCorrect ? 3 : isSelected ? 1 : 0.3;
   const backboardColor = isCorrect ? "#14532d" : "#1e1b4b";
 
-  useFrame(() => {
+  useFrame((state) => {
     if (leftDoorRef.current && rightDoorRef.current) {
-      const targetAngle = trapdoorOpen ? -Math.PI / 2 : 0;
+      const targetAngle = trapdoorOpen ? -Math.PI / 1.8 : 0; // Slightly more than 90 deg for "swing"
+      const speed = trapdoorOpen ? 0.15 : 0.1;
+      
       leftDoorRef.current.rotation.z = THREE.MathUtils.lerp(
-        leftDoorRef.current.rotation.z, targetAngle, 0.1
+        leftDoorRef.current.rotation.z, targetAngle, speed
       );
       rightDoorRef.current.rotation.z = THREE.MathUtils.lerp(
-        rightDoorRef.current.rotation.z, -targetAngle, 0.1
+        rightDoorRef.current.rotation.z, -targetAngle, speed
       );
+
+      // Subtle vibration effect when open
+      if (trapdoorOpen) {
+        const vibration = Math.sin(state.clock.elapsedTime * 20) * 0.02;
+        leftDoorRef.current.rotation.z += vibration;
+        rightDoorRef.current.rotation.z -= vibration;
+      }
     }
   });
 

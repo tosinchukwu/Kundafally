@@ -43,27 +43,27 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
 function GameRouter() {
   const { state, dispatch } = useGame();
 
-  console.log("Current Game Phase:", state.phase);
+  console.log("GameRouter State:", { phase: state.phase, catIdx: state.currentCategoryIndex, qIdx: state.currentQuestionIndex });
   const currentCategory = state.selectedCategories[state.currentCategoryIndex];
   const currentQuestion = currentCategory?.questions[state.currentQuestionIndex];
+  console.log("Current Question ID:", currentQuestion?.id);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-background">
-      {/* Persistent 3D Background - only active during playing/reveal */}
-      {(state.phase === "playing" || state.phase === "reveal") && (
-        <div className="absolute inset-0 z-0">
-          <GameScene
-            distribution={state.distribution}
-            options={currentQuestion?.options || []}
-            revealedAnswer={state.revealedAnswer}
-            trapdoorPlatforms={(state.trapdoorsOpen && state.revealedAnswer && currentQuestion) ? currentQuestion.options.filter(o => o.label !== state.revealedAnswer).map(o => o.label) : []}
-            onPlatformClick={(label) => state.phase === "playing" && dispatch({ type: "SELECT_PLATFORM", label: state.selectedPlatform === label ? null : label })}
-            selectedPlatform={state.selectedPlatform}
-          />
-        </div>
-      )}
+    <div className="relative min-h-screen w-full overflow-hidden bg-transparent">
+      {/* Persistent 3D Background */}
+      <div className="absolute inset-0 z-0">
+        <GameScene
+          phase={state.phase}
+          distribution={state.distribution}
+          options={currentQuestion?.options || []}
+          revealedAnswer={state.revealedAnswer}
+          trapdoorPlatforms={(state.trapdoorsOpen && state.revealedAnswer && currentQuestion) ? currentQuestion.options.filter(o => o.label !== state.revealedAnswer).map(o => o.label) : []}
+          onPlatformClick={(label) => state.phase === "playing" && dispatch({ type: "SELECT_PLATFORM", label: state.selectedPlatform === label ? null : label })}
+          selectedPlatform={state.selectedPlatform}
+        />
+      </div>
 
-      <div className="relative z-10 min-h-screen w-full">
+      <div className="relative z-10 min-h-screen w-full pointer-events-none bg-transparent">
         {(() => {
           switch (state.phase) {
             case "menu":

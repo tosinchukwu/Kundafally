@@ -70,13 +70,7 @@
 
 @layer utilities {
   .game-container {
-    background-color: hsl(var(--background));
-    background-image: 
-      radial-gradient(circle at 50% -20%, hsla(270, 80%, 30%, 0.3) 0%, transparent 60%),
-      radial-gradient(circle at 10% 50%, hsla(190, 80%, 20%, 0.2) 0%, transparent 40%),
-      radial-gradient(circle at 90% 50%, hsla(270, 80%, 20%, 0.2) 0%, transparent 40%),
-      url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cg fill='%238B5CF6' fill-opacity='0.05' fill-rule='evenodd'%3%3Cpath d='M0 0h1v200H0V0zm199 0h1v200h-1V0zM1 0h198v1H1V0zm0 199h198v1H1v-1zM50 0h1v200h-1V0zm50 0h1v200h-1V0zm50 0h1v200h-1V0zM0 50h200v1H0v-1zm0 50h200v1H0v-1zm0 50h200v1H0v-1z'/%3E%3Ccircle cx='50' cy='50' r='1'/%3E%3Ccircle cx='100' cy='50' r='1'/%3E%3Ccircle cx='150' cy='50' r='1'/%3E%3Ccircle cx='50' cy='100' r='1'/%3E%3Ccircle cx='100' cy='100' r='1'/%3E%3Ccircle cx='150' cy='100' r='1'/%3E%3Ccircle cx='50' cy='150' r='1'/%3E%3Ccircle cx='100' cy='100' r='1'/%3E%3Ccircle cx='150' cy='150' r='1'/%3E%3C/g%3E%3C/svg%3E");
-    background-size: cover, cover, cover, 300px 300px;
+    background-color: transparent !important;
     position: relative;
     min-height: 100vh;
     overflow: hidden;

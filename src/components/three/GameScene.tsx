@@ -7,16 +7,6 @@ import Environment from "./Environment";
 import Platform3D from "./Platform3D";
 import Token3D from "./Token3D";
 
-function Loader() {
-  const { progress } = useProgress();
-  return (
-    <Html center>
-      <div className="text-cyan-400 font-display font-black text-2xl tracking-tighter filter drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]">
-        {Math.round(progress)}%
-      </div>
-    </Html>
-  );
-}
 
 interface OptionDef {
   label: string;
@@ -39,6 +29,7 @@ const PLATFORM_CONFIGS: PlatformConfig[] = [
 ];
 
 interface GameSceneProps {
+  phase?: string;
   distribution: Record<string, number>;
   options: OptionDef[];
   revealedAnswer: string | null;
@@ -56,6 +47,7 @@ function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, o
     return m;
   }, [options]);
 
+  console.log("3D Platforms rendering with options count:", options?.length);
   return (
     <>
       {PLATFORM_CONFIGS.map((cfg) => {
@@ -120,7 +112,82 @@ function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, o
   );
 }
 
+function SceneContent({ distribution, options, revealedAnswer, trapdoorPlatforms, onPlatformClick, selectedPlatform }: GameSceneProps) {
+  const { camera } = useThree();
+  const initialCameraPos = useMemo(() => camera.position.clone(), [camera]);
+  const shakeRef = useRef(0);
+
+  useEffect(() => {
+    if (trapdoorPlatforms.length > 0) {
+      shakeRef.current = 0.5; // Trigger shake
+    }
+  }, [trapdoorPlatforms]);
+
+  useFrame((state) => {
+    if (shakeRef.current > 0.01) {
+      const s = shakeRef.current;
+      camera.position.x = initialCameraPos.x + (Math.random() - 0.5) * s;
+      camera.position.y = initialCameraPos.y + (Math.random() - 0.5) * s;
+      shakeRef.current *= 0.9; // Decay
+    } else {
+      camera.position.copy(initialCameraPos);
+    }
+  });
+
+  return (
+    <>
+      <Environment />
+      <Platforms
+        distribution={distribution}
+        options={options}
+        revealedAnswer={revealedAnswer}
+        trapdoorPlatforms={trapdoorPlatforms}
+        onPlatformClick={onPlatformClick}
+        selectedPlatform={selectedPlatform}
+      />
+
+      {/* Cinematic Reveal: God Ray on Correct Platform */}
+      {revealedAnswer && (
+        <group>
+          {(() => {
+            const cfg = PLATFORM_CONFIGS.find(c => c.id === revealedAnswer);
+            if (!cfg) return null;
+            return (
+              <>
+                <mesh position={[cfg.position[0], cfg.position[1] + 10, cfg.position[2]]}>
+                  <cylinderGeometry args={[0.05, 3, 20, 32]} />
+                  <meshBasicMaterial color="#4ade80" transparent opacity={0.3} />
+                </mesh>
+                <SpotLight
+                  position={[cfg.position[0], cfg.position[1] + 15, cfg.position[2]]}
+                  target-position={[cfg.position[0], cfg.position[1], cfg.position[2]]}
+                  angle={0.15}
+                  penumbra={1}
+                  intensity={10}
+                  color="#4ade80"
+                />
+                <pointLight 
+                  position={[cfg.position[0], cfg.position[1] + 2, cfg.position[2]]} 
+                  intensity={5} 
+                  color="#4ade80" 
+                />
+              </>
+            );
+          })()}
+        </group>
+      )}
+
+      {/* Pit floor */}
+      <mesh position={[0, -10.5, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[100, 100]} />
+        <meshStandardMaterial color="#0a0212" roughness={0.8} />
+      </mesh>
+    </>
+  );
+}
+
 export default function GameScene({
+  phase,
   distribution,
   options,
   revealedAnswer,
@@ -128,6 +195,8 @@ export default function GameScene({
   onPlatformClick,
   selectedPlatform,
 }: GameSceneProps) {
+  const showPlatforms = phase === "playing" || phase === "reveal";
+
   return (
     <Canvas
       shadows
@@ -143,33 +212,19 @@ export default function GameScene({
       }}
     >
       <PerspectiveCamera makeDefault position={[0, 8, 14]} fov={55} />
-
-      <Suspense fallback={<Loader />}>
-        <Environment />
-        <Platforms
-          distribution={distribution}
-          options={options}
-          revealedAnswer={revealedAnswer}
-          trapdoorPlatforms={trapdoorPlatforms}
-          onPlatformClick={onPlatformClick}
-          selectedPlatform={selectedPlatform}
-        />
-
-        {/* Pit floor */}
-        <mesh position={[0, -10.5, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-          <planeGeometry args={[100, 100]} />
-          <meshStandardMaterial color="#0a0212" roughness={0.8} />
-        </mesh>
-
-        {/* <EffectComposer multisampling={0}>
-          <Bloom 
-            intensity={1.0} 
-            luminanceThreshold={0.5} 
-            luminanceSmoothing={0.9} 
-            mipmapBlur 
+      
+      <Suspense fallback={null}>
+        {showPlatforms && (
+          <SceneContent
+            distribution={distribution}
+            options={options}
+            revealedAnswer={revealedAnswer}
+            trapdoorPlatforms={trapdoorPlatforms}
+            onPlatformClick={onPlatformClick}
+            selectedPlatform={selectedPlatform}
           />
-          <Noise opacity={0.02} />
-        </EffectComposer> */}
+        )}
+        {!showPlatforms && <Environment />}
       </Suspense>
     </Canvas>
   );
