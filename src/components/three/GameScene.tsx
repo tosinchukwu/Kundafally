@@ -1,6 +1,6 @@
-import React, { useMemo, Suspense } from "react";
-import { Canvas } from "@react-three/fiber";
-import { PerspectiveCamera, useProgress, Html } from "@react-three/drei";
+import React, { useMemo, Suspense, useRef, useEffect } from "react";
+import { Canvas, useThree, useFrame } from "@react-three/fiber";
+import { PerspectiveCamera, useProgress, Html, SpotLight } from "@react-three/drei";
 import { EffectComposer, Bloom, Noise, ToneMapping } from "@react-three/postprocessing";
 import * as THREE from "three";
 import Environment from "./Environment";
