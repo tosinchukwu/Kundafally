@@ -192,8 +192,8 @@ function ResponsiveCamera() {
   const isPortrait = aspect < 1.1;
 
   // On mobile (portrait), we pull back and increase FOV to see all platforms
-  const position: [number, number, number] = isPortrait ? [0, 14, 20] : [0, 8, 14];
-  const fov = isPortrait ? 65 : 55;
+  const position: [number, number, number] = isPortrait ? [0, 14, 20] : [0, 7, 13];
+  const fov = isPortrait ? 65 : 60;
 
   return <PerspectiveCamera makeDefault position={position} fov={fov} />;
 }

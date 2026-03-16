@@ -68,7 +68,7 @@ export default function GameplayScreen() {
       {/* === HTML UI OVERLAY === */}
 
       {/* Header Section */}
-      <header className="relative z-10 flex w-full flex-col md:flex-row items-center md:items-start justify-between p-4 md:p-10 pointer-events-none gap-6 md:gap-0">
+      <header className="relative z-10 flex w-full flex-col md:flex-row items-center md:items-start justify-between p-4 md:p-6 pointer-events-none gap-4 md:gap-0">
         {/* Token Balance (Left on PC, Top on Phone) */}
         <div className="pointer-events-auto flex flex-col items-center md:items-start gap-1">
           <div className="glass-card flex items-center gap-3 px-3 py-1.5 md:px-4 md:py-2">
@@ -109,7 +109,7 @@ export default function GameplayScreen() {
           <motion.div 
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="relative scale-90 md:scale-100"
+            className="relative scale-75 md:scale-90"
           >
             <div className="logo-frame bg-gradient-to-br from-indigo-900/90 to-black/95 backdrop-blur-3xl border-t border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
               <h1 className="font-display text-4xl md:text-5xl font-black italic tracking-tighter text-white neon-text-glow">
@@ -164,8 +164,7 @@ export default function GameplayScreen() {
         </motion.div>
       </main>
 
-      {/* Footer Controls */}
-      <footer className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center p-4 md:p-6 bg-transparent pt-20">
+      {/* Footer Controls       <footer className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center p-3 md:p-4 bg-transparent pt-12">
         {/* Token Tray (Appears when platform selected) */}
         <AnimatePresence>
           {selectedPlate && (
@@ -173,15 +172,15 @@ export default function GameplayScreen() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 30 }}
-              className="pointer-events-auto glass-card mb-4 flex flex-wrap items-center justify-center gap-2 md:gap-3 p-3 md:p-4 border-accent/20 max-w-[95vw]"
+              className="pointer-events-auto glass-card mb-2 md:mb-4 flex flex-wrap items-center justify-center gap-2 p-2 md:p-3 border-accent/20 max-w-[95vw]"
             >
-              <div className="w-full md:w-auto mb-2 md:mb-0 md:mr-4 px-3 py-1 bg-white/5 rounded-lg flex items-center justify-center gap-2">
-                <span className="font-display text-base md:text-lg font-black text-accent">{selectedPlate}</span>
+              <div className="w-full md:w-auto mb-1 md:mb-0 md:mr-3 px-3 py-1 bg-white/5 rounded-lg flex items-center justify-center gap-2">
+                <span className="font-display text-sm md:text-base font-black text-accent">{selectedPlate}</span>
                 <span className="font-data text-xs text-white/50">|</span>
                 <span className="font-data text-[10px] md:text-xs text-white/60">AVAIL:</span>
-                <span className="ml-1 font-data text-base md:text-lg font-bold text-gold">{available.toLocaleString()}</span>
+                <span className="ml-1 font-data text-sm md:text-base font-bold text-gold">{available.toLocaleString()}</span>
               </div>
-              <div className="flex flex-wrap items-center justify-center gap-2">
+              <div className="flex flex-wrap items-center justify-center gap-1 md:gap-2">
                 {PRESETS.map((pct) => {
                   const amt = Math.floor(state.tokens * (pct / 100));
                   const actualAmt = Math.min(amt, available);
@@ -190,7 +189,7 @@ export default function GameplayScreen() {
                       key={pct}
                       onClick={() => addTokens(selectedPlate, actualAmt)}
                       disabled={available <= 0}
-                      className="rounded-lg bg-white/5 px-4 py-2 md:px-6 md:py-3 font-data text-xs md:text-sm font-bold text-white border border-white/10 transition-all hover:bg-accent/20 disabled:opacity-30"
+                      className="rounded-lg bg-white/5 px-3 py-1.5 md:px-5 md:py-2.5 font-data text-[10px] md:text-xs font-bold text-white border border-white/10 transition-all hover:bg-accent/20 disabled:opacity-30"
                     >
                       +{pct}%
                     </button>
@@ -199,7 +198,7 @@ export default function GameplayScreen() {
                 <button
                   onClick={() => addTokens(selectedPlate, available)}
                   disabled={available <= 0}
-                  className="rounded-lg bg-accent px-6 py-2 md:px-8 md:py-3 font-display text-xs md:text-sm font-black text-black transition-all hover:scale-105 disabled:opacity-30"
+                  className="rounded-lg bg-accent px-5 py-1.5 md:px-7 md:py-2.5 font-display text-[10px] md:text-xs font-black text-black transition-all hover:scale-105 disabled:opacity-30"
                 >
                   ALL IN
                 </button>
@@ -208,10 +207,10 @@ export default function GameplayScreen() {
           )}
         </AnimatePresence>
 
-        <div className="pointer-events-auto flex w-full max-w-4xl items-center justify-between px-4 md:px-10">
+        <div className="pointer-events-auto flex w-full max-w-4xl items-center justify-between px-4 md:px-6">
           <div className="text-left">
-            <span className="font-data text-[10px] md:text-xs text-white/40 block">COLLECTED</span>
-            <span className="font-data text-lg md:text-2xl font-black text-white">{totalDistributed.toLocaleString()}</span>
+            <span className="font-data text-[8px] md:text-[10px] text-white/40 block">COLLECTED</span>
+            <span className="font-data text-base md:text-xl font-black text-white">{totalDistributed.toLocaleString()}</span>
           </div>
 
           <motion.button
@@ -224,9 +223,9 @@ export default function GameplayScreen() {
             }}
             disabled={!canLock}
             className={`
-              relative group flex items-center gap-2 md:gap-3 rounded-xl md:rounded-2xl px-8 py-3 md:px-16 md:py-5 font-display text-sm md:text-xl font-black tracking-[0.1em] md:tracking-[0.2em] transition-all
+              relative group flex items-center gap-2 md:gap-3 rounded-lg md:rounded-xl px-6 py-2 md:px-12 md:py-4 font-display text-xs md:text-lg font-black tracking-[0.1em] transition-all
               ${canLock
-                ? "bg-accent text-black shadow-[0_0_30px_rgba(34,211,238,0.3)]"
+                ? "bg-accent text-black shadow-[0_0_20px_rgba(34,211,238,0.3)]"
                 : "bg-white/5 text-white/20 border border-white/5"
               }
             `}
@@ -235,18 +234,19 @@ export default function GameplayScreen() {
               <motion.div 
                 animate={{ opacity: [0.1, 0.4, 0.1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
-                className="absolute inset-0 rounded-xl md:rounded-2xl bg-white" 
+                className="absolute inset-0 rounded-lg md:rounded-xl bg-white" 
               />
             )}
             <span className="relative z-10">LOCK SESSION</span>
           </motion.button>
 
           <div className="text-right">
-            <span className="font-data text-[10px] md:text-xs text-white/40 block">QUEST</span>
-            <span className="font-data text-lg md:text-2xl font-black text-white">{state.questionsAnswered + 1}</span>
+            <span className="font-data text-[8px] md:text-[10px] text-white/40 block">QUEST</span>
+            <span className="font-data text-base md:text-xl font-black text-white">{state.questionsAnswered + 1}</span>
           </div>
         </div>
       </footer>
+er>
     </div>
   );
 }
