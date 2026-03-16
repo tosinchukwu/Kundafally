@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGame } from "@/context/GameContext";
-import Platform from "./Platform";
+import GameScene from "./three/GameScene";
 import WalletButton from "./WalletButton";
 
 const PRESETS = [10, 25, 50, 100];
@@ -15,7 +15,6 @@ export default function GameplayScreen() {
   React.useEffect(() => {
     if (state.tokens > prevTokens) {
       const bonus = state.tokens - prevTokens;
-      // Only show if it matches the 10% bonus pattern (simplified) or any increase
       setShowBonus({ amount: bonus, id: Date.now() });
       const timer = setTimeout(() => setShowBonus(null), 1500);
       setPrevTokens(state.tokens);
@@ -41,12 +40,26 @@ export default function GameplayScreen() {
 
   const canLock = totalDistributed > 0;
 
+  const handlePlatformClick = useCallback((label: string) => {
+    setSelectedPlate(prev => prev === label ? null : label);
+  }, []);
+
   return (
-    <div className="game-container flex flex-col items-center">
-      <div className="spotlight-main" />
-      
-      {/* Background Circuitry */}
-      <div className="absolute inset-0 circuitry-bg opacity-30 pointer-events-none" />
+    <div className="game-container flex flex-col items-center" style={{ overflow: "hidden" }}>
+
+      {/* === FULL-SCREEN 3D CANVAS === */}
+      <div className="absolute inset-0 z-0">
+        <GameScene
+          distribution={state.distribution}
+          options={currentQuestion.options}
+          revealedAnswer={null}
+          trapdoorPlatforms={[]}
+          onPlatformClick={handlePlatformClick}
+          selectedPlatform={selectedPlate}
+        />
+      </div>
+
+      {/* === HTML UI OVERLAY === */}
 
       {/* Header Section */}
       <header className="relative z-10 flex w-full items-start justify-between p-6 md:p-10">
@@ -63,7 +76,10 @@ export default function GameplayScreen() {
               {showBonus && (
                 <motion.span 
                   key={showBonus.id}
-                  className="absolute left-4 font-data text-lg font-bold text-bonus animate-bonus"
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute left-4 font-data text-lg font-bold text-bonus"
                 >
                   +{showBonus.amount} BONUS
                 </motion.span>
@@ -113,62 +129,26 @@ export default function GameplayScreen() {
         </div>
       </header>
 
-      {/* Main Content Area */}
-      <main className="relative z-10 flex w-full flex-1 flex-col items-center justify-center px-4 -mt-10">
-        {/* Question Box */}
-        <div className="group relative w-full max-w-4xl">
+      {/* Question Box - pinned near top of the 3D scene */}
+      <main className="relative z-10 flex w-full flex-col items-center px-4 mt-2">
+        <div className="group relative w-full max-w-3xl">
           <div className="absolute -inset-1 bg-gradient-to-r from-accent/50 to-primary/50 blur opacity-25 group-hover:opacity-40 transition" />
-          <div className="glass-card flex items-center gap-4 p-6 md:p-10">
-            <button className="hidden md:flex h-12 w-12 items-center justify-center rounded-full border border-white/10 hover:bg-white/5 text-white/40">
-              <IconChevronLeft />
-            </button>
-            <h2 className="flex-1 text-center font-display text-2xl md:text-3xl font-bold text-white leading-tight">
+          <div className="glass-card flex items-center gap-4 p-6 md:p-8">
+            <h2 className="flex-1 text-center font-display text-xl md:text-2xl font-bold text-white leading-tight">
               {currentQuestion.question}
             </h2>
-            <button className="hidden md:flex h-12 w-12 items-center justify-center rounded-full border border-white/10 hover:bg-white/5 text-white/40">
-              <IconChevronRight />
-            </button>
           </div>
-          {/* Navigation Dots */}
-          <div className="mt-4 flex justify-center gap-2">
+          {/* Question counter dots */}
+          <div className="mt-3 flex justify-center gap-2">
             <div className="h-1 w-8 rounded-full bg-accent" />
             <div className="h-1 w-8 rounded-full bg-white/10" />
             <div className="h-1 w-8 rounded-full bg-white/10" />
           </div>
         </div>
-
-        {/* Platforms Area - Semi-circle spatial layout */}
-        <div className="mt-24 flex items-end justify-center gap-12 w-full max-w-7xl px-8">
-          {currentQuestion.options.map((opt, i) => {
-            // Apply different scaling and positioning for outside (A, D) vs inside (B, C)
-            const isOutside = i === 0 || i === 3;
-            return (
-              <div 
-                key={opt.label} 
-                className={`transition-all duration-500 ${isOutside ? "scale-110 mb-[-20px]" : "scale-90 opacity-80"}`}
-              >
-                <Platform
-                  label={opt.label}
-                  text={opt.text}
-                  tokens={state.distribution[opt.label] || 0}
-                  isSelected={selectedPlate === opt.label}
-                  isCorrect={false}
-                  isTrapdoorOpen={false}
-                  isFalling={false}
-                  index={i}
-                  onClick={() => setSelectedPlate(selectedPlate === opt.label ? null : opt.label)}
-                />
-              </div>
-            );
-          })}
-        </div>
-
-        {/* The Pit / Abyss Glow (Center Bottom) */}
-        <div className="absolute bottom-[-150px] left-1/2 -translate-x-1/2 w-[120%] h-[400px] bg-gradient-to-t from-purple-600/30 to-transparent blur-[120px] pointer-events-none" />
       </main>
 
       {/* Footer Controls */}
-      <footer className="relative z-20 w-full flex flex-col items-center p-6 bg-gradient-to-t from-background to-transparent pt-20">
+      <footer className="absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center p-6 bg-gradient-to-t from-background/90 via-background/50 to-transparent pt-20">
         {/* Token Tray (Appears when platform selected) */}
         <AnimatePresence>
           {selectedPlate && (
@@ -176,11 +156,13 @@ export default function GameplayScreen() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 30 }}
-              className="glass-card mb-6 flex flex-wrap items-center justify-center gap-3 p-4 border-accent/20"
+              className="glass-card mb-4 flex flex-wrap items-center justify-center gap-3 p-4 border-accent/20"
             >
-              <div className="mr-4 px-3 py-1 bg-white/5 rounded-lg">
+              <div className="mr-4 px-3 py-1 bg-white/5 rounded-lg flex items-center gap-2">
+                <span className="font-display text-lg font-black text-accent">{selectedPlate}</span>
+                <span className="font-data text-xs text-white/50">|</span>
                 <span className="font-data text-xs text-white/60">AVAILABLE:</span>
-                <span className="ml-2 font-data text-lg font-bold text-gold">{available.toLocaleString()}</span>
+                <span className="ml-1 font-data text-lg font-bold text-gold">{available.toLocaleString()}</span>
               </div>
               {PRESETS.map((pct) => {
                 const amt = Math.floor(state.tokens * (pct / 100));
@@ -238,8 +220,8 @@ export default function GameplayScreen() {
           </motion.button>
 
           <div className="text-right">
-            <span className="font-data text-xs text-white/40 block">TIME LEFT</span>
-            <span className="font-data text-2xl font-black text-red-500">00:30</span>
+            <span className="font-data text-xs text-white/40 block">QUESTION</span>
+            <span className="font-data text-2xl font-black text-white">{state.questionsAnswered + 1}</span>
           </div>
         </div>
       </footer>
@@ -247,7 +229,6 @@ export default function GameplayScreen() {
   );
 }
 
-// Simple internal SVG icons to keep it self-contained for now
 function IconSound() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -264,20 +245,3 @@ function IconSettings() {
     </svg>
   );
 }
-
-function IconChevronLeft() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M15 18l-6-6 6-6" />
-    </svg>
-  );
-}
-
-function IconChevronRight() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M9 18l6-6-6-6" />
-    </svg>
-  );
-}
-
