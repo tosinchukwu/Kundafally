@@ -90,10 +90,9 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const tokensOnCorrect = state.distribution[correctLabel] || 0;
       const totalDistributed = Object.values(state.distribution).reduce((a, b) => a + b, 0);
       const tokensLost = totalDistributed - tokensOnCorrect;
-      const undistributed = state.tokens - totalDistributed;
-      
-      // If no tokens on correct answer, all distributed tokens are lost
-      const remainingTokens = undistributed + tokensOnCorrect;
+      // RULE: Only tokens placed on the correct option are kept. 
+      // Undistributed tokens and tokens on wrong options are lost.
+      const remainingTokens = tokensOnCorrect;
       const isEliminated = remainingTokens === 0;
       const bonus = isEliminated ? 0 : Math.floor(remainingTokens * BONUS_RATE);
       const newTokens = remainingTokens + bonus;
@@ -111,7 +110,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           {
             question: question.question,
             correct: tokensOnCorrect > 0,
-            tokensLost,
+            tokensLost: state.tokens - tokensOnCorrect, // Total lost including undistributed
             bonus,
           },
         ],
