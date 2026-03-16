@@ -10,76 +10,55 @@ interface Token3DProps {
   onFallComplete?: () => void;
 }
 
-export default function Token3D({ position, label = "₿", falling = false, onFallComplete }: Token3DProps) {
-  const groupRef = useRef<THREE.Group>(null);
-  const [pos, setPos] = useState<THREE.Vector3>(new THREE.Vector3(...position));
-  const [vel, setVel] = useState(new THREE.Vector3(
-    (Math.random() - 0.5) * 0.05,
-    0,
-    (Math.random() - 0.5) * 0.05
-  ));
-  const [fallen, setFallen] = useState(false);
-  const gravity = -0.015;
-  const bounce = 0.4;
-  const floorY = -8;
+import { useCylinder } from "@react-three/cannon";
 
-  const rotVel = useRef(new THREE.Vector3(
-    Math.random() * 0.2,
-    Math.random() * 0.2,
-    Math.random() * 0.2
-  ));
-  const bounceVar = useRef(bounce * (0.8 + Math.random() * 0.4));
+// ... existing code ...
+
+export default function Token3D({ position, label = "₿", falling = false, onFallComplete }: Token3DProps) {
+  const [fallen, setFallen] = useState(false);
   const floatOffset = useRef(Math.random() * Math.PI * 2);
 
+  // Physics body
+  const [ref, api] = useCylinder(() => ({
+    mass: 1,
+    position: [position[0], position[1], position[2]],
+    args: [0.28, 0.28, 0.08, 32],
+    type: falling ? "Dynamic" : "Kinematic", // Kinematic when floating, Dynamic when falling
+    rotation: [Math.PI / 2, 0, 0],
+    onCollide: (e) => {
+      // Optional: Add impact sounds or particles here
+    }
+  }), useRef<THREE.Group>(null));
+
   useFrame((state) => {
-    if (!groupRef.current || fallen) return;
+    if (fallen) return;
 
-    if (falling) {
-      // Apply gravity
-      vel.y += gravity;
-      pos.x += vel.x;
-      pos.y += vel.y;
-      pos.z += vel.z;
+    if (!falling) {
+      // Gentle floating (Kinematic control)
+      const t = state.clock.elapsedTime + floatOffset.current;
+      const y = position[1] + Math.sin(t) * 0.05;
+      api.position.set(position[0], y, position[2]);
+      api.rotation.set(Math.PI / 2, Math.sin(t * 0.5) * 0.1, 0);
+    } else {
+      // Logic to check if it has fallen deep enough to disappear
+      // We can't easily get the position from API synchronously without a subscription
+      // But we can subscribe to position to check for despawn
+    }
+  });
 
-      // Bounce on "floor" before disappearing
-      if (pos.y < floorY && Math.abs(vel.y) > 0.01) {
-        vel.y *= -bounceVar.current;
-        vel.x *= 0.8;
-        vel.z *= 0.8;
-        // Add random spin on bounce
-        rotVel.current.multiplyScalar(1.2);
-      }
-
-      if (pos.y < floorY - 3) {
+  useEffect(() => {
+    if (!falling) return;
+    
+    // Subscribe to position for despawn check
+    const unsubscribe = api.position.subscribe((p) => {
+      if (p[1] < -15) {
         setFallen(true);
         onFallComplete?.();
       }
-
-      groupRef.current.position.copy(pos);
-      groupRef.current.rotation.x += rotVel.current.x;
-      groupRef.current.rotation.y += rotVel.current.y;
-      groupRef.current.rotation.z += rotVel.current.z;
-
-      // Fade out as it falls
-      const opacity = Math.max(0, 1 - (floorY - pos.y) / 5);
-      groupRef.current.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          if (child.material && (child.material as THREE.MeshStandardMaterial).transparent !== undefined) {
-            (child.material as THREE.MeshStandardMaterial).opacity = opacity;
-          }
-        }
-      });
-    } else {
-      // Gentle floating
-      const t = state.clock.elapsedTime + floatOffset.current;
-      groupRef.current.position.set(
-        position[0],
-        position[1] + Math.sin(t) * 0.05,
-        position[2]
-      );
-      groupRef.current.rotation.y = Math.sin(t * 0.5) * 0.1;
-    }
-  });
+    });
+    
+    return unsubscribe;
+  }, [falling, api, onFallComplete]);
 
   if (fallen) return null;
 

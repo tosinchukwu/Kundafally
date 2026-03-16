@@ -112,6 +112,10 @@ function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, o
   );
 }
 
+import { Physics } from "@react-three/cannon";
+
+// ... existing code ...
+
 function SceneContent({ distribution, options, revealedAnswer, trapdoorPlatforms, onPlatformClick, selectedPlatform }: GameSceneProps) {
   const { camera } = useThree();
   const initialCameraPos = useMemo(() => camera.position.clone(), [camera]);
@@ -137,14 +141,19 @@ function SceneContent({ distribution, options, revealedAnswer, trapdoorPlatforms
   return (
     <>
       <Environment />
-      <Platforms
-        distribution={distribution}
-        options={options}
-        revealedAnswer={revealedAnswer}
-        trapdoorPlatforms={trapdoorPlatforms}
-        onPlatformClick={onPlatformClick}
-        selectedPlatform={selectedPlatform}
-      />
+      <Physics gravity={[0, -9.81, 0]} iterations={20} tolerance={0.001}>
+        <Platforms
+          distribution={distribution}
+          options={options}
+          revealedAnswer={revealedAnswer}
+          trapdoorPlatforms={trapdoorPlatforms}
+          onPlatformClick={onPlatformClick}
+          selectedPlatform={selectedPlatform}
+        />
+        
+        {/* Pit floor (Physics body) */}
+        <PhysicsFloor />
+      </Physics>
 
       {/* Cinematic Reveal: God Ray on Correct Platform */}
       {revealedAnswer && (
@@ -176,13 +185,24 @@ function SceneContent({ distribution, options, revealedAnswer, trapdoorPlatforms
           })()}
         </group>
       )}
-
-      {/* Pit floor */}
-      <mesh position={[0, -10.5, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[100, 100]} />
-        <meshStandardMaterial color="#0a0212" roughness={0.8} />
-      </mesh>
     </>
+  );
+}
+
+import { usePlane } from "@react-three/cannon";
+
+function PhysicsFloor() {
+  const [ref] = usePlane(() => ({ 
+    rotation: [-Math.PI / 2, 0, 0], 
+    position: [0, -10.5, 0],
+    type: "Static"
+  }));
+
+  return (
+    <mesh ref={ref as any} receiveShadow>
+      <planeGeometry args={[100, 100]} />
+      <meshStandardMaterial color="#0a0212" roughness={0.8} />
+    </mesh>
   );
 }
 

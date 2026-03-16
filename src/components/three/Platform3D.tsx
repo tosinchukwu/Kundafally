@@ -16,6 +16,10 @@ interface Platform3DProps {
 }
 
 
+import { useBox } from "@react-three/cannon";
+
+// ... existing code ...
+
 export default function Platform3D({
   position,
   label,
@@ -27,37 +31,52 @@ export default function Platform3D({
   onClick,
   scale = [1, 1, 1],
 }: Platform3DProps) {
-  const leftDoorRef = useRef<THREE.Mesh>(null);
-  const rightDoorRef = useRef<THREE.Mesh>(null);
+  // Physics: Main static base
+  const [baseRef] = useBox(() => ({
+    type: "Static",
+    position: [position[0], position[1], position[2]],
+    args: [2.0, 0.25, 1.4],
+  }));
+
+  // Physics: Left Trapdoor
+  const [doorLRef, doorLApi] = useBox(() => ({
+    type: "Kinematic",
+    position: [position[0] - 0.5, position[1] - 0.05, position[2]],
+    args: [1.0, 0.1, 1.35],
+  }));
+
+  // Physics: Right Trapdoor
+  const [doorRRef, doorRApi] = useBox(() => ({
+    type: "Kinematic",
+    position: [position[0] + 0.5, position[1] - 0.05, position[2]],
+    args: [1.0, 0.1, 1.35],
+  }));
+
+  const leftDoorMesh = useRef<THREE.Mesh>(null);
+  const rightDoorMesh = useRef<THREE.Mesh>(null);
 
   const baseColor = isCorrect ? "#22c55e" : isSelected ? "#A855F7" : "#4c1d95";
   const emissiveColor = isCorrect ? "#16a34a" : isSelected ? "#7c3aed" : "#2e1065";
   const emissiveIntensity = isCorrect ? 3 : isSelected ? 1 : 0.3;
   const backboardColor = isCorrect ? "#14532d" : "#1e1b4b";
 
-  useFrame((state) => {
-    if (leftDoorRef.current && rightDoorRef.current) {
-      const targetAngle = trapdoorOpen ? -Math.PI / 1.8 : 0; // Slightly more than 90 deg for "swing"
-      const speed = trapdoorOpen ? 0.15 : 0.1;
-      
-      leftDoorRef.current.rotation.z = THREE.MathUtils.lerp(
-        leftDoorRef.current.rotation.z, targetAngle, speed
-      );
-      rightDoorRef.current.rotation.z = THREE.MathUtils.lerp(
-        rightDoorRef.current.rotation.z, -targetAngle, speed
-      );
-
-      // Subtle vibration effect when open
-      if (trapdoorOpen) {
-        const vibration = Math.sin(state.clock.elapsedTime * 20) * 0.02;
-        leftDoorRef.current.rotation.z += vibration;
-        rightDoorRef.current.rotation.z -= vibration;
-      }
+  useFrame((state, delta) => {
+    const targetAngle = trapdoorOpen ? -Math.PI / 1.8 : 0;
+    const speed = trapdoorOpen ? 5 : 3;
+    
+    // Animate physics bodies
+    if (leftDoorMesh.current && rightDoorMesh.current) {
+      const currentL = leftDoorMesh.current.rotation.z;
+      const nextL = THREE.MathUtils.lerp(currentL, targetAngle, speed * delta);
+      doorLApi.rotation.set(0, 0, nextL);
+      doorRApi.rotation.set(0, 0, -nextL);
     }
   });
 
   return (
     <group position={position} scale={scale} onClick={onClick}>
+      {/* Platform Physics Base is at world space position, so we don't ref this group mesh for physics */}
+      
       {/* Vertical Backboard */}
       <mesh position={[0, 1.2, -0.5]} castShadow>
         <boxGeometry args={[1.6, 2.0, 0.15]} />
@@ -91,8 +110,8 @@ export default function Platform3D({
         {label}
       </Text>
 
-      {/* Platform Base */}
-      <mesh position={[0, 0, 0]} castShadow receiveShadow>
+      {/* Platform Base - Physical Body */}
+      <mesh ref={baseRef as any} castShadow receiveShadow>
         <boxGeometry args={[2.0, 0.25, 1.4]} />
         <meshStandardMaterial
           color={baseColor}
@@ -105,8 +124,10 @@ export default function Platform3D({
 
       {/* Trapdoor Left */}
       <mesh
-        ref={leftDoorRef}
-        position={[-0.5, -0.05, 0]}
+        ref={(m) => {
+          (leftDoorMesh as any).current = m;
+          (doorLRef as any).current = m;
+        }}
         castShadow
       >
         <boxGeometry args={[1.0, 0.1, 1.35]} />
@@ -121,8 +142,10 @@ export default function Platform3D({
 
       {/* Trapdoor Right */}
       <mesh
-        ref={rightDoorRef}
-        position={[0.5, -0.05, 0]}
+        ref={(m) => {
+          (rightDoorMesh as any).current = m;
+          (doorRRef as any).current = m;
+        }}
         castShadow
       >
         <boxGeometry args={[1.0, 0.1, 1.35]} />

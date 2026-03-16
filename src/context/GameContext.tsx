@@ -58,13 +58,18 @@ function getCurrentQuestion(state: GameState): Question | null {
 
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
-    case "START_GAME":
+    case "START_GAME": {
+      const randomizedCategories = action.categories.map(cat => ({
+        ...cat,
+        questions: [...cat.questions].sort(() => Math.random() - 0.5)
+      }));
       return {
         ...initialState,
         phase: "playing",
-        selectedCategories: action.categories,
+        selectedCategories: randomizedCategories,
         sponsor: action.sponsor || "BASE",
       };
+    }
 
     case "DISTRIBUTE_TOKENS": {
       const currentDistributed = Object.values(state.distribution).reduce((a, b) => a + b, 0);
