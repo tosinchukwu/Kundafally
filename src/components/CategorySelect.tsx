@@ -18,9 +18,12 @@ export default function CategorySelect() {
   };
 
   const startGame = () => {
-    console.log("Starting game with categories:", Array.from(selected));
-    if (selected.size === 0) return;
     const chosen: Category[] = categories.filter((c) => selected.has(c.id));
+    console.log("Chosen categories:", chosen.map(c => c.id), "Count:", chosen.length);
+    if (chosen.length === 0) {
+      console.warn("No categories selected after filter!");
+      return;
+    }
     dispatch({ type: "START_GAME", categories: chosen });
   };
 
@@ -64,7 +67,7 @@ export default function CategorySelect() {
                 </span>
                 {isSelected && (
                   <motion.div
-                    layoutId="check"
+                    layoutId={`check-${cat.id}`}
                     className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent"
                   >
                     <span className="text-xs text-accent-foreground">✓</span>

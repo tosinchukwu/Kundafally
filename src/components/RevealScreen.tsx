@@ -1,42 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useGame } from "@/context/GameContext";
-import GameScene from "./three/GameScene";
 
 export default function RevealScreen() {
   const { state, dispatch, currentQuestion } = useGame();
-  const [showTrapdoor, setShowTrapdoor] = useState(false);
-
   useEffect(() => {
-    // Stage 2: After 1.5s, trigger trapdoor for incorrect answers
     const timer = setTimeout(() => {
-      setShowTrapdoor(true);
+      dispatch({ type: "OPEN_TRAPDOORS" });
     }, 1500);
     return () => clearTimeout(timer);
-  }, []);
+  }, [dispatch]);
 
   if (!currentQuestion) return null;
 
   const correctLabel = state.revealedAnswer!;
   const lastHistory = state.history[state.history.length - 1];
-  const trapdoorPlatforms = showTrapdoor
-    ? currentQuestion.options.map(o => o.label).filter(l => l !== correctLabel)
-    : [];
+  const showTrapdoor = state.trapdoorsOpen;
 
   return (
     <div className="game-container flex flex-col items-center" style={{ overflow: "hidden" }}>
-      {/* === FULL-SCREEN 3D CANVAS === */}
-      <div className="absolute inset-0 z-0">
-        <GameScene
-          distribution={state.distribution}
-          options={currentQuestion.options}
-          revealedAnswer={correctLabel}
-          trapdoorPlatforms={trapdoorPlatforms}
-          onPlatformClick={undefined}
-          selectedPlatform={null}
-        />
-      </div>
-
       {/* === HTML UI OVERLAY === */}
       <motion.div
         initial={{ opacity: 0 }}

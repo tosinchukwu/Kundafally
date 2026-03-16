@@ -50,7 +50,9 @@ interface GameSceneProps {
 function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, onPlatformClick, selectedPlatform }: GameSceneProps) {
   const optionMap = useMemo(() => {
     const m: Record<string, string> = {};
-    options.forEach(o => { m[o.label] = o.text; });
+    if (options && Array.isArray(options)) {
+      options.forEach(o => { if (o && o.label) m[o.label] = o.text; });
+    }
     return m;
   }, [options]);
 
@@ -159,16 +161,15 @@ export default function GameScene({
           <meshStandardMaterial color="#0a0212" roughness={0.8} />
         </mesh>
 
-        <EffectComposer>
+        {/* <EffectComposer multisampling={0}>
           <Bloom 
-            intensity={1.5} 
-            luminanceThreshold={0.2} 
+            intensity={1.0} 
+            luminanceThreshold={0.5} 
             luminanceSmoothing={0.9} 
             mipmapBlur 
           />
-          <Noise opacity={0.03} />
-          <ToneMapping />
-        </EffectComposer>
+          <Noise opacity={0.02} />
+        </EffectComposer> */}
       </Suspense>
     </Canvas>
   );

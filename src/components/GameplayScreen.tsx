@@ -1,14 +1,12 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGame } from "@/context/GameContext";
-import GameScene from "./three/GameScene";
 import WalletButton from "./WalletButton";
 
 const PRESETS = [10, 25, 50, 100];
 
 export default function GameplayScreen() {
   const { state, dispatch, currentQuestion } = useGame();
-  const [selectedPlate, setSelectedPlate] = useState<string | null>(null);
   const [prevTokens, setPrevTokens] = useState(state.tokens);
   const [showBonus, setShowBonus] = useState<{ amount: number; id: number } | null>(null);
 
@@ -30,7 +28,27 @@ export default function GameplayScreen() {
   );
   const available = state.tokens - totalDistributed;
 
-  if (!currentQuestion) return null;
+  console.log("GameplayScreen active. Current question:", currentQuestion?.id);
+  
+  if (!currentQuestion) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-background p-10 text-center">
+        <h1 className="text-4xl font-black text-white mb-4 italic">KUNDA FALL</h1>
+        <div className="glass-card p-8 border-red-500/50">
+          <p className="text-red-400 font-display mb-4">CRITICAL: No question data found.</p>
+          <p className="text-white/60 text-xs font-data mb-6 truncate max-w-sm">
+            Phase: {state.phase} | Categories: {state.selectedCategories.length} | Index: {state.currentCategoryIndex}
+          </p>
+          <button 
+            onClick={() => dispatch({ type: "RESET" })}
+            className="rounded-full bg-accent px-8 py-3 font-display font-black text-black"
+          >
+            RETURN TO MENU
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const addTokens = (label: string, amount: number) => {
     if (amount > available) amount = available;
@@ -40,25 +58,12 @@ export default function GameplayScreen() {
 
   const canLock = totalDistributed > 0;
 
-  const handlePlatformClick = useCallback((label: string) => {
-    console.log("Platform clicked:", label);
-    setSelectedPlate(prev => prev === label ? null : label);
-  }, []);
+  const selectedPlate = state.selectedPlatform;
+
 
   return (
     <div className="game-container flex flex-col items-center" style={{ overflow: "hidden" }}>
 
-      {/* === FULL-SCREEN 3D CANVAS === */}
-      <div className="absolute inset-0 z-0">
-        <GameScene
-          distribution={state.distribution}
-          options={currentQuestion.options}
-          revealedAnswer={null}
-          trapdoorPlatforms={[]}
-          onPlatformClick={handlePlatformClick}
-          selectedPlatform={selectedPlate}
-        />
-      </div>
 
       {/* === HTML UI OVERLAY === */}
 
@@ -202,7 +207,6 @@ export default function GameplayScreen() {
             onClick={() => {
               if (canLock) {
                 dispatch({ type: "LOCK_ANSWERS" });
-                setSelectedPlate(null);
               }
             }}
             disabled={!canLock}

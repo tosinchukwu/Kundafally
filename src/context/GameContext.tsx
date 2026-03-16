@@ -16,6 +16,8 @@ interface GameState {
   questionsAnswered: number;
   history: { question: string; correct: boolean; tokensLost: number; bonus: number }[];
   isEliminated: boolean;
+  selectedPlatform: string | null;
+  trapdoorsOpen: boolean;
 }
 
 type GameAction =
@@ -24,7 +26,9 @@ type GameAction =
   | { type: "LOCK_ANSWERS" }
   | { type: "NEXT_QUESTION" }
   | { type: "RESET" }
-  | { type: "SET_PHASE"; phase: GamePhase };
+  | { type: "SET_PHASE"; phase: GamePhase }
+  | { type: "SELECT_PLATFORM"; label: string | null }
+  | { type: "OPEN_TRAPDOORS" };
 
 const STARTING_TOKENS = 1000;
 const BONUS_RATE = 0.1;
@@ -42,6 +46,8 @@ const initialState: GameState = {
   questionsAnswered: 0,
   history: [],
   isEliminated: false,
+  selectedPlatform: null,
+  trapdoorsOpen: false,
 };
 
 function getCurrentQuestion(state: GameState): Question | null {
@@ -93,6 +99,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         revealedAnswer: correctLabel,
         tokens: newTokens,
         isEliminated,
+        selectedPlatform: null,
         questionsAnswered: state.questionsAnswered + 1,
         history: [
           ...state.history,
@@ -136,14 +143,20 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         };
       }
 
-      return { ...state, phase: "results" };
+      return { ...state, phase: "results", selectedPlatform: null };
     }
 
     case "RESET":
       return initialState;
 
     case "SET_PHASE":
-      return { ...state, phase: action.phase };
+      return { ...state, phase: action.phase, selectedPlatform: null, trapdoorsOpen: false };
+
+    case "SELECT_PLATFORM":
+      return { ...state, selectedPlatform: action.label };
+
+    case "OPEN_TRAPDOORS":
+      return { ...state, trapdoorsOpen: true };
 
     default:
       return state;
