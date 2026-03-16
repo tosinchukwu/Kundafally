@@ -186,6 +186,18 @@ function SceneContent({ distribution, options, revealedAnswer, trapdoorPlatforms
   );
 }
 
+function ResponsiveCamera() {
+  const { size } = useThree();
+  const aspect = size.width / size.height;
+  const isPortrait = aspect < 1.1;
+
+  // On mobile (portrait), we pull back and increase FOV to see all platforms
+  const position: [number, number, number] = isPortrait ? [0, 14, 20] : [0, 8, 14];
+  const fov = isPortrait ? 65 : 55;
+
+  return <PerspectiveCamera makeDefault position={position} fov={fov} />;
+}
+
 export default function GameScene({
   phase,
   distribution,
@@ -211,7 +223,7 @@ export default function GameScene({
         gl.setClearColor(new THREE.Color("#05010a"));
       }}
     >
-      <PerspectiveCamera makeDefault position={[0, 8, 14]} fov={55} />
+      <ResponsiveCamera />
       
       <Suspense fallback={null}>
         {showPlatforms && (

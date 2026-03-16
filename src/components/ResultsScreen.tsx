@@ -27,26 +27,26 @@ export default function ResultsScreen() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.6, type: "spring", stiffness: 100 }}
-          className="glass-card p-12 mb-10 overflow-hidden relative border-white/5 bg-white/[0.03] backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
+          className="glass-card p-8 md:p-12 mb-6 md:mb-10 overflow-hidden relative border-white/5 bg-white/[0.03] backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
         >
           {/* Decorative Glow */}
           <div className="absolute -top-24 -left-24 w-48 h-48 bg-accent/20 blur-[80px] rounded-full" />
           <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-primary/20 blur-[80px] rounded-full" />
           
           <div className="relative z-10 flex flex-col items-center">
-            <div className="flex items-center justify-center gap-6 mb-2">
-              <div className="flex h-20 w-20 items-center justify-center rounded-[2rem] bg-gradient-to-tr from-yellow-600 to-yellow-300 shadow-[0_20px_40px_rgba(234,179,8,0.3)] border border-white/20">
-                <span className="text-4xl font-bold text-white drop-shadow-xl">₿</span>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 mb-2">
+              <div className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl md:rounded-[2rem] bg-gradient-to-tr from-yellow-600 to-yellow-300 shadow-[0_20px_40px_rgba(234,179,8,0.3)] border border-white/20">
+                <span className="text-3xl md:text-4xl font-bold text-white drop-shadow-xl">₿</span>
               </div>
-              <span className="font-data text-7xl md:text-9xl font-black text-white tracking-tighter drop-shadow-2xl">
+              <span className="font-data text-6xl md:text-9xl font-black text-white tracking-tighter drop-shadow-2xl">
                 {state.tokens.toLocaleString()}
               </span>
             </div>
-            <div className="font-display text-[10px] font-black tracking-[0.5em] text-white/30 uppercase mt-4">Vault Reconciliation Successful</div>
+            <div className="font-display text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.5em] text-white/30 uppercase mt-4">Vault Reconciliation Successful</div>
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-3 gap-6 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-10">
           {[
             { label: "STABILITY", value: `${correctCount}/${state.history.length}`, color: "text-accent" },
             { label: "VOIDS", value: totalLost.toLocaleString(), color: "text-red-500" },
@@ -57,31 +57,31 @@ export default function ResultsScreen() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 + i * 0.1 }}
-              className="glass-card p-6 flex flex-col items-center border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors"
+              className="glass-card p-4 md:p-6 flex flex-row md:flex-col items-center justify-between md:justify-center border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors"
             >
-              <div className={`font-data text-2xl font-black ${stat.color} tracking-tight`}>{stat.value}</div>
-              <div className="font-display mt-2 text-[9px] font-black text-white/20 tracking-[0.2em] uppercase">{stat.label}</div>
+              <div className="font-display text-[9px] font-black text-white/20 tracking-[0.2em] uppercase order-first md:order-last md:mt-2">{stat.label}</div>
+              <div className={`font-data text-xl md:text-2xl font-black ${stat.color} tracking-tight`}>{stat.value}</div>
             </motion.div>
           ))}
         </div>
 
-        <div className="glass-card p-6 overflow-hidden">
-            <div className="max-h-60 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-white/10">
+        <div className="glass-card p-4 md:p-6 overflow-hidden">
+            <div className="max-h-48 md:max-h-60 overflow-y-auto space-y-2 md:space-y-3 pr-2 scrollbar-thin scrollbar-thumb-white/10">
                 {state.history.map((h, i) => (
                     <motion.div
                     key={i}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 1 + i * 0.05 }}
-                    className="flex items-center gap-4 rounded-xl bg-white/5 p-4 border border-white/5 hover:border-white/10 transition-colors"
+                    className="flex items-center gap-3 md:gap-4 rounded-xl bg-white/5 p-3 md:p-4 border border-white/5 hover:border-white/10 transition-colors"
                     >
-                    <span className={`font-data text-[10px] font-black w-14 ${h.correct ? "text-accent" : "text-red-500"}`}>
+                    <span className={`font-data text-[8px] md:text-[10px] font-black w-10 md:w-14 ${h.correct ? "text-accent" : "text-red-500"}`}>
                         {h.correct ? "STABLE" : "VOID"}
                     </span>
-                    <span className="flex-1 text-left font-display text-sm font-bold text-white/70 truncate">
+                    <span className="flex-1 text-left font-display text-xs md:text-sm font-bold text-white/70 truncate">
                         {h.question}
                     </span>
-                    <span className={`font-data text-sm font-black ${h.correct ? "text-accent" : "text-red-500"}`}>
+                    <span className={`font-data text-xs md:text-sm font-black ${h.correct ? "text-accent" : "text-red-500"}`}>
                         {h.correct ? `+${h.bonus}` : `-${h.tokensLost}`}
                     </span>
                     </motion.div>
@@ -89,7 +89,7 @@ export default function ResultsScreen() {
             </div>
         </div>
 
-        <div className="mt-8 font-display text-xs font-bold text-white/20 tracking-wider">
+        <div className="mt-8 font-display text-[8px] md:text-xs font-bold text-white/20 tracking-wider">
           PROTECTED BY <span className="text-gold/60">{state.sponsor.toUpperCase()}</span> VAULT TECHNOLOGY
         </div>
 
@@ -97,7 +97,7 @@ export default function ResultsScreen() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => dispatch({ type: "RESET" })}
-          className="mt-12 rounded-full bg-accent px-16 py-5 font-display text-xl font-black tracking-widest text-black shadow-[0_0_40px_rgba(34,211,238,0.3)] transition-all"
+          className="mt-10 md:mt-12 rounded-full bg-accent px-10 py-4 md:px-16 md:py-5 font-display text-lg md:text-xl font-black tracking-widest text-black shadow-[0_0_40px_rgba(34,211,238,0.3)] transition-all"
         >
           NEW SESSION
         </motion.button>

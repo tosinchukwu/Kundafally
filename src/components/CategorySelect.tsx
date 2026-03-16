@@ -42,18 +42,18 @@ export default function CategorySelect() {
           Choose your arena.
         </h2>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
           {categories.map((cat, i) => {
             const isSelected = selected.has(cat.id);
             return (
               <motion.button
                 key={cat.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05, duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
+                transition={{ delay: i * 0.05, duration: 0.4 }}
                 onClick={() => toggle(cat.id)}
                 className={`
-                  relative flex flex-col items-center gap-3 rounded-xl p-6 
+                  relative flex flex-col items-center gap-2 rounded-xl p-4 md:p-6 
                   transition-all duration-200 cursor-pointer
                   ${isSelected
                     ? "bg-surface-elevated neon-border"
@@ -61,16 +61,16 @@ export default function CategorySelect() {
                   }
                 `}
               >
-                <span className="text-3xl">{cat.icon}</span>
-                <span className={`font-data text-xs ${isSelected ? "text-accent" : "text-muted-foreground"}`}>
+                <span className="text-2xl md:text-3xl">{cat.icon}</span>
+                <span className={`font-data text-[10px] md:text-xs text-center ${isSelected ? "text-accent" : "text-muted-foreground"}`}>
                   {cat.name}
                 </span>
                 {isSelected && (
                   <motion.div
                     layoutId={`check-${cat.id}`}
-                    className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent"
+                    className="absolute -top-1 -right-1 flex h-4 w-4 md:h-5 md:w-5 items-center justify-center rounded-full bg-accent"
                   >
-                    <span className="text-xs text-accent-foreground">✓</span>
+                    <span className="text-[10px] md:text-xs text-accent-foreground">✓</span>
                   </motion.div>
                 )}
               </motion.button>
@@ -78,15 +78,15 @@ export default function CategorySelect() {
           })}
         </div>
 
-        <motion.div className="mt-10 flex justify-center">
+        <motion.div className="mt-8 md:mt-10 flex justify-center">
           <button
             onClick={startGame}
             disabled={selected.size === 0}
             className={`
-              rounded-xl px-10 py-4 font-display text-lg font-bold tracking-tight
+              rounded-xl px-8 py-3 md:px-10 md:py-4 font-display text-base md:text-lg font-bold tracking-tight
               transition-all duration-200
               ${selected.size > 0
-                ? "bg-primary text-primary-foreground gold-border hover:scale-[1.02] active:scale-[0.98]"
+                ? "bg-primary text-primary-foreground gold-border hover:scale-[1.02] "
                 : "bg-surface text-muted-foreground plate-border cursor-not-allowed"
               }
             `}
@@ -95,7 +95,7 @@ export default function CategorySelect() {
           </button>
         </motion.div>
 
-        <p className="mt-4 text-center font-data text-xs text-muted-foreground">
+        <p className="mt-4 text-center font-data text-[10px] md:text-xs text-white/30">
           {selected.size} {selected.size === 1 ? "CATEGORY" : "CATEGORIES"} · {selected.size * 3} QUESTIONS
         </p>
       </motion.div>

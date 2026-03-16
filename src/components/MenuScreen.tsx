@@ -27,14 +27,14 @@ export default function MenuScreen() {
           <div className="mt-1 font-data text-sm text-gold">BASE</div>
         </div>
 
-        <h1 className="font-display text-6xl font-black text-foreground md:text-8xl">
+        <h1 className="font-display text-5xl font-black text-foreground md:text-8xl">
           KUNDA
         </h1>
-        <h1 className="font-display -mt-2 text-6xl font-black md:text-8xl bg-gradient-to-r from-accent via-neon-glow to-accent bg-clip-text text-transparent">
+        <h1 className="font-display -mt-2 text-5xl font-black md:text-8xl bg-gradient-to-r from-accent via-neon-glow to-accent bg-clip-text text-transparent">
           FALL
         </h1>
 
-        <p className="mx-auto mt-8 max-w-md font-display text-lg text-muted-foreground">
+        <p className="mx-auto mt-6 max-w-md font-display text-base md:text-lg text-muted-foreground px-4">
           Protect Your Tokens • Let the Wrong Ones Fall
         </p>
 
@@ -42,25 +42,25 @@ export default function MenuScreen() {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => dispatch({ type: "SET_PHASE", phase: "category" })}
-          className="mt-12 rounded-xl bg-primary px-12 py-5 font-display text-xl font-bold text-primary-foreground gold-border transition-all"
+          className="mt-10 rounded-xl bg-primary px-10 py-4 font-display text-lg font-bold text-primary-foreground gold-border transition-all md:px-12 md:py-5 md:text-xl"
         >
           BEGIN SESSION
         </motion.button>
 
-        <div className="mt-16 flex items-center justify-center gap-8">
+        <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8">
           <div className="text-center">
-            <div className="font-data text-xs text-muted-foreground">FORMAT</div>
-            <div className="font-data text-sm text-foreground">STRATEGY QUIZ</div>
+            <div className="font-data text-[10px] md:text-xs text-muted-foreground">FORMAT</div>
+            <div className="font-data text-xs md:text-sm text-foreground">STRATEGY QUIZ</div>
           </div>
-          <div className="h-6 w-px bg-border" />
+          <div className="hidden md:block h-6 w-px bg-border" />
           <div className="text-center">
-            <div className="font-data text-xs text-muted-foreground">BONUS</div>
-            <div className="font-data text-sm text-foreground">+10% PER ROUND</div>
+            <div className="font-data text-[10px] md:text-xs text-muted-foreground">BONUS</div>
+            <div className="font-data text-xs md:text-sm text-foreground">+10% PER ROUND</div>
           </div>
-          <div className="h-6 w-px bg-border" />
+          <div className="hidden md:block h-6 w-px bg-border" />
           <div className="text-center">
-            <div className="font-data text-xs text-muted-foreground">RISK</div>
-            <div className="font-data text-sm text-foreground">TOTAL LOSS</div>
+            <div className="font-data text-[10px] md:text-xs text-muted-foreground">RISK</div>
+            <div className="font-data text-xs md:text-sm text-foreground">TOTAL LOSS</div>
           </div>
         </div>
       </motion.div>
