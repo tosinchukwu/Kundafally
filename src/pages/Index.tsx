@@ -8,6 +8,8 @@ import ResultsScreen from "@/components/ResultsScreen";
 function GameRouter() {
   const { state } = useGame();
 
+  console.log("Current Game Phase:", state.phase);
+  
   switch (state.phase) {
     case "menu":
       return <MenuScreen />;

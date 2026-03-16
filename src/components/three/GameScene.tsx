@@ -68,7 +68,14 @@ function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, o
         const answerText = optionMap[cfg.id] || "";
 
         return (
-          <group key={cfg.id}>
+          <group 
+            key={cfg.id} 
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log("3D Group Clicked:", cfg.id);
+              onPlatformClick?.(cfg.id);
+            }}
+          >
             <Platform3D
               position={cfg.position}
               label={cfg.label}
@@ -77,7 +84,6 @@ function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, o
               isCorrect={isCorrect}
               isWrong={isWrong}
               trapdoorOpen={trapdoorOpen}
-              onClick={() => onPlatformClick?.(cfg.id)}
               scale={cfg.scale}
             />
             {/* Tokens stacked on platform — Organized grid/stack */}
@@ -153,7 +159,7 @@ export default function GameScene({
           <meshStandardMaterial color="#0a0212" roughness={0.8} />
         </mesh>
 
-        <EffectComposer disableNormalPass>
+        <EffectComposer>
           <Bloom 
             intensity={1.5} 
             luminanceThreshold={0.2} 

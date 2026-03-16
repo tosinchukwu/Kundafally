@@ -8,6 +8,7 @@ export default function CategorySelect() {
   const [selected, setSelected] = useState<Set<string>>(new Set());
 
   const toggle = (id: string) => {
+    console.log("Toggling category:", id);
     setSelected((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
@@ -17,6 +18,7 @@ export default function CategorySelect() {
   };
 
   const startGame = () => {
+    console.log("Starting game with categories:", Array.from(selected));
     if (selected.size === 0) return;
     const chosen: Category[] = categories.filter((c) => selected.has(c.id));
     dispatch({ type: "START_GAME", categories: chosen });
@@ -28,7 +30,7 @@ export default function CategorySelect() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
-        className="w-full max-w-2xl"
+        className="relative z-10 w-full max-w-2xl"
       >
         <div className="mb-2 text-center">
           <span className="font-data text-accent">SELECT CATEGORIES</span>

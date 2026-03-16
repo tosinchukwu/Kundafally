@@ -41,6 +41,7 @@ export default function GameplayScreen() {
   const canLock = totalDistributed > 0;
 
   const handlePlatformClick = useCallback((label: string) => {
+    console.log("Platform clicked:", label);
     setSelectedPlate(prev => prev === label ? null : label);
   }, []);
 
@@ -62,9 +63,9 @@ export default function GameplayScreen() {
       {/* === HTML UI OVERLAY === */}
 
       {/* Header Section */}
-      <header className="relative z-10 flex w-full items-start justify-between p-6 md:p-10">
+      <header className="pointer-events-none relative z-10 flex w-full items-start justify-between p-6 md:p-10">
         {/* Score Display (Top Left) */}
-        <div className="flex flex-col gap-1">
+        <div className="pointer-events-auto flex flex-col gap-1">
           <div className="glass-card flex items-center gap-3 px-4 py-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-yellow-600 to-yellow-400 border border-yellow-300/50">
               <span className="text-sm font-bold text-white">₿</span>
@@ -116,7 +117,7 @@ export default function GameplayScreen() {
         </div>
 
         {/* Utility Buttons (Top Right) */}
-        <div className="flex flex-col gap-4">
+        <div className="pointer-events-auto flex flex-col gap-4">
           <WalletButton />
           <div className="flex gap-2 justify-end">
              <button className="h-10 w-10 flex items-center justify-center glass-card hover:bg-white/10 text-white">
@@ -130,8 +131,8 @@ export default function GameplayScreen() {
       </header>
 
       {/* Question Box - pinned near top of the 3D scene */}
-      <main className="relative z-10 flex w-full flex-col items-center px-4 mt-2">
-        <div className="group relative w-full max-w-3xl">
+      <main className="pointer-events-none relative z-10 flex w-full flex-col items-center px-4 mt-2">
+        <div className="pointer-events-auto group relative w-full max-w-3xl">
           <div className="absolute -inset-1 bg-gradient-to-r from-accent/50 to-primary/50 blur opacity-25 group-hover:opacity-40 transition" />
           <div className="glass-card flex items-center gap-4 p-6 md:p-8">
             <h2 className="flex-1 text-center font-display text-xl md:text-2xl font-bold text-white leading-tight">
@@ -148,7 +149,7 @@ export default function GameplayScreen() {
       </main>
 
       {/* Footer Controls */}
-      <footer className="absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center p-6 bg-gradient-to-t from-background/90 via-background/50 to-transparent pt-20">
+      <footer className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center p-6 bg-gradient-to-t from-background/90 via-background/50 to-transparent pt-20">
         {/* Token Tray (Appears when platform selected) */}
         <AnimatePresence>
           {selectedPlate && (
@@ -156,7 +157,7 @@ export default function GameplayScreen() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 30 }}
-              className="glass-card mb-4 flex flex-wrap items-center justify-center gap-3 p-4 border-accent/20"
+              className="pointer-events-auto glass-card mb-4 flex flex-wrap items-center justify-center gap-3 p-4 border-accent/20"
             >
               <div className="mr-4 px-3 py-1 bg-white/5 rounded-lg flex items-center gap-2">
                 <span className="font-display text-lg font-black text-accent">{selectedPlate}</span>
@@ -189,7 +190,7 @@ export default function GameplayScreen() {
           )}
         </AnimatePresence>
 
-        <div className="flex w-full max-w-4xl items-center justify-between px-10">
+        <div className="pointer-events-auto flex w-full max-w-4xl items-center justify-between px-10">
           <div className="text-left">
             <span className="font-data text-xs text-white/40 block">COLLECTED</span>
             <span className="font-data text-2xl font-black text-white">{totalDistributed.toLocaleString()}</span>

@@ -42,10 +42,10 @@ export default function RevealScreen() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        className="relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center pt-10 px-4"
+        className="pointer-events-none relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center pt-10 px-4"
       >
         {/* Reveal badge */}
-        <div className="mb-6 inline-block glass-card px-6 py-2 border-accent/40">
+        <div className="pointer-events-auto mb-6 inline-block glass-card px-6 py-2 border-accent/40">
           <span className="font-display text-sm font-black tracking-[0.2em] text-accent uppercase">Reveal Phase</span>
         </div>
 
@@ -77,10 +77,10 @@ export default function RevealScreen() {
         initial={{ opacity: 0, y: 60 }}
         animate={showTrapdoor ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
         transition={{ duration: 0.8 }}
-        className="absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center p-8 bg-gradient-to-t from-background/95 via-background/60 to-transparent"
+        className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center p-8 bg-gradient-to-t from-background/95 via-background/60 to-transparent"
       >
         {!state.isEliminated ? (
-          <div className="glass-card px-10 py-6 flex flex-col items-center mb-6">
+          <div className="pointer-events-auto glass-card px-10 py-6 flex flex-col items-center mb-6">
             {lastHistory?.correct ? (
               <div className="font-display text-xl font-bold text-accent">
                 STABLE. <span className="text-bonus">+{lastHistory.bonus}</span> BONUS APPLIED.
@@ -108,7 +108,7 @@ export default function RevealScreen() {
           whileTap={{ scale: 0.95 }}
           onClick={() => dispatch({ type: "NEXT_QUESTION" })}
           className={`
-            rounded-full px-16 py-5 font-display text-xl font-black tracking-widest transition-all
+            pointer-events-auto rounded-full px-16 py-5 font-display text-xl font-black tracking-widest transition-all
             ${state.isEliminated
               ? "bg-red-500 text-white shadow-[0_0_30px_rgba(239,68,68,0.4)]"
               : "bg-accent text-black shadow-[0_0_30px_rgba(34,211,238,0.4)]"
