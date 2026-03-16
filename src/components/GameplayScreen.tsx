@@ -152,14 +152,48 @@ export default function GameplayScreen() {
               {currentQuestion.question}
             </h2>
           </div>
-          {/* Question counter dots */}
-          <div className="mt-6 flex justify-center gap-3">
-            {[...Array(3)].map((_, i) => (
-              <div 
-                key={i} 
-                className={`h-1.5 w-10 rounded-full transition-all duration-500 ${i === 0 ? "bg-accent shadow-[0_0_10px_rgba(34,211,238,0.5)]" : "bg-white/10"}`} 
-              />
-            ))}
+          {/* Options Grid - 2x2 for clarity */}
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+            {currentQuestion.options.map((opt) => {
+              const isSelected = state.selectedPlatform === opt.label;
+              return (
+                <motion.button
+                  key={opt.label}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    dispatch({ type: "SELECT_PLATFORM", label: isSelected ? null : opt.label });
+                  }}
+                  className={`
+                    pointer-events-auto relative flex items-center gap-4 p-4 rounded-xl border transition-all duration-300
+                    ${isSelected 
+                      ? "bg-accent/20 border-accent shadow-[0_0_20px_rgba(34,211,238,0.2)]" 
+                      : "bg-white/5 border-white/10 hover:bg-white/10"
+                    }
+                  `}
+                >
+                  <div className={`
+                    flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg font-display text-lg font-black
+                    ${isSelected ? "bg-accent text-black" : "bg-white/10 text-white/40"}
+                  `}>
+                    {opt.label}
+                  </div>
+                  <div className="text-left">
+                    <span className={`block text-[10px] font-black tracking-widest uppercase mb-0.5 ${isSelected ? "text-accent" : "text-white/20"}`}>
+                      Option {opt.label}
+                    </span>
+                    <span className="font-display font-bold text-white leading-tight">
+                      {opt.text}
+                    </span>
+                  </div>
+                  {isSelected && (
+                    <div className="ml-auto">
+                      <div className="h-2 w-2 rounded-full bg-accent animate-pulse" />
+                    </div>
+                  )}
+                </motion.button>
+              );
+            })}
           </div>
         </motion.div>
       </main>
