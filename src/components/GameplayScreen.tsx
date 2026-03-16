@@ -164,7 +164,8 @@ export default function GameplayScreen() {
         </motion.div>
       </main>
 
-      {/* Footer Controls       <footer className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center p-3 md:p-4 bg-transparent pt-12">
+      {/* Footer Controls */}
+      <footer className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center p-3 md:p-4 bg-transparent pt-12">
         {/* Token Tray (Appears when platform selected) */}
         <AnimatePresence>
           {selectedPlate && (
@@ -246,7 +247,6 @@ export default function GameplayScreen() {
           </div>
         </div>
       </footer>
-er>
     </div>
   );
 }
