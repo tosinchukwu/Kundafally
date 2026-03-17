@@ -32,7 +32,7 @@ export default function GameplayScreen() {
   const available = state.tokens - totalDistributed;
 
   console.log("GameplayScreen active. Current question:", currentQuestion?.id);
-  
+
   if (!currentQuestion) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background p-10 text-center">
@@ -40,7 +40,7 @@ export default function GameplayScreen() {
         <div className="glass-card p-8 border-red-500/50">
           <p className="text-red-400 font-display mb-4 uppercase tracking-widest text-xs font-black">Critical Error</p>
           <p className="text-white font-display text-lg mb-6">No question data found.</p>
-          <button 
+          <button
             onClick={() => dispatch({ type: "RESET" })}
             className="rounded-full bg-accent px-8 py-3 font-display font-black text-black hover:scale-105 transition-transform"
           >
@@ -62,18 +62,18 @@ export default function GameplayScreen() {
 
   return (
     <div className="game-container relative flex flex-col items-center min-h-screen w-full bg-transparent overflow-hidden">
-      
+
       {/* Settings Overlay */}
       <AnimatePresence>
         {showSettings && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-6"
           >
             <div className="glass-card w-full max-w-md p-8 relative border-white/10">
-              <button 
+              <button
                 onClick={() => setShowSettings(false)}
                 className="absolute top-4 right-4 text-white/40 hover:text-white"
               >
@@ -83,7 +83,7 @@ export default function GameplayScreen() {
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <span className="text-white/60 font-display font-bold">SOUND EFFECTS</span>
-                  <button 
+                  <button
                     onClick={() => setIsSoundOn(!isSoundOn)}
                     className={`h-6 w-12 rounded-full transition-colors relative ${isSoundOn ? "bg-accent" : "bg-white/10"}`}
                   >
@@ -91,7 +91,7 @@ export default function GameplayScreen() {
                   </button>
                 </div>
                 <div className="pt-6 border-t border-white/5 text-center">
-                  <button 
+                  <button
                     onClick={() => dispatch({ type: "RESET" })}
                     className="text-red-400 hover:text-red-300 font-display text-xs font-black tracking-widest uppercase"
                   >
@@ -117,17 +117,17 @@ export default function GameplayScreen() {
           <div className="h-6 ml-2">
             <AnimatePresence mode="wait">
               {showBonus ? (
-                <motion.span 
-                   key={`bonus-${showBonus.id}`}
-                   initial={{ opacity: 0, y: 10 }}
-                   animate={{ opacity: 1, y: 0 }}
-                   exit={{ opacity: 0, y: -10 }}
-                   className="font-data text-sm font-bold text-bonus"
+                <motion.span
+                  key={`bonus-${showBonus.id}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="font-data text-sm font-bold text-bonus"
                 >
                   +{showBonus.amount} BONUS
                 </motion.span>
               ) : totalDistributed > 0 ? (
-                <motion.span 
+                <motion.span
                   key="placed"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -153,13 +153,13 @@ export default function GameplayScreen() {
 
         {/* Utility Icons (Top Right) */}
         <div className="pointer-events-auto flex gap-2">
-          <button 
+          <button
             onClick={() => setIsSoundOn(!isSoundOn)}
             className={`h-10 w-10 flex items-center justify-center glass-card border-white/10 transition-all ${isSoundOn ? "text-accent" : "text-white/20"}`}
           >
             <IconSound muted={!isSoundOn} />
           </button>
-          <button 
+          <button
             onClick={() => setShowSettings(true)}
             className="h-10 w-10 flex items-center justify-center glass-card border-white/10 text-white/60"
           >
@@ -170,9 +170,9 @@ export default function GameplayScreen() {
 
       {/* Main Content Area (Centralized) */}
       <main className="flex-1 flex flex-col items-center w-full max-w-4xl relative z-10 px-4 mt-2 pointer-events-auto">
-        
+
         {/* Question Display */}
-        <motion.div 
+        <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           className="w-full mb-6"
@@ -188,7 +188,7 @@ export default function GameplayScreen() {
 
       {/* Footer Area - Bottom-Center Controls */}
       <footer className="relative z-20 w-full flex flex-col items-center p-6 gap-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-        
+
         {/* Token Distribution Tray */}
         <AnimatePresence>
           {selectedPlate && available > 0 && (
@@ -230,42 +230,42 @@ export default function GameplayScreen() {
             disabled={!canLock}
             className={`
               relative group flex items-center justify-center rounded-2xl px-16 py-5 font-display text-2xl font-black tracking-[0.2em] transition-all duration-500
-              ${canLock 
-                ? "bg-red-600 text-white shadow-[0_0_50px_rgba(220,38,38,0.4)] hover:scale-105 active:scale-95 cursor-pointer" 
+              ${canLock
+                ? "bg-red-600 text-white shadow-[0_0_50px_rgba(220,38,38,0.4)] hover:scale-105 active:scale-95 cursor-pointer"
                 : "bg-white/5 text-white/10 border border-white/5 opacity-40 cursor-not-allowed"
               }
             `}
           >
             <span className="relative z-10">LOCK SESSION</span>
             {canLock && (
-              <motion.div 
+              <motion.div
                 animate={{ opacity: [0, 0.4, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
-                className="absolute inset-0 rounded-2xl bg-white" 
+                className="absolute inset-0 rounded-2xl bg-white"
               />
             )}
             <div className="absolute -inset-1 bg-red-600/20 blur-xl group-hover:bg-red-600/30 transition-all duration-300" />
           </button>
-          
+
           <p className="font-display text-[9px] font-bold text-white/20 uppercase tracking-[0.4em] text-glow italic">
-             "Protect your stack. Divide wisely or lose it all."
+            "Protect your stack. Divide wisely or lose it all."
           </p>
         </div>
 
         {/* Status Mini-Bar */}
         <div className="w-full max-w-4xl flex items-center justify-between mt-2 px-4 opacity-50">
-           <div className="flex items-center gap-6">
-              <div className="flex flex-col">
-                <span className="font-data text-[7px] uppercase tracking-[0.2em]">Distributed</span>
-                <span className="font-data text-sm font-bold text-accent">{totalDistributed.toLocaleString()} ₿</span>
-              </div>
-              <div className="w-px h-6 bg-white/10" />
-              <div className="flex flex-col">
-                <span className="font-data text-[7px] uppercase tracking-[0.2em]">Objective</span>
-                <span className="font-data text-sm font-bold text-white">Q{state.questionsAnswered + 1}</span>
-              </div>
-           </div>
-           <WalletButton />
+          <div className="flex items-center gap-6">
+            <div className="flex flex-col">
+              <span className="font-data text-[7px] uppercase tracking-[0.2em]">Distributed</span>
+              <span className="font-data text-sm font-bold text-accent">{totalDistributed.toLocaleString()} ₿</span>
+            </div>
+            <div className="w-px h-6 bg-white/10" />
+            <div className="flex flex-col">
+              <span className="font-data text-[7px] uppercase tracking-[0.2em]">Objective</span>
+              <span className="font-data text-sm font-bold text-white">Q{state.questionsAnswered + 1}</span>
+            </div>
+          </div>
+          <WalletButton />
         </div>
       </footer>
     </div>
@@ -303,8 +303,8 @@ function IconSettings() {
 
 function IconFall({ active }: { active: boolean }) {
   return (
-    <svg 
-      width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" 
+    <svg
+      width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
       className={active ? "animate-bounce" : ""}
     >
       <path d="M12 5v14M5 12l7 7 7-7" />

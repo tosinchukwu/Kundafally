@@ -12,22 +12,6 @@ export default function Environment() {
       <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
       <ambientLight intensity={0.4} />
 
-      {/* Sponsor Neon Sign (High Background) */}
-      <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-        <group position={[0, 12, -15]}>
-          <Text
-            fontSize={4}
-            color="#06B6D4"
-            anchorX="center"
-            anchorY="middle"
-            outlineWidth={0.1}
-            outlineColor="#0891b2"
-          >
-            KUNDA FALL
-          </Text>
-          <pointLight intensity={5} distance={15} color="#06B6D4" />
-        </group>
-      </Float>
 
       {/* Cinematic Spotlights from corners */}
       <SpotLight

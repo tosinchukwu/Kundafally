@@ -24,8 +24,8 @@ interface PlatformConfig {
 const PLATFORM_CONFIGS: PlatformConfig[] = [
   { id: "A", label: "A", position: [-10.5, 0.0, 3], scale: [1.2, 1.2, 1.2] },
   { id: "B", label: "B", position: [-3.5, 0.0, 3], scale: [1.2, 1.2, 1.2] },
-  { id: "C", label: "C", position: [3.5, 0.0, 3],  scale: [1.2, 1.2, 1.2] },
-  { id: "D", label: "D", position: [10.5, 0.0, 3],  scale: [1.2, 1.2, 1.2] },
+  { id: "C", label: "C", position: [3.5, 0.0, 3], scale: [1.2, 1.2, 1.2] },
+  { id: "D", label: "D", position: [10.5, 0.0, 3], scale: [1.2, 1.2, 1.2] },
 ];
 
 interface GameSceneProps {
@@ -54,7 +54,7 @@ function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, o
         const rawAmount = distribution[cfg.id] || 0;
         // Show 1 token per 100 units, cap at 12 for performance/visuals
         const tokenCount = Math.min(Math.ceil(rawAmount / 100), 12);
-        
+
         const isCorrect = revealedAnswer === cfg.id;
         const isWrong = revealedAnswer !== null && revealedAnswer !== cfg.id;
         const trapdoorOpen = trapdoorPlatforms.includes(cfg.id);
@@ -62,8 +62,8 @@ function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, o
         const answerText = optionMap[cfg.id] || "";
 
         return (
-          <group 
-            key={cfg.id} 
+          <group
+            key={cfg.id}
             onClick={(e) => {
               e.stopPropagation();
               console.log("3D Group Clicked:", cfg.id);
@@ -86,7 +86,7 @@ function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, o
               const gridX = (i % 2) * 0.35 - 0.175;
               const gridZ = (Math.floor(i / 2) % 2) * 0.35 - 0.175;
               const heightIdx = Math.floor(i / 4);
-              
+
               // If few tokens, just stack them in center
               const x = tokenCount <= 1 ? 0 : gridX;
               const z = tokenCount <= 1 ? 0 : gridZ;
@@ -117,74 +117,9 @@ import { Physics } from "@react-three/cannon";
 // ... existing code ...
 
 function SceneContent({ distribution, options, revealedAnswer, trapdoorPlatforms, onPlatformClick, selectedPlatform }: GameSceneProps) {
-  const { camera } = useThree();
-  const initialCameraPos = useMemo(() => camera.position.clone(), [camera]);
-  const shakeRef = useRef(0);
-
-  useEffect(() => {
-    if (trapdoorPlatforms.length > 0) {
-      shakeRef.current = 0.5; // Trigger shake
-    }
-  }, [trapdoorPlatforms]);
-
-  useFrame((state) => {
-    if (shakeRef.current > 0.01) {
-      const s = shakeRef.current;
-      camera.position.x = initialCameraPos.x + (Math.random() - 0.5) * s;
-      camera.position.y = initialCameraPos.y + (Math.random() - 0.5) * s;
-      shakeRef.current *= 0.9; // Decay
-    } else {
-      camera.position.copy(initialCameraPos);
-    }
-  });
-
   return (
     <>
       <Environment />
-      <Physics gravity={[0, -9.81, 0]} iterations={20} tolerance={0.001}>
-        <Platforms
-          distribution={distribution}
-          options={options}
-          revealedAnswer={revealedAnswer}
-          trapdoorPlatforms={trapdoorPlatforms}
-          onPlatformClick={onPlatformClick}
-          selectedPlatform={selectedPlatform}
-        />
-        
-        {/* Pit floor (Physics body) */}
-        <PhysicsFloor />
-      </Physics>
-
-      {/* Cinematic Reveal: God Ray on Correct Platform */}
-      {revealedAnswer && (
-        <group>
-          {(() => {
-            const cfg = PLATFORM_CONFIGS.find(c => c.id === revealedAnswer);
-            if (!cfg) return null;
-            return (
-              <>
-                <mesh position={[cfg.position[0], cfg.position[1] + 10, cfg.position[2]]}>
-                  <cylinderGeometry args={[0.05, 3, 20, 32]} />
-                  <meshBasicMaterial color="#4ade80" transparent opacity={0.3} />
-                </mesh>
-                <SpotLight
-                  position={[cfg.position[0], cfg.position[1] + 15, cfg.position[2]]}
-                  target-position={[cfg.position[0], cfg.position[1], cfg.position[2]]}
-                  angle={0.15}
-                  penumbra={1}
-                  intensity={10}
-                  color="#4ade80"
-                />
-                <pointLight 
-                  position={[cfg.position[0], cfg.position[1] + 2, cfg.position[2]]} 
-                  intensity={5} 
-                  color="#4ade80" 
-                />
-              </>
-            );
-          })()}
-        </group>
-      )}
     </>
   );
 }
@@ -192,8 +127,8 @@ function SceneContent({ distribution, options, revealedAnswer, trapdoorPlatforms
 import { usePlane } from "@react-three/cannon";
 
 function PhysicsFloor() {
-  const [ref] = usePlane(() => ({ 
-    rotation: [-Math.PI / 2, 0, 0], 
+  const [ref] = usePlane(() => ({
+    rotation: [-Math.PI / 2, 0, 0],
     position: [0, -10.5, 0],
     type: "Static"
   }));
@@ -234,8 +169,8 @@ export default function GameScene({
       shadows
       dpr={[1, 1.5]}
       style={{ width: "100%", height: "100%" }}
-      gl={{ 
-        antialias: true, 
+      gl={{
+        antialias: true,
         alpha: false,
         powerPreference: "high-performance"
       }}
@@ -244,7 +179,7 @@ export default function GameScene({
       }}
     >
       <ResponsiveCamera />
-      
+
       <Suspense fallback={null}>
         {showPlatforms && (
           <SceneContent
