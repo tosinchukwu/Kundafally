@@ -184,6 +184,90 @@ export default function GameplayScreen() {
           </div>
         </motion.div>
 
+        {/* Options Grid (Restored & Split) */}
+        <div className="w-full grid grid-cols-2 gap-x-8 md:gap-x-24 relative z-20 mt-8">
+          {/* Left Column (A & B) */}
+          <div className="flex flex-col gap-4">
+            {currentQuestion.options.slice(0, 2).map((opt) => {
+              const isSelected = state.selectedPlatform === opt.label;
+              const hasTokens = (state.distribution[opt.label] || 0) > 0;
+              return (
+                <button
+                  key={opt.label}
+                  onClick={() => dispatch({ type: "SELECT_PLATFORM", label: isSelected ? null : opt.label })}
+                  className={`
+                    relative flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 group
+                    ${isSelected 
+                      ? "bg-accent/10 border-accent shadow-[0_0_20px_rgba(34,211,238,0.2)]" 
+                      : "bg-white/5 border-white/10 hover:bg-white/10"
+                    }
+                  `}
+                >
+                  <div className={`
+                     flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg font-display text-2xl font-black
+                     ${isSelected ? "bg-accent text-black shadow-lg" : "bg-white/5 text-white/20"}
+                  `}>
+                    {opt.label}
+                  </div>
+                  <div className="text-left flex-1 min-w-0">
+                    <span className={`block text-[10px] font-black tracking-widest uppercase mb-0.5 ${isSelected ? "text-accent" : "text-white/20"}`}>
+                      Option {opt.label}
+                    </span>
+                    <span className="font-display font-medium text-white/90 leading-snug truncate block">
+                      {opt.text}
+                    </span>
+                  </div>
+                  {hasTokens && (
+                    <div className="ml-auto bg-gold/20 border border-gold/40 px-2 py-1 rounded text-[10px] font-mono font-bold text-gold">
+                      {state.distribution[opt.label].toLocaleString()}
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right Column (C & D) */}
+          <div className="flex flex-col gap-4">
+            {currentQuestion.options.slice(2, 4).map((opt) => {
+              const isSelected = state.selectedPlatform === opt.label;
+              const hasTokens = (state.distribution[opt.label] || 0) > 0;
+              return (
+                <button
+                  key={opt.label}
+                  onClick={() => dispatch({ type: "SELECT_PLATFORM", label: isSelected ? null : opt.label })}
+                  className={`
+                    relative flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 group
+                    ${isSelected 
+                      ? "bg-accent/10 border-accent shadow-[0_0_20px_rgba(34,211,238,0.2)]" 
+                      : "bg-white/5 border-white/10 hover:bg-white/10"
+                    }
+                  `}
+                >
+                  <div className={`
+                     flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg font-display text-2xl font-black
+                     ${isSelected ? "bg-accent text-black shadow-lg" : "bg-white/5 text-white/20"}
+                  `}>
+                    {opt.label}
+                  </div>
+                  <div className="text-left flex-1 min-w-0">
+                    <span className={`block text-[10px] font-black tracking-widest uppercase mb-0.5 ${isSelected ? "text-accent" : "text-white/20"}`}>
+                      Option {opt.label}
+                    </span>
+                    <span className="font-display font-medium text-white/90 leading-snug truncate block">
+                      {opt.text}
+                    </span>
+                  </div>
+                  {hasTokens && (
+                    <div className="ml-auto bg-gold/20 border border-gold/40 px-2 py-1 rounded text-[10px] font-mono font-bold text-gold">
+                      {state.distribution[opt.label].toLocaleString()}
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </main>
 
       {/* Footer Area - Bottom-Center Controls */}
