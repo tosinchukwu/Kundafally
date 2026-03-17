@@ -169,7 +169,7 @@ export default function GameplayScreen() {
       </header>
 
       {/* Main Content Area (Centralized) */}
-      <main className="flex-1 flex flex-col items-center w-full max-w-4xl relative z-10 px-4 mt-2">
+      <main className="flex-1 flex flex-col items-center w-full max-w-4xl relative z-10 px-4 mt-2 pointer-events-auto">
         
         {/* Question Display */}
         <motion.div 

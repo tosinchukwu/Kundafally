@@ -22,10 +22,10 @@ interface PlatformConfig {
 
 // Platforms matching the blueprint POV: A (front-left), D (front-right), B/C (back-center)
 const PLATFORM_CONFIGS: PlatformConfig[] = [
-  { id: "A", label: "A", position: [-6.5, 0.0, 3], scale: [1.2, 1.2, 1.2] },
-  { id: "B", label: "B", position: [-2.5, 0.0, 3], scale: [1.2, 1.2, 1.2] },
-  { id: "C", label: "C", position: [2.5, 0.0, 3],  scale: [1.2, 1.2, 1.2] },
-  { id: "D", label: "D", position: [6.5, 0.0, 3],  scale: [1.2, 1.2, 1.2] },
+  { id: "A", label: "A", position: [-8.5, 0.0, 3], scale: [1.2, 1.2, 1.2] },
+  { id: "B", label: "B", position: [-3.0, 0.0, 3], scale: [1.2, 1.2, 1.2] },
+  { id: "C", label: "C", position: [3.0, 0.0, 3],  scale: [1.2, 1.2, 1.2] },
+  { id: "D", label: "D", position: [8.5, 0.0, 3],  scale: [1.2, 1.2, 1.2] },
 ];
 
 interface GameSceneProps {
