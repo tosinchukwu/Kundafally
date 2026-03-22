@@ -109,7 +109,25 @@ export default function GameplayScreen() {
     return num >= 50 && num <= 1000 && num % 50 === 0;
   }, [inputValue]);
 
-  const canLock = totalDistributed >= 50 && Object.values(state.distribution).every(val => val === 0 || (val >= 50 && val <= 1000 && val % 50 === 0));
+  const canLock = useMemo(() => {
+    // 1. Current typing must be valid (or 0)
+    if (inputValue !== "0" && !isInputValid) return false;
+    
+    // 2. All other platforms in state must be valid
+    const othersValid = Object.entries(state.distribution).every(([label, val]) => {
+      if (label === selectedPlateLabel) return true; // Handled by isInputValid
+      return val === 0 || (val >= 50 && val <= 1000 && val % 50 === 0);
+    });
+    if (!othersValid) return false;
+
+    // 3. Total (including current typing) must be >= 50
+    const currentNum = parseInt(inputValue) || 0;
+    const totalOtherDist = Object.entries(state.distribution)
+      .filter(([label]) => label !== selectedPlateLabel)
+      .reduce((a, [_, b]) => a + b, 0);
+    
+    return (currentNum + totalOtherDist) >= 50;
+  }, [inputValue, isInputValid, state.distribution, selectedPlateLabel]);
 
   return (
     <div className="game-container relative flex flex-col items-center min-h-screen w-full bg-transparent overflow-hidden">
