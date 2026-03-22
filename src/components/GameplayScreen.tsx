@@ -6,7 +6,7 @@ const PRESETS = [10, 25, 50, 100];
 
 export default function GameplayScreen() {
   const { state, dispatch, currentQuestion, currentToken } = useGame();
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(45);
   const [timerActive, setTimerActive] = useState(true);
   
   // Betting Input Local State
@@ -88,7 +88,7 @@ export default function GameplayScreen() {
 
   useEffect(() => {
     if (state.phase === "playing") {
-      setTimeLeft(60);
+      setTimeLeft(45);
       setTimerActive(true);
     } else {
       setTimerActive(false);

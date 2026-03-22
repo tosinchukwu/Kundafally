@@ -136,22 +136,25 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     }
 
     case "LOCK_ANSWERS": {
-      const totalDistributed = Object.values(state.distribution).reduce((a, b) => a + b, 0);
-      if (totalDistributed < MIN_BET) return state;
-
+      const totalDistributed = Object.values(state.distribution).reduce((a, b: any) => a + b, 0);
       const question = getCurrentQuestion(state);
       if (!question) return state;
 
       const correctLabel = question.correctAnswer;
       const tokensOnCorrect = state.distribution[correctLabel] || 0;
+      const newTokens = tokensOnCorrect + (state.tokens - totalDistributed);
       
+      // Eliminated if:
+      // 1. Didn't make a valid attempt (totalDistributed < 50)
+      // 2. OR final balance is below minimum bet
+      const isEliminated = totalDistributed < MIN_BET || newTokens < MIN_BET;
+
       return {
         ...state,
         phase: "reveal",
         revealedAnswer: correctLabel,
-        // Tokens kept = amount on correct platform + any undistributed tokens
-        tokens: tokensOnCorrect + (state.tokens - totalDistributed), 
-        isEliminated: (tokensOnCorrect + (state.tokens - totalDistributed)) < MIN_BET, 
+        tokens: newTokens,
+        isEliminated,
         selectedPlatform: null,
         questionsAnswered: state.questionsAnswered + 1,
         lastWinAmount: tokensOnCorrect,
