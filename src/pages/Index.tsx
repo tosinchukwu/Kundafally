@@ -6,6 +6,7 @@ import GameplayScreen from "@/components/GameplayScreen";
 import RevealScreen from "@/components/RevealScreen";
 import ResultsScreen from "@/components/ResultsScreen";
 import GameScene from "@/components/three/GameScene";
+import HUD from "@/components/HUD";
 
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: Error | null }> {
   constructor(props: { children: React.ReactNode }) {
@@ -65,6 +66,7 @@ function GameRouter() {
       </div>
 
       <div className="relative z-10 min-h-screen w-full pointer-events-none bg-transparent">
+        {(state.phase === "playing" || state.phase === "reveal") && <HUD />}
         {(() => {
           switch (state.phase) {
             case "menu":

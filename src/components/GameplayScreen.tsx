@@ -1,7 +1,6 @@
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGame } from "@/context/GameContext";
-import WalletButton from "./WalletButton";
 
 const PRESETS = [10, 25, 50, 100];
 
@@ -10,13 +9,6 @@ export default function GameplayScreen() {
   const [timeLeft, setTimeLeft] = useState(60);
   const [timerActive, setTimerActive] = useState(true);
   const [prevTokens, setPrevTokens] = useState(state.tokens);
-
-  // Capture tokens at the start of each question to calculate winnings
-  useEffect(() => {
-    if (state.phase === "playing") {
-      setPrevTokens(state.tokens);
-    }
-  }, [state.currentQuestionIndex, state.phase]);
 
   // Timer logic
   useEffect(() => {
@@ -88,40 +80,7 @@ export default function GameplayScreen() {
     <div className="game-container relative flex flex-col items-center min-h-screen w-full bg-transparent overflow-hidden">
 
 
-      {/* Header Area */}
-      <header className="relative z-10 flex w-full items-start justify-between p-4 md:p-8 pointer-events-none">
-        {/* Token Balance */}
-        <div className="pointer-events-auto flex flex-col items-start gap-1">
-          <div className="glass-card flex items-center gap-3 px-4 py-2 border-white/5 bg-white/5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-accent/60 to-accent border border-accent/50">
-              <span className="text-[10px] font-black text-white leading-none tracking-tighter">{currentToken}</span>
-            </div>
-            <span className="font-data text-2xl font-black text-white">${displayedBalance.toLocaleString()}</span>
-          </div>
-          <div className="h-6 ml-2">
-            <AnimatePresence mode="wait">
-              {totalDistributed > 0 ? (
-                  <motion.div
-                    key="status"
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="flex items-center gap-2"
-                  >
-                    <span className="font-data text-[10px] font-bold text-accent">
-                      -${totalDistributed} PLACED
-                    </span>
-                    {state.lastWinAmount > 0 && (state.phase === "reveal" || state.phase === "playing") && (
-                      <span className="font-data text-[10px] font-bold text-green-400">
-                        (+${state.lastWinAmount} WON)
-                      </span>
-                    )}
-                  </motion.div>
-              ) : null}
-            </AnimatePresence>
-          </div>
-        </div>
-
+      <header className="relative z-10 w-full p-4 md:p-8 flex justify-center">
         {/* Branding */}
         <div className="flex flex-col items-center">
           <div className="logo-frame bg-black/40 backdrop-blur-xl border border-white/5 px-6 py-2 shadow-2xl">
@@ -130,12 +89,6 @@ export default function GameplayScreen() {
           <p className="mt-2 font-display text-[8px] font-bold text-white/30 uppercase tracking-[0.4em]">
             Shield Your Stack
           </p>
-        </div>
-
-        {/* Utility Icons (Top Right) */}
-        <div className="pointer-events-auto flex items-center gap-4">
-          <WalletButton />
-          {/* Sound and Settings removed for now */}
         </div>
       </header>
 

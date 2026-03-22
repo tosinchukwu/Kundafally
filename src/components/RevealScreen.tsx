@@ -15,6 +15,7 @@ export default function RevealScreen() {
 
   const correctLabel = state.revealedAnswer!;
   const lastHistory = state.history[state.history.length - 1];
+  const wasCorrect = lastHistory?.correct;
   const showTrapdoor = state.trapdoorsOpen;
 
   return (
@@ -39,6 +40,26 @@ export default function RevealScreen() {
           {currentQuestion.question}
         </h2>
 
+        {/* Status Badge */}
+        {!wasCorrect && (
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="mb-4 glass-card px-6 py-2 border-red-500/50 bg-red-500/10"
+          >
+            <span className="font-display text-sm font-black tracking-widest text-red-500 uppercase">Incorrect Prediction</span>
+          </motion.div>
+        )}
+        {wasCorrect && (
+           <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="mb-4 glass-card px-6 py-2 border-green-500/50 bg-green-500/10"
+          >
+            <span className="font-display text-sm font-black tracking-widest text-green-400 uppercase">Correct Platform</span>
+          </motion.div>
+        )}
+
         {/* Correct Answer Badge */}
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
@@ -61,49 +82,8 @@ export default function RevealScreen() {
           </span>
         </motion.div>
       </motion.div>
-
-      {/* Result Footer - slides up after trapdoors open */}
-      <motion.div
-        initial={{ opacity: 0, y: 60 }}
-        animate={showTrapdoor ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-        transition={{ duration: 0.8 }}
-        className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 flex flex-col items-center p-6 md:p-8 bg-gradient-to-t from-background/95 via-background/60 to-transparent pt-16 md:pt-20"
-      >
-        {!state.isEliminated ? (
-          <motion.div 
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            className="pointer-events-auto glass-card px-8 py-6 md:px-12 md:py-8 flex flex-col items-center mb-6 md:mb-8 border-white/5 shadow-2xl backdrop-blur-3xl"
-          >
-            {lastHistory?.correct ? (
-              <div className="font-display text-xl md:text-2xl font-black text-accent tracking-tight flex items-center gap-2">
-                STABLE
-              </div>
-            ) : (
-              <div className="font-display text-xl md:text-2xl font-black text-red-500 tracking-tight">
-                UNSTABLE <span className="text-white/80">-{lastHistory?.tokensLost}</span>
-              </div>
-            )}
-            
-            <div className="mt-4 md:mt-6 flex flex-col items-center">
-              <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-2">Vault Balance</span>
-              <div className="flex items-center gap-3 md:gap-5">
-                <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl md:rounded-2xl bg-gradient-to-tr from-accent/60 to-accent shadow-[0_0_20px_rgba(34,211,238,0.3)]">
-                  <span className="text-[10px] md:text-sm font-black text-white leading-none tracking-tighter">{currentToken}</span>
-                </div>
-                <span className="font-data text-4xl md:text-5xl font-black text-white tracking-tighter">
-                  ${state.tokens.toLocaleString()}
-                </span>
-              </div>
-            </div>
-          </motion.div>
-        ) : (
-          <div className="glass-card px-10 py-8 md:px-12 md:py-10 border-red-500/40 bg-red-500/5 mb-6 md:mb-8 flex flex-col items-center backdrop-blur-2xl">
-            <div className="font-display text-2xl md:text-3xl font-black text-red-500 neon-text-glow tracking-tighter uppercase mb-1 md:mb-2">Vault Breach</div>
-            <div className="text-white/60 font-medium tracking-wide text-xs">SESSION TERMINATED</div>
-          </div>
-        )}
-
+      {/* Continue Button Area */}
+      <div className="mt-auto mb-12 flex flex-col items-center gap-6 z-20">
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -118,7 +98,7 @@ export default function RevealScreen() {
         >
           {state.isEliminated ? "VIEW RESULTS" : "CONTINUE"}
         </motion.button>
-      </motion.div>
+      </div>
     </div>
   );
 }
