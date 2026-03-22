@@ -42,3 +42,8 @@ If your balance falls below **$50** or you fail to place a valid bet before the 
 - **Vault Centric UI**: Real-time balance reconciliation with "stable" and "risk" zones.
 - **Local History**: Tracks your last 20 game sessions in local storage.
 - **Visual Feedback**: Coins rise to the vault on wins and fall to the void on losses.
+
+## 📊 Scoring & Strategy
+
+For a detailed breakdown of the mathematical formulas, hedging strategies, and elimination rules, please see:
+[SCORING_STRATEGY.md](/SCORING_STRATEGY.md)
