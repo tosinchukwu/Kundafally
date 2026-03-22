@@ -163,7 +163,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           {
             question: question.question,
             correct: tokensOnCorrect > 0,
-            tokensLost: state.tokens - tokensOnCorrect,
+            tokensLost: totalDistributed - tokensOnCorrect,
             bonus: 0,
           },
         ],
