@@ -1,8 +1,29 @@
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useGame } from "@/context/GameContext";
 
 export default function ResultsScreen() {
-  const { state, dispatch } = useGame();
+  const { state, dispatch, currentToken } = useGame();
+
+  useEffect(() => {
+    try {
+      const history = JSON.parse(localStorage.getItem("kunda_history") || "[]");
+      const newEntry = {
+        id: Date.now(),
+        date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        score: state.totalScore,
+        correct: state.history.filter(h => h.correct).length,
+        total: state.history.length,
+        token: currentToken
+      };
+      
+      // Save it! (Limit to last 20)
+      const updated = [newEntry, ...history].slice(0, 20);
+      localStorage.setItem("kunda_history", JSON.stringify(updated));
+    } catch (e) {
+      console.error("Failed to save history", e);
+    }
+  }, []);
 
   const correctCount = state.history.filter((h) => h.correct).length;
   const totalLost = state.history.reduce((a, h) => a + h.tokensLost, 0);

@@ -1,73 +1,44 @@
-# Welcome to your Lovable project
+# KUNDA FALL
 
-## Project info
+A high-stakes strategy quiz game built with React, Three.js, and Framer Motion. Protect your vault across 6 rounds of increasing difficulty.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 🎮 How to Play
 
-## How can I edit this code?
+### 01. The Objective
+You begin with **$1,000**. Your goal is to keep as much as possible through **6 Rounds** of high-stakes questioning.
 
-There are several ways of editing your application.
+### 02. Stable vs Void
+- **Stable Vault**: Money **NOT** placed on platforms is 100% safe. It stays with you regardless of the answer.
+- **The Void (Risk)**: Money placed on platforms is at risk. If the answer is wrong, the trapdoors open and those tokens fall into the void.
 
-**Use Lovable**
+### 03. Deployment Rules
+- **Stakes**: Minimum bet is **$50**. Maximum bet is **$1,000** per platform.
+- **Precision**: All bets must be in **multiples of $50**.
+- **Timing**: You have exactly **45 Seconds** per round to distribute your tokens across the options (A, B, C, D).
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### 04. Game Over
+If your balance falls below **$50** or you fail to place a valid bet before the timer expires, the session ends.
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## 🛠 Tech Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **Framework**: React + Vite
+- **3D Engine**: Three.js + React Three Fiber
+- **Animations**: Framer Motion
+- **Styling**: Vanilla CSS + Tailwind
+- **State Management**: React Context + Hooks
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🚀 Getting Started
 
-Follow these steps:
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start the dev server: `npm run dev`
+4. Open the game: `http://localhost:5173`
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 💎 Features
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- **Dynamic 3D Environment**: Interactive platforms and falling physics.
+- **Vault Centric UI**: Real-time balance reconciliation with "stable" and "risk" zones.
+- **Local History**: Tracks your last 20 game sessions in local storage.
+- **Visual Feedback**: Coins rise to the vault on wins and fall to the void on losses.
