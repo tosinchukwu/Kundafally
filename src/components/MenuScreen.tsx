@@ -72,7 +72,7 @@ export default function MenuScreen() {
 
         <div className="mt-16 flex items-center justify-center gap-10 opacity-40">
            <div className="text-center">
-             <div className="font-data text-[10px] text-white/50 mb-1">FORMAT</div>
+             <div className="font-data text-[10px] text-white/50 mb-1">STABILITY</div>
              <div className="font-data text-xs text-white font-black">6 ROUNDS</div>
            </div>
            <div className="h-4 w-px bg-white/10" />
@@ -82,8 +82,8 @@ export default function MenuScreen() {
            </div>
            <div className="h-4 w-px bg-white/10" />
            <div className="text-center">
-             <div className="font-data text-[10px] text-white/50 mb-1">LIMIT</div>
-             <div className="font-data text-xs text-white font-black">45 SECONDS</div>
+             <div className="font-data text-[10px] text-white/50 mb-1">RISK</div>
+             <div className="font-data text-xs text-white font-black">TOTAL LOSS</div>
            </div>
         </div>
       </motion.div>
