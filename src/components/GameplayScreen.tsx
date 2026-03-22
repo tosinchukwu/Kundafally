@@ -8,7 +8,70 @@ export default function GameplayScreen() {
   const { state, dispatch, currentQuestion, currentToken } = useGame();
   const [timeLeft, setTimeLeft] = useState(60);
   const [timerActive, setTimerActive] = useState(true);
-  const [prevTokens, setPrevTokens] = useState(state.tokens);
+  
+  // Betting Input Local State
+  const [inputValue, setInputValue] = useState<string>("0");
+
+  const selectedPlateLabel = state.selectedPlatform;
+
+  // Sync local input with global state when selection changes
+  useEffect(() => {
+    if (selectedPlateLabel) {
+      const val = state.distribution[selectedPlateLabel] || 0;
+      setInputValue(val.toString());
+    }
+  }, [selectedPlateLabel, state.distribution]);
+
+  const handleBetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    if (val === "" || /^\d+$/.test(val)) {
+      setInputValue(val);
+      
+      // If it's a valid multiple of 50, update global state immediately so LOCK can enable
+      const num = parseInt(val) || 0;
+      if (num >= 50 && num % 50 === 0 && selectedPlateLabel) {
+        const totalOtherDist = Object.entries(state.distribution)
+          .filter(([label]) => label !== selectedPlateLabel)
+          .reduce((a, [_, b]) => a + b, 0);
+        
+        if (num <= state.tokens - totalOtherDist) {
+          dispatch({ type: "SET_DISTRIBUTION", label: selectedPlateLabel, amount: num });
+        }
+      }
+    }
+  };
+
+  const handleBetBlur = () => {
+    if (!selectedPlateLabel) return;
+    const rawVal = parseInt(inputValue) || 0;
+    
+    // Snap to nearest 50
+    const snappedVal = Math.round(rawVal / 50) * 50;
+    
+    const totalDist = Object.values(state.distribution).reduce((a: number, b: number) => a + b, 0);
+    const currentOtherDist = totalDist - (state.distribution[selectedPlateLabel] || 0);
+    const maxPossible = Math.min(1000, state.tokens - currentOtherDist);
+    
+    const finalVal = Math.max(0, Math.min(snappedVal, Math.floor(maxPossible / 50) * 50));
+    
+    dispatch({ type: "SET_DISTRIBUTION", label: selectedPlateLabel, amount: finalVal });
+    setInputValue(finalVal.toString());
+  };
+
+  const updateBet = (label: string, delta: number) => {
+    const currentAmount = state.distribution[label] || 0;
+    const totalDist = Object.values(state.distribution).reduce((a: number, b: number) => a + b, 0);
+    let newAmount = currentAmount + delta;
+    
+    const currentOtherDist = totalDist - (state.distribution[label] || 0);
+    const maxPossible = Math.min(1000, state.tokens - currentOtherDist);
+    
+    newAmount = Math.max(0, Math.min(newAmount, maxPossible));
+    // Snap delta updates to 50 if they aren't already
+    newAmount = Math.round(newAmount / 50) * 50;
+    
+    dispatch({ type: "SET_DISTRIBUTION", label, amount: newAmount });
+  };
 
   // Timer logic
   useEffect(() => {
@@ -18,17 +81,11 @@ export default function GameplayScreen() {
         setTimeLeft((prev) => prev - 1);
       }, 1000);
     } else if (timeLeft === 0 && state.phase === "playing") {
-      const totalDist = Object.values(state.distribution).reduce((a, b: any) => a + b, 0);
-      if (totalDist >= 50) {
-        dispatch({ type: "LOCK_ANSWERS" });
-      } else {
-        dispatch({ type: "LOCK_ANSWERS" }); // Reveal even if not enough bet
-      }
+      dispatch({ type: "LOCK_ANSWERS" });
     }
     return () => clearInterval(interval);
-  }, [timeLeft, timerActive, state.phase, state.distribution, dispatch]);
+  }, [timeLeft, timerActive, state.phase, dispatch]);
 
-  // Reset timer on new question
   useEffect(() => {
     if (state.phase === "playing") {
       setTimeLeft(60);
@@ -43,45 +100,20 @@ export default function GameplayScreen() {
     [state.distribution]
   );
   
-  // Real-time Balance: Total - Distributed
-  const displayedBalance = (state.tokens - totalDistributed) + (state.phase === "reveal" ? state.lastWinAmount : 0);
   const available = state.tokens - totalDistributed;
 
-  console.log("GameplayScreen active. Current question:", currentQuestion?.id);
+  if (!currentQuestion) return null;
 
-  if (!currentQuestion) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-background p-10 text-center">
-        <h1 className="text-4xl font-black text-white mb-4 italic text-glow">KUNDA FALL</h1>
-        <div className="glass-card p-8 border-red-500/50">
-          <p className="text-red-400 font-display mb-4 uppercase tracking-widest text-xs font-black">Critical Error</p>
-          <p className="text-white font-display text-lg mb-6">No question data found.</p>
-          <button
-            onClick={() => dispatch({ type: "RESET" })}
-            className="rounded-full bg-accent px-8 py-3 font-display font-black text-black hover:scale-105 transition-transform"
-          >
-            RETURN TO MENU
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const isInputValid = useMemo(() => {
+    const num = parseInt(inputValue) || 0;
+    return num >= 50 && num <= 1000 && num % 50 === 0;
+  }, [inputValue]);
 
-  const updateBet = (label: string, delta: number) => {
-    const currentAmount = state.distribution[label] || 0;
-    const newAmount = currentAmount + delta;
-    dispatch({ type: "SET_DISTRIBUTION", label, amount: newAmount });
-  };
-
-  const canLock = totalDistributed > 0;
-  const selectedPlate = state.selectedPlatform;
+  const canLock = totalDistributed >= 50 && Object.values(state.distribution).every(val => val === 0 || (val >= 50 && val <= 1000 && val % 50 === 0));
 
   return (
     <div className="game-container relative flex flex-col items-center min-h-screen w-full bg-transparent overflow-hidden">
-
-
       <header className="relative z-10 w-full p-4 md:p-8 flex justify-center">
-        {/* Branding */}
         <div className="flex flex-col items-center">
           <div className="logo-frame bg-black/40 backdrop-blur-xl border border-white/5 px-6 py-2 shadow-2xl">
             <h1 className="font-display text-3xl font-black italic tracking-tighter text-white">KUNDA FALL</h1>
@@ -92,68 +124,44 @@ export default function GameplayScreen() {
         </div>
       </header>
 
-      {/* Main Content Area (Centralized) */}
       <main className="flex-1 flex flex-col items-center w-full max-w-4xl relative z-10 px-4 mt-2 pointer-events-auto">
-
-        {/* Question Display */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="w-full mb-6"
-        >
-          <div className="glass-card border-white/5 bg-black/40 backdrop-blur-2xl shadow-2xl p-6 md:p-10 relative">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-accent rounded-full shadow-lg z-10">
-              <span className="text-[10px] font-black text-black uppercase tracking-widest leading-none">Question {state.questionsAnswered + 1} of 6</span>
+        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="w-full mb-6 text-center">
+          <div className="glass-card border-white/5 bg-black/40 backdrop-blur-2xl p-6 md:p-10 relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-accent rounded-full z-10">
+              <span className="text-[10px] font-black text-black">Question {state.questionsAnswered + 1} of 6</span>
             </div>
-            <h2 className="text-center font-display text-lg md:text-3xl font-bold text-white leading-relaxed tracking-tight group-hover:text-glow transition-all">
+            <h2 className="font-display text-lg md:text-3xl font-bold text-white mb-4">
               {currentQuestion.question}
             </h2>
-            <div className="flex flex-col items-center mt-4">
-              <div className={`
-                flex items-center justify-center h-16 w-16 rounded-full border-4 transition-all duration-300
-                ${timeLeft <= 5 ? "border-red-500 text-red-500 shadow-[0_0_20px_rgba(239,68,68,0.4)]" : "border-accent text-accent shadow-[0_0_15px_rgba(34,211,238,0.2)]"}
-              `}>
-                <span className="font-data text-2xl font-black">{timeLeft}s</span>
+            <div className="flex flex-col items-center">
+              <div className={`h-16 w-16 rounded-full border-4 flex items-center justify-center ${timeLeft <= 5 ? "border-red-500 text-red-500 animate-pulse" : "border-accent text-accent"}`}>
+                <span className="font-data text-2xl font-black">{timeLeft}</span>
               </div>
-              <span className="mt-1 font-display text-[8px] font-bold text-white/30 uppercase tracking-[0.3em]">Seconds Remaining</span>
             </div>
           </div>
         </motion.div>
 
-        <div className="w-full grid grid-cols-2 gap-x-8 md:gap-x-24 relative z-20 mt-8">
-          {/* Option Buttons */}
+        <div className="w-full grid grid-cols-2 gap-x-8 mt-8">
           {currentQuestion.options.map((opt) => {
-            const isSelected = state.selectedPlatform === opt.label;
+            const isSelected = selectedPlateLabel === opt.label;
             const hasTokens = (state.distribution[opt.label] || 0) > 0;
+            const isPlatformValid = (state.distribution[opt.label] || 0) % 50 === 0;
+
             return (
               <button
                 key={opt.label}
                 onClick={() => dispatch({ type: "SELECT_PLATFORM", label: isSelected ? null : opt.label })}
-                className={`
-                  relative flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 group mb-4
-                  ${isSelected 
-                    ? "bg-accent/10 border-accent shadow-[0_0_20px_rgba(34,211,238,0.2)]" 
-                    : "bg-white/5 border-white/10 hover:bg-white/10"
-                  }
-                `}
+                className={`relative flex items-center gap-4 p-4 rounded-xl border transition-all mb-4 ${isSelected ? "bg-accent/10 border-accent" : "bg-white/5 border-white/10"}`}
               >
-                <div className={`
-                   flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg font-display text-2xl font-black
-                   ${isSelected ? "bg-accent text-black shadow-lg" : "bg-white/5 text-white/20"}
-                `}>
+                <div className={`h-12 w-12 flex items-center justify-center rounded-lg font-display text-2xl font-black ${isSelected ? "bg-accent text-black" : "bg-white/5 text-white/20"}`}>
                   {opt.label}
                 </div>
                 <div className="text-left flex-1 min-w-0">
-                  <span className={`block text-[10px] font-black tracking-widest uppercase mb-0.5 ${isSelected ? "text-accent" : "text-white/20"}`}>
-                    Option {opt.label}
-                  </span>
-                  <span className="font-display font-medium text-white/90 leading-snug truncate block">
-                    {opt.text}
-                  </span>
+                  <span className="font-display font-medium text-white/90 truncate block">{opt.text}</span>
                 </div>
                 {hasTokens && (
-                  <div className="ml-auto bg-green-500/20 border border-green-500/40 px-2 py-1 rounded text-[10px] font-mono font-bold text-green-400">
-                    ${state.distribution[opt.label].toLocaleString()}
+                  <div className={`ml-auto px-2 py-1 rounded text-[10px] font-mono font-bold ${isPlatformValid ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400 animate-pulse"}`}>
+                    ${state.distribution[opt.label]}
                   </div>
                 )}
               </button>
@@ -161,45 +169,33 @@ export default function GameplayScreen() {
           })}
         </div>
 
-        {/* Center-Aligned Betting Controls (New Layout) */}
         <AnimatePresence>
-          {selectedPlate && state.phase === "playing" && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className="mt-8 flex flex-col items-center gap-6 p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl w-full max-w-lg shadow-2xl"
-            >
+          {selectedPlateLabel && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-8 flex flex-col items-center gap-6 p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl w-full max-w-lg shadow-2xl">
               <div className="flex flex-col items-center gap-1">
-                <span className="font-display text-[10px] font-black text-accent uppercase tracking-[0.3em]">MANAGING OPTION {selectedPlate}</span>
-                <div className="flex items-center gap-1 text-glow">
-                  <span className="font-data text-4xl font-black text-white">$</span>
-                  <input
-                    type="number"
-                    value={state.distribution[selectedPlate] || 0}
-                    onChange={(e) => {
-                      const rawVal = parseInt(e.target.value) || 0;
-                      // Snap to nearest 50
-                      let snappedVal = Math.round(rawVal / 50) * 50;
-                      
-                      const currentOtherDist = totalDistributed - (state.distribution[selectedPlate] || 0);
-                      const maxPossible = state.tokens - currentOtherDist;
-                      
-                      // Final validation
-                      const finalVal = Math.max(0, Math.min(snappedVal, Math.floor(maxPossible / 50) * 50));
-                      
-                      dispatch({ type: "SET_DISTRIBUTION", label: selectedPlate, amount: finalVal });
-                    }}
-                    className="w-40 bg-transparent border-b-2 border-accent/30 focus:border-accent text-4xl font-black text-white text-center outline-none transition-all placeholder:text-white/10"
-                  />
+                <span className="font-display text-[10px] font-black text-accent uppercase tracking-widest">BET ON OPTION {selectedPlateLabel}</span>
+                <div className="flex flex-col items-center gap-1">
+                  <div className="flex items-center gap-1">
+                    <span className="font-data text-4xl font-black text-white">$</span>
+                    <input
+                      type="text"
+                      value={inputValue}
+                      onChange={handleBetChange}
+                      onBlur={handleBetBlur}
+                      className={`w-40 bg-transparent border-b-2 text-4xl font-black text-center outline-none transition-colors ${isInputValid || inputValue === "0" ? "border-accent/30 focus:border-accent text-white" : "border-red-500 text-red-500"}`}
+                    />
+                  </div>
+                  {!isInputValid && inputValue !== "0" && (
+                    <span className="text-[8px] font-black text-red-500 uppercase tracking-widest animate-pulse">Range: $50 - $1000 ($50 steps)</span>
+                  )}
                 </div>
               </div>
 
               <div className="flex items-center gap-8">
                 <button
-                  onClick={(e) => { e.stopPropagation(); updateBet(selectedPlate, -50); }}
-                  disabled={(state.distribution[selectedPlate] || 0) <= 0}
-                  className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-4xl font-black text-white border border-white/10 hover:bg-red-500/30 hover:border-red-500 transition-all active:scale-90 disabled:opacity-10"
+                  onClick={() => updateBet(selectedPlateLabel, -50)}
+                  disabled={(state.distribution[selectedPlateLabel] || 0) <= 0}
+                  className="w-16 h-16 rounded-2xl bg-white/5 text-4xl text-white border border-white/10 hover:bg-red-500/30 transition-all active:scale-95"
                 >
                   -
                 </button>
@@ -207,36 +203,26 @@ export default function GameplayScreen() {
                 <button
                   onClick={() => canLock && dispatch({ type: "LOCK_ANSWERS" })}
                   disabled={!canLock}
-                  className={`
-                    px-10 py-5 rounded-2xl font-display text-xl font-black tracking-widest transition-all
-                    ${canLock 
-                      ? "bg-red-600 text-white shadow-[0_0_40px_rgba(220,38,38,0.5)] hover:scale-105 active:scale-95" 
-                      : "bg-white/5 text-white/10 cursor-not-allowed"
-                    }
-                  `}
+                  className={`px-10 py-5 rounded-2xl font-display text-xl font-black transition-all ${canLock ? "bg-red-600 text-white shadow-xl hover:scale-105 active:scale-95" : "bg-white/5 text-white/5 cursor-not-allowed"}`}
                 >
                   LOCK SESSION
                 </button>
 
                 <button
-                  onClick={(e) => { e.stopPropagation(); updateBet(selectedPlate, 50); }}
+                  onClick={() => updateBet(selectedPlateLabel, 50)}
                   disabled={available < 50}
-                  className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-4xl font-black text-white border border-white/10 hover:bg-accent/30 hover:border-accent transition-all active:scale-90 disabled:opacity-10"
+                  className="w-16 h-16 rounded-2xl bg-white/5 text-4xl text-white border border-white/10 hover:bg-accent/30 transition-all active:scale-95"
                 >
                   +
                 </button>
               </div>
-
-              <div className="flex flex-col items-center opacity-30">
-                <span className="font-display text-[8px] font-bold uppercase tracking-[0.4em]">Current Status</span>
-                <span className="font-data text-xs font-black italic">${totalDistributed.toLocaleString()} of ${state.tokens.toLocaleString()} Distributed</span>
+              <div className="opacity-30 text-[8px] uppercase font-black tracking-[0.3em] leading-none text-center">
+                Min Bet $50 — Snaps to $50 on exit
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </main>
-
-
       <footer className="mt-auto h-20" />
     </div>
   );
