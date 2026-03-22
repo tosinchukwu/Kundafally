@@ -103,7 +103,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         difficulty: "easy", // Default start difficulty, will change per question but not used globally anymore
         sponsor: action.sponsor || "KUNDAFALL",
         tokens: STARTING_TOKENS,
-        currentTokenIndex: 0,
+        currentTokenIndex: Math.floor(Math.random() * TOKENS.length),
         totalScore: 0,
       };
     }
@@ -179,7 +179,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           distribution: {},
           revealedAnswer: null,
           lastWinAmount: 0,
-          currentTokenIndex: (state.currentTokenIndex + 1) % TOKENS.length, // Rotate token
+           // Keep same token for entire session
           totalScore: newTotalScore,
         };
       }
