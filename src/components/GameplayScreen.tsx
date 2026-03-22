@@ -7,8 +7,16 @@ const PRESETS = [10, 25, 50, 100];
 
 export default function GameplayScreen() {
   const { state, dispatch, currentQuestion, currentToken } = useGame();
-  const [timeLeft, setTimeLeft] = useState(15);
+  const [timeLeft, setTimeLeft] = useState(60);
   const [timerActive, setTimerActive] = useState(true);
+  const [prevTokens, setPrevTokens] = useState(state.tokens);
+
+  // Capture tokens at the start of each question to calculate winnings
+  useEffect(() => {
+    if (state.phase === "playing") {
+      setPrevTokens(state.tokens);
+    }
+  }, [state.currentQuestionIndex, state.phase]);
 
   // Timer logic
   useEffect(() => {
@@ -31,7 +39,7 @@ export default function GameplayScreen() {
   // Reset timer on new question
   useEffect(() => {
     if (state.phase === "playing") {
-      setTimeLeft(15);
+      setTimeLeft(60);
       setTimerActive(true);
     } else {
       setTimerActive(false);
@@ -44,7 +52,7 @@ export default function GameplayScreen() {
   );
   
   // Real-time Balance: Total - Distributed
-  const displayedBalance = state.tokens - totalDistributed;
+  const displayedBalance = (state.tokens - totalDistributed) + (state.phase === "reveal" ? state.lastWinAmount : 0);
   const available = state.tokens - totalDistributed;
 
   console.log("GameplayScreen active. Current question:", currentQuestion?.id);
@@ -93,15 +101,22 @@ export default function GameplayScreen() {
           <div className="h-6 ml-2">
             <AnimatePresence mode="wait">
               {totalDistributed > 0 ? (
-                <motion.span
-                  key="placed"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0 }}
-                  className="font-data text-[10px] font-bold text-accent"
-                >
-                  -${totalDistributed} PLACED
-                </motion.span>
+                  <motion.div
+                    key="status"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="flex items-center gap-2"
+                  >
+                    <span className="font-data text-[10px] font-bold text-accent">
+                      -${totalDistributed} PLACED
+                    </span>
+                    {state.lastWinAmount > 0 && (state.phase === "reveal" || state.phase === "playing") && (
+                      <span className="font-data text-[10px] font-bold text-green-400">
+                        (+${state.lastWinAmount} WON)
+                      </span>
+                    )}
+                  </motion.div>
               ) : null}
             </AnimatePresence>
           </div>
@@ -133,7 +148,10 @@ export default function GameplayScreen() {
           animate={{ y: 0, opacity: 1 }}
           className="w-full mb-6"
         >
-          <div className="glass-card border-white/5 bg-black/40 backdrop-blur-2xl shadow-2xl p-6 md:p-10">
+          <div className="glass-card border-white/5 bg-black/40 backdrop-blur-2xl shadow-2xl p-6 md:p-10 relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-accent rounded-full shadow-lg z-10">
+              <span className="text-[10px] font-black text-black uppercase tracking-widest leading-none">Question {state.questionsAnswered + 1} of 6</span>
+            </div>
             <h2 className="text-center font-display text-lg md:text-3xl font-bold text-white leading-relaxed tracking-tight group-hover:text-glow transition-all">
               {currentQuestion.question}
             </h2>
@@ -201,7 +219,21 @@ export default function GameplayScreen() {
             >
               <div className="flex flex-col items-center gap-1">
                 <span className="font-display text-[10px] font-black text-accent uppercase tracking-[0.3em]">MANAGING OPTION {selectedPlate}</span>
-                <span className="font-data text-5xl font-black text-white text-glow">${(state.distribution[selectedPlate] || 0).toLocaleString()}</span>
+                <div className="flex items-center gap-1 text-glow">
+                  <span className="font-data text-4xl font-black text-white">$</span>
+                  <input
+                    type="number"
+                    value={state.distribution[selectedPlate] || 0}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value) || 0;
+                      const currentOtherDist = totalDistributed - (state.distribution[selectedPlate] || 0);
+                      const maxPossible = state.tokens - currentOtherDist;
+                      const finalVal = Math.max(0, Math.min(val, maxPossible));
+                      dispatch({ type: "SET_DISTRIBUTION", label: selectedPlate, amount: finalVal });
+                    }}
+                    className="w-40 bg-transparent border-b-2 border-accent/30 focus:border-accent text-4xl font-black text-white text-center outline-none transition-all placeholder:text-white/10"
+                  />
+                </div>
               </div>
 
               <div className="flex items-center gap-8">

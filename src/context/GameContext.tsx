@@ -22,12 +22,13 @@ interface GameState {
   difficulty: Difficulty;
   currentTokenIndex: number;
   totalScore: number;
+  lastWinAmount: number;
 }
 
 const TOKENS = ["BNB", "ETH", "BTC", "AVAX", "POL", "SOL"];
 
 type GameAction =
-  | { type: "START_GAME"; categories: Category[]; difficulty: Difficulty; sponsor?: string }
+  | { type: "START_GAME"; categories: Category[]; sponsor?: string }
   | { type: "DISTRIBUTE_TOKENS"; label: string; amount: number }
   | { type: "LOCK_ANSWERS" }
   | { type: "NEXT_QUESTION" }
@@ -59,6 +60,7 @@ const initialState: GameState = {
   difficulty: "easy",
   currentTokenIndex: 0,
   totalScore: 0,
+  lastWinAmount: 0,
 };
 
 function getCurrentQuestion(state: GameState): Question | null {
@@ -73,9 +75,18 @@ function getCurrentQuestion(state: GameState): Question | null {
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case "START_GAME": {
-      // Pick 3 questions of the chosen difficulty from the 2 selected categories
-      const allQuestions = action.categories.flatMap(c => c.questions.filter(q => q.difficulty === action.difficulty));
-      const randomizedQuestions = allQuestions.sort(() => Math.random() - 0.5).slice(0, 3);
+      // Pick 1 Easy, 1 Medium, 1 Hard from the first 2 categories
+      const cat1 = action.categories[0];
+      const cat2 = action.categories[1];
+      
+      const getQuestions = (cat: Category) => {
+        const easy = cat.questions.filter(q => q.difficulty === "easy").sort(() => Math.random() - 0.5).slice(0, 1);
+        const med = cat.questions.filter(q => q.difficulty === "medium").sort(() => Math.random() - 0.5).slice(0, 1);
+        const hard = cat.questions.filter(q => q.difficulty === "hard").sort(() => Math.random() - 0.5).slice(0, 1);
+        return [...easy, ...med, ...hard];
+      };
+
+      const randomizedQuestions = [...getQuestions(cat1), ...getQuestions(cat2)];
       
       // We package these into a single "virtual" category for the game logic
       const virtualCategory: Category = {
@@ -89,7 +100,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         ...initialState,
         phase: "playing",
         selectedCategories: [virtualCategory],
-        difficulty: action.difficulty,
+        difficulty: "easy", // Default start difficulty, will change per question but not used globally anymore
         sponsor: action.sponsor || "KUNDAFALL",
         tokens: STARTING_TOKENS,
         currentTokenIndex: 0,
@@ -143,6 +154,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         isEliminated: tokensOnCorrect === 0 && totalDistributed === state.tokens, 
         selectedPlatform: null,
         questionsAnswered: state.questionsAnswered + 1,
+        lastWinAmount: tokensOnCorrect,
         history: [
           ...state.history,
           {
@@ -159,13 +171,14 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const nextQ = state.currentQuestionIndex + 1;
       const newTotalScore = state.totalScore + state.tokens;
 
-      if (nextQ < 3) {
+      if (nextQ < 6) {
         return {
           ...state,
           phase: "playing",
           currentQuestionIndex: nextQ,
           distribution: {},
           revealedAnswer: null,
+          lastWinAmount: 0,
           currentTokenIndex: (state.currentTokenIndex + 1) % TOKENS.length, // Rotate token
           totalScore: newTotalScore,
         };

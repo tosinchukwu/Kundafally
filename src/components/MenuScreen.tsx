@@ -34,9 +34,7 @@ export default function MenuScreen() {
           FALL
         </h1>
 
-        <p className="mx-auto mt-6 max-w-md font-display text-base md:text-lg text-muted-foreground px-4">
-          Protect Your Tokens • Let the Wrong Ones Fall
-        </p>
+        {/* Subtitle removed as requested */}
 
         <motion.button
           whileHover={{ scale: 1.02 }}

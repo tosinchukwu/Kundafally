@@ -12,7 +12,6 @@ const DIFFICULTIES: { id: Difficulty; label: string; Desc: string; color: string
 export default function SelectionScreen() {
   const { dispatch } = useGame();
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
-  const [difficulty, setDifficulty] = useState<Difficulty>("easy");
 
   const toggleCategory = (id: string) => {
     setSelectedCats(prev => {
@@ -25,7 +24,7 @@ export default function SelectionScreen() {
   const handleStart = () => {
     if (selectedCats.length !== 2) return;
     const pickedCategories = categories.filter(c => selectedCats.includes(c.id));
-    dispatch({ type: "START_GAME", categories: pickedCategories, difficulty });
+    dispatch({ type: "START_GAME", categories: pickedCategories });
   };
 
   const canStart = selectedCats.length === 2;
@@ -46,44 +45,7 @@ export default function SelectionScreen() {
           </p>
         </div>
 
-        {/* Step 1: Difficulty */}
-        <div className="space-y-6">
-          <div className="flex items-center gap-4">
-            <span className="h-px flex-1 bg-white/10" />
-            <h2 className="font-display text-sm font-black text-accent tracking-widest uppercase">Select Difficulty</h2>
-            <span className="h-px flex-1 bg-white/10" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {DIFFICULTIES.map((d) => (
-              <button
-                key={d.id}
-                onClick={() => setDifficulty(d.id)}
-                className={`
-                  relative p-6 rounded-2xl border transition-all duration-300 group overflow-hidden
-                  ${difficulty === d.id 
-                    ? "bg-white/10 border-white/40 shadow-2xl scale-105" 
-                    : "bg-white/5 border-white/5 hover:border-white/20"
-                  }
-                `}
-              >
-                {difficulty === d.id && (
-                  <motion.div 
-                    layoutId="diff-bg"
-                    className={`absolute inset-0 bg-gradient-to-br ${d.color} opacity-20`}
-                  />
-                )}
-                <div className="relative z-10 text-left">
-                  <span className={`block font-display text-xl font-black italic mb-1 ${difficulty === d.id ? "text-white" : "text-white/40"}`}>
-                    {d.label}
-                  </span>
-                  <p className="text-[10px] font-medium text-white/50 leading-relaxed uppercase tracking-wider">
-                    {d.Desc}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* Subtitles/Breadcrumbs removed to simplify */}
 
         {/* Step 2: Categories */}
         <div className="space-y-6">
