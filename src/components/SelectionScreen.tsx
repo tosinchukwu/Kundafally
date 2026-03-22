@@ -31,7 +31,7 @@ export default function SelectionScreen() {
   const canStart = selectedCats.length === 2;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background p-6 md:p-12 overflow-y-auto">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background p-6 md:p-12 overflow-y-auto pointer-events-auto">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -130,7 +130,7 @@ export default function SelectionScreen() {
               }
             `}
           >
-            START OPERATION
+            START QUIZ
             {canStart && (
               <motion.div
                 animate={{ opacity: [0, 0.5, 0] }}
