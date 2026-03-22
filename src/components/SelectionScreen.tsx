@@ -36,12 +36,12 @@ export default function SelectionScreen() {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-4xl w-full space-y-12"
       >
-        <div className="text-center space-y-6">
-          <h1 className="font-display text-7xl md:text-9xl font-black text-white tracking-tighter drop-shadow-2xl">
-            ANALYSIS <span className="text-safe lowercase opacity-60">_target</span>
+        <div className="text-center space-y-4">
+          <h1 className="font-display text-5xl md:text-7xl font-black italic text-white tracking-tighter text-glow">
+            QUIZ SETUP
           </h1>
-          <p className="font-mono text-[10px] font-black text-safe/40 uppercase tracking-[0.6em] italic">
-            Select authentication focus areas
+          <p className="font-display text-xs font-bold text-white/40 uppercase tracking-[0.5em]">
+            Choose your path to glory
           </p>
         </div>
 
@@ -51,7 +51,7 @@ export default function SelectionScreen() {
         <div className="space-y-6">
           <div className="flex items-center gap-4">
             <span className="h-px flex-1 bg-white/10" />
-            <h2 className="font-display text-[10px] font-black text-vault tracking-[0.4em] uppercase opacity-60">Selection Phase ({selectedCats.length}/2)</h2>
+            <h2 className="font-display text-sm font-black text-accent tracking-widest uppercase">Choose 2 Categories ({selectedCats.length}/2)</h2>
             <span className="h-px flex-1 bg-white/10" />
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -62,15 +62,15 @@ export default function SelectionScreen() {
                   key={cat.id}
                   onClick={() => toggleCategory(cat.id)}
                   className={`
-                    flex flex-col items-center justify-center p-8 rounded-sm border transition-all duration-300 relative group
+                    flex flex-col items-center justify-center p-6 rounded-2xl border transition-all duration-500
                     ${isSelected 
-                      ? "bg-slate-900 border-safe shadow-safe scale-105" 
-                      : "bg-slate-950/20 border-white/5 hover:border-white/20"
+                      ? "bg-accent/20 border-accent shadow-[0_0_30px_rgba(34,211,238,0.2)]" 
+                      : "bg-white/5 border-white/5 hover:bg-white/10 hover:scale-105"
                     }
                   `}
                 >
-                  <span className={`text-5xl mb-6 transition-all duration-700 ${isSelected ? "scale-110" : "grayscale opacity-10 group-hover:grayscale-0 group-hover:opacity-100"}`}>{cat.icon}</span>
-                  <span className={`font-mono text-[10px] font-black uppercase tracking-[0.4em] ${isSelected ? "text-safe" : "text-white/20 group-hover:text-safe/40"}`}>
+                  <span className="text-4xl mb-4 grayscale-[0.5] group-hover:grayscale-0 transition-all">{cat.icon}</span>
+                  <span className={`font-display text-xs font-black uppercase tracking-widest ${isSelected ? "text-white" : "text-white/40"}`}>
                     {cat.name}
                   </span>
                 </button>
@@ -85,14 +85,21 @@ export default function SelectionScreen() {
             onClick={handleStart}
             disabled={!canStart}
             className={`
-              relative group flex items-center justify-center rounded-sm px-24 py-6 font-mono text-xl font-black tracking-[0.4em] transition-all duration-500
+              relative group flex items-center justify-center rounded-2xl px-24 py-6 font-display text-3xl font-black tracking-[0.2em] italic transition-all duration-500
               ${canStart
-                ? "bg-safe text-black shadow-safe hover:bg-white translate-y-0"
-                : "bg-slate-900 text-white/5 border border-white/5 opacity-40 cursor-not-allowed translate-y-4"
+                ? "bg-accent text-black shadow-[0_0_50px_rgba(34,211,238,0.4)] hover:scale-105 active:scale-95 translate-y-0"
+                : "bg-white/5 text-white/10 border border-white/5 opacity-40 cursor-not-allowed translate-y-4"
               }
             `}
           >
-            EXECUTE::LOGIN
+            START QUIZ
+            {canStart && (
+              <motion.div
+                animate={{ opacity: [0, 0.5, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="absolute inset-0 rounded-2xl bg-white"
+              />
+            )}
           </button>
           {!canStart && (
             <p className="mt-4 font-display text-[9px] font-bold text-white/20 uppercase tracking-[0.4em] italic">

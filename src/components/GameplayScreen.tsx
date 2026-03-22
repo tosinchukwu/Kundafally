@@ -109,14 +109,6 @@ export default function GameplayScreen() {
     return num >= 50 && num <= 1000 && num % 50 === 0;
   }, [inputValue]);
 
-  // Calculate heartbeat frequency based on time left
-  const pulseDuration = useMemo(() => {
-    if (timeLeft > 30) return 2;
-    if (timeLeft > 15) return 1.2;
-    if (timeLeft > 5) return 0.6;
-    return 0.3; // Rapid panic pulse below 5s
-  }, [timeLeft]);
-
   const canLock = useMemo(() => {
     // 1. Current typing must be valid (or 0)
     if (inputValue !== "0" && !isInputValid) return false;
@@ -139,16 +131,6 @@ export default function GameplayScreen() {
 
   return (
     <div className="game-container relative flex flex-col items-center min-h-screen w-full bg-transparent overflow-hidden">
-      {/* Risk Vignette Overlay */}
-      <motion.div 
-        animate={{ 
-          opacity: timeLeft <= 10 ? [0.2, 0.5, 0.2] : 0,
-          scale: timeLeft <= 10 ? [1, 1.05, 1] : 1 
-        }}
-        transition={{ duration: pulseDuration, repeat: Infinity }}
-        className="fixed inset-0 pointer-events-none z-[5] bg-[radial-gradient(circle,transparent_40%,rgba(239,68,68,0.3)_100%)]"
-      />
-
       <header className="relative z-10 w-full p-4 md:p-8 flex justify-center">
         <div className="flex flex-col items-center">
           <div className="logo-frame bg-black/40 backdrop-blur-xl border border-white/5 px-6 py-2 shadow-2xl">
@@ -161,13 +143,7 @@ export default function GameplayScreen() {
       </header>
 
       <main className="flex-1 flex flex-col items-center w-full max-w-4xl relative z-10 px-4 mt-2 pointer-events-auto">
-        <motion.div 
-          animate={{ scale: [1, 1.01, 1] }}
-          transition={{ duration: pulseDuration, repeat: Infinity, ease: "easeInOut" }}
-          initial={{ y: 20, opacity: 0 }} 
-          whileInView={{ y: 0, opacity: 1 }} 
-          className="w-full mb-6 text-center"
-        >
+        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="w-full mb-6 text-center">
           <div className="glass-card border-white/5 bg-black/40 backdrop-blur-2xl p-6 md:p-10 relative">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-accent rounded-full z-10">
               <span className="text-[10px] font-black text-black">Question {state.questionsAnswered + 1} of 6</span>
@@ -175,15 +151,11 @@ export default function GameplayScreen() {
             <h2 className="font-display text-lg md:text-3xl font-bold text-white mb-4">
               {currentQuestion.question}
             </h2>
-          <div className="flex flex-col items-center">
-            <div className={`
-              h-20 w-20 rounded-sm border-2 flex items-center justify-center transition-all duration-300
-              ${timeLeft > 20 ? "border-safe text-safe shadow-safe" : timeLeft > 10 ? "border-orange-400 text-orange-400" : "border-risk text-risk shadow-risk animate-pulse"}
-            `}>
-              <span className="font-data text-3xl font-black">{timeLeft}</span>
+            <div className="flex flex-col items-center">
+              <div className={`h-16 w-16 rounded-full border-4 flex items-center justify-center ${timeLeft <= 5 ? "border-red-500 text-red-500 animate-pulse" : "border-accent text-accent"}`}>
+                <span className="font-data text-2xl font-black">{timeLeft}</span>
+              </div>
             </div>
-            <div className="mt-2 font-mono text-[8px] font-black tracking-[0.4em] uppercase opacity-30">SEC_TIMER</div>
-          </div>
           </div>
         </motion.div>
 
@@ -191,36 +163,22 @@ export default function GameplayScreen() {
           {currentQuestion.options.map((opt) => {
             const isSelected = selectedPlateLabel === opt.label;
             const hasTokens = (state.distribution[opt.label] || 0) > 0;
+            const isPlatformValid = (state.distribution[opt.label] || 0) % 50 === 0;
 
             return (
               <button
                 key={opt.label}
                 onClick={() => dispatch({ type: "SELECT_PLATFORM", label: isSelected ? null : opt.label })}
-                className={`
-                  relative flex items-center gap-6 p-6 rounded-sm border transition-all duration-200 mb-4
-                  ${isSelected 
-                    ? "bg-slate-900 border-safe shadow-safe scale-[1.02]" 
-                    : hasTokens
-                      ? "bg-slate-950 border-safe/40"
-                      : "bg-slate-950/20 border-white/5 hover:border-white/20"}
-                `}
+                className={`relative flex items-center gap-4 p-4 rounded-xl border transition-all mb-4 ${isSelected ? "bg-accent/10 border-accent" : "bg-white/5 border-white/10"}`}
               >
-                <div className={`
-                  h-10 w-10 flex items-center justify-center rounded-sm font-data text-xl font-black transition-colors
-                  ${isSelected ? "bg-safe text-black" : "bg-slate-800 text-white/20 border border-white/5"}
-                `}>
+                <div className={`h-12 w-12 flex items-center justify-center rounded-lg font-display text-2xl font-black ${isSelected ? "bg-accent text-black" : "bg-white/5 text-white/20"}`}>
                   {opt.label}
                 </div>
                 <div className="text-left flex-1 min-w-0">
-                  <p className={`font-mono text-sm md:text-base font-black truncate block tracking-tighter ${isSelected ? "text-safe" : "text-white/60"}`}>
-                    {opt.text}
-                  </p>
+                  <span className="font-display font-medium text-white/90 truncate block">{opt.text}</span>
                 </div>
                 {hasTokens && (
-                  <div className={`
-                    px-2 py-1 rounded-sm text-[10px] font-data font-black border transition-all
-                    ${isSelected ? "bg-safe/20 border-safe text-safe" : "bg-slate-800 border-white/10 text-white/40"}
-                  `}>
+                  <div className={`ml-auto px-2 py-1 rounded text-[10px] font-mono font-bold ${isPlatformValid ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400 animate-pulse"}`}>
                     ${state.distribution[opt.label]}
                   </div>
                 )}
@@ -231,31 +189,31 @@ export default function GameplayScreen() {
 
         <AnimatePresence>
           {selectedPlateLabel && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-8 flex flex-col items-center gap-6 p-8 rounded-none bg-slate-900 border-l-4 border-safe shadow-2xl w-full max-w-lg relative overflow-hidden">
-              <div className="flex flex-col items-center gap-2">
-                <span className="font-mono text-[9px] font-black text-safe/40 uppercase tracking-[0.4em]">AUTH://INPUT_NODE_{selectedPlateLabel}</span>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-8 flex flex-col items-center gap-6 p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl w-full max-w-lg shadow-2xl">
+              <div className="flex flex-col items-center gap-1">
+                <span className="font-display text-[10px] font-black text-accent uppercase tracking-widest">BET ON OPTION {selectedPlateLabel}</span>
                 <div className="flex flex-col items-center gap-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-data text-4xl font-black text-white/10 select-none">$</span>
+                  <div className="flex items-center gap-1">
+                    <span className="font-data text-4xl font-black text-white">$</span>
                     <input
                       type="text"
                       value={inputValue}
                       onChange={handleBetChange}
                       onBlur={handleBetBlur}
-                      className={`w-40 bg-transparent border-b border-white/10 text-4xl font-data font-black text-center outline-none transition-all duration-300 ${isInputValid || inputValue === "0" ? "focus:border-safe text-white" : "border-risk text-risk animate-flicker"}`}
+                      className={`w-40 bg-transparent border-b-2 text-4xl font-black text-center outline-none transition-colors ${isInputValid || inputValue === "0" ? "border-accent/30 focus:border-accent text-white" : "border-red-500 text-red-500"}`}
                     />
                   </div>
                   {!isInputValid && inputValue !== "0" && (
-                    <span className="text-[9px] font-mono font-black text-risk uppercase tracking-[0.2em] mt-2">Invalid Quantity</span>
+                    <span className="text-[8px] font-black text-red-500 uppercase tracking-widest animate-pulse">Range: $50 - $1000 ($50 steps)</span>
                   )}
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 w-full justify-center">
+              <div className="flex items-center gap-8">
                 <button
                   onClick={() => updateBet(selectedPlateLabel, -50)}
                   disabled={(state.distribution[selectedPlateLabel] || 0) <= 0}
-                  className="w-12 h-12 rounded-sm bg-slate-800 text-xl text-white border border-white/5 hover:bg-risk/20 hover:border-risk/40 transition-all active:scale-95 disabled:opacity-5"
+                  className="w-16 h-16 rounded-2xl bg-white/5 text-4xl text-white border border-white/10 hover:bg-red-500/30 transition-all active:scale-95"
                 >
                   -
                 </button>
@@ -263,18 +221,21 @@ export default function GameplayScreen() {
                 <button
                   onClick={() => canLock && dispatch({ type: "LOCK_ANSWERS" })}
                   disabled={!canLock}
-                  className={`flex-1 h-12 rounded-sm font-mono text-sm font-black tracking-[0.3em] transition-all ${canLock ? "bg-safe text-black shadow-safe hover:bg-white" : "bg-slate-800 text-white/5 cursor-not-allowed"}`}
+                  className={`px-10 py-5 rounded-2xl font-display text-xl font-black transition-all ${canLock ? "bg-red-600 text-white shadow-xl hover:scale-105 active:scale-95" : "bg-white/5 text-white/5 cursor-not-allowed"}`}
                 >
-                  COMMIT
+                  LOCK SESSION
                 </button>
 
                 <button
                   onClick={() => updateBet(selectedPlateLabel, 50)}
                   disabled={available < 50}
-                  className="w-12 h-12 rounded-sm bg-slate-800 text-xl text-white border border-white/5 hover:bg-safe/20 hover:border-safe/40 transition-all active:scale-95 disabled:opacity-5"
+                  className="w-16 h-16 rounded-2xl bg-white/5 text-4xl text-white border border-white/10 hover:bg-accent/30 transition-all active:scale-95"
                 >
                   +
                 </button>
+              </div>
+              <div className="opacity-30 text-[8px] uppercase font-black tracking-[0.3em] leading-none text-center">
+                Min Bet $50 — Snaps to $50 on exit
               </div>
             </motion.div>
           )}
