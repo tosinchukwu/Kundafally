@@ -28,8 +28,8 @@ export default function RevealScreen() {
         className="pointer-events-none relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center pt-10 px-4"
       >
         {/* Reveal badge */}
-        <div className="pointer-events-auto mb-6 inline-block glass-card px-6 py-2 border-accent/40">
-          <span className="font-display text-sm font-black tracking-[0.2em] text-accent uppercase">Reveal Phase</span>
+        <div className="pointer-events-auto mb-6 inline-block bg-slate-900 px-6 py-2 border-l-4 border-safe">
+          <span className="font-mono text-[10px] font-black tracking-[0.4em] text-safe uppercase">RECON_PROCESS::ACTIVE</span>
         </div>
 
         {/* Question text */}
@@ -45,18 +45,18 @@ export default function RevealScreen() {
           <motion.div
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="mb-4 glass-card px-6 py-2 border-red-500/50 bg-red-500/10"
+            className="mb-6 bg-risk/10 px-8 py-3 border-l-2 border-risk shadow-risk"
           >
-            <span className="font-display text-sm font-black tracking-widest text-red-500 uppercase">Incorrect Prediction</span>
+            <span className="font-mono text-[10px] font-black tracking-[0.3em] text-risk uppercase">CRITICAL_BRCH::VOID_INTRUSION</span>
           </motion.div>
         )}
         {wasCorrect && (
            <motion.div
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="mb-4 glass-card px-6 py-2 border-green-500/50 bg-green-500/10"
+            className="mb-6 bg-safe/10 px-8 py-3 border-l-2 border-safe shadow-safe"
           >
-            <span className="font-display text-sm font-black tracking-widest text-green-400 uppercase">Correct Platform</span>
+            <span className="font-mono text-[10px] font-black tracking-[0.3em] text-safe uppercase">SEC_SIGNAL::INTEGRITY_VERIFIED</span>
           </motion.div>
         )}
 
@@ -65,38 +65,28 @@ export default function RevealScreen() {
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.4, type: "spring", damping: 12 }}
-          className="glass-card px-6 py-4 md:px-10 md:py-5 border-green-400/50 bg-green-500/5 relative overflow-hidden"
+          className="bg-slate-900 border-l border-white/10 px-10 py-6 relative overflow-hidden"
         >
-          {/* Internal Glow Pulse */}
-          <motion.div
-            animate={{ opacity: [0.1, 0.3, 0.1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="absolute inset-0 bg-green-400/20 blur-xl"
-          />
-          <span className="relative z-10 font-display text-[10px] md:text-sm font-black tracking-[0.15em] md:tracking-[0.25em] text-green-400 uppercase flex items-center gap-2 md:gap-3 leading-tight md:leading-normal">
-            <span className="h-1.5 w-1.5 md:h-2 md:w-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
-            <span className="flex-1">
-              Correct: <span className="text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">{correctLabel}</span>
-              <span className="hidden md:inline">{" — "}{currentQuestion.options.find(o => o.label === correctLabel)?.text}</span>
-            </span>
+          <span className="relative z-10 font-mono text-[10px] font-black tracking-[0.4em] text-white/40 uppercase flex items-center justify-center gap-4 leading-tight">
+            TARGET_KEY: <span className="text-safe text-2xl md:text-3xl translate-y-0.5 inline-block font-data">{correctLabel}</span>
           </span>
         </motion.div>
       </motion.div>
       {/* Continue Button Area */}
       <div className="mt-auto mb-12 flex flex-col items-center gap-6 z-20">
         <motion.button
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.05, backgroundColor: "#fff", color: "#000" }}
           whileTap={{ scale: 0.95 }}
           onClick={() => dispatch({ type: "NEXT_QUESTION" })}
           className={`
-            pointer-events-auto rounded-full px-12 py-4 md:px-16 md:py-5 font-display text-lg md:text-xl font-black tracking-widest transition-all
+            pointer-events-auto rounded-sm px-12 py-4 md:px-16 md:py-5 font-mono text-sm md:text-base font-black tracking-[0.3em] transition-all border-2
             ${state.isEliminated
-              ? "bg-red-500 text-white shadow-[0_0_30px_rgba(239,68,68,0.4)]"
-              : "bg-accent text-black shadow-[0_0_30px_rgba(34,211,238,0.4)]"
+              ? "border-risk text-risk shadow-risk"
+              : "border-safe text-safe shadow-safe"
             }
           `}
         >
-          {state.isEliminated ? "VIEW RESULTS" : "CONTINUE"}
+          {state.isEliminated ? "DEBRIEF::ANALYSIS" : "EXECUTE::NEXT"}
         </motion.button>
       </div>
     </div>

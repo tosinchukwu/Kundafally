@@ -6,51 +6,43 @@
 
 @layer base {
   :root {
-    --background: 268 80% 3%;
-    --foreground: 270 20% 92%;
+    --background: 222 47% 4%;
+    --foreground: 210 40% 98%;
 
-    --card: 268 45% 10%;
-    --card-foreground: 270 20% 92%;
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 268 50% 8%;
-    --popover-foreground: 270 20% 92%;
+    --popover: 222 47% 6%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 45 90% 55%;
-    --primary-foreground: 268 60% 4%;
+    --primary: 199 89% 48%;
+    --primary-foreground: 222 47% 4%;
 
-    --secondary: 268 40% 16%;
-    --secondary-foreground: 270 20% 80%;
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 268 35% 14%;
-    --muted-foreground: 270 15% 50%;
+    --muted: 217 32% 12%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 190 90% 55%;
-    --accent-foreground: 190 20% 95%;
+    --accent: 199 89% 48%;
+    --accent-foreground: 222 47% 4%;
 
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 24 95% 53%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 270 40% 18%;
-    --input: 270 40% 18%;
-    --ring: 270 85% 65%;
+    --border: 217 32% 17%;
+    --input: 217 32% 17%;
+    --ring: 199 89% 48%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    --surface: 268 45% 9%;
-    --surface-elevated: 268 40% 14%;
-    --gold: 45 90% 55%;
-    --gold-dark: 30 80% 25%;
-    --neon: 270 85% 65%;
-    --neon-glow: 270 100% 75%;
-    --cyan: 190 90% 55%;
-    --cyan-glow: 190 90% 65%;
+    --safe: 199 89% 48%;
+    --risk: 24 95% 53%;
+    --terminal-line: 217 32% 25%;
+    --obsidian: 222 47% 2%;
     
-    --shadow-deep: 0 20px 50px -12px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(139, 92, 246, 0.05) inset;
-    --shadow-plate: 0 8px 30px -8px rgba(0, 0, 0, 0.6);
-    --shadow-glow-cyan: 0 0 20px rgba(0, 200, 255, 0.3), 0 0 60px rgba(0, 200, 255, 0.1);
-
-    --font-display: 'Schibsted Grotesk', sans-serif;
-    --font-mono: 'Geist Mono', monospace;
+    --shadow-safe: 0 0 20px rgba(34, 211, 238, 0.2);
+    --shadow-risk: 0 0 20px rgba(249, 115, 22, 0.2);
   }
 }
 
@@ -138,8 +130,29 @@
   }
 
   .glass-card {
-    @apply bg-background/40 backdrop-blur-xl border border-white/10 rounded-2xl;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    @apply bg-obsidian/80 backdrop-blur-3xl border border-white/5 rounded-[2rem];
+    box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.7), inset 0 0 1px 1px rgba(255, 255, 255, 0.05);
+  }
+
+  .safe-gradient {
+    background: linear-gradient(135deg, #22d3ee 0%, #0ea5e9 100%);
+  }
+
+  .risk-gradient {
+    background: linear-gradient(135deg, #f97316 0%, #c2410c 100%);
+  }
+
+  .shadow-safe {
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.3), 0 0 40px rgba(34, 211, 238, 0.1);
+  }
+
+  .shadow-risk {
+    box-shadow: 0 0 20px rgba(249, 115, 22, 0.3), 0 0 40px rgba(249, 115, 22, 0.1);
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
+    letter-spacing: 0.1em;
   }
 
   .font-display {

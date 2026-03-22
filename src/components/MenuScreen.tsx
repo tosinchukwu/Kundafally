@@ -40,32 +40,32 @@ export default function MenuScreen() {
           <div className="mt-1 font-data text-sm text-accent tracking-widest font-black italic">KUNDAFALL</div>
         </div>
 
-        <h1 className="font-display text-6xl font-black text-white md:text-9xl tracking-tighter italic">KUNDA</h1>
-        <h1 className="font-display -mt-4 text-6xl font-black md:text-9xl bg-gradient-to-r from-accent via-white to-accent bg-clip-text text-transparent italic drop-shadow-[0_0_30px_rgba(34,211,238,0.3)]">FALL</h1>
+        <h1 className="font-display text-7xl font-black text-white md:text-[10rem] tracking-tighter select-none">KUNDA</h1>
+        <h1 className="font-mono -mt-6 text-5xl md:text-7xl font-black text-safe tracking-[0.2em] italic select-none opacity-80">_FALL.OS</h1>
 
-        <div className="flex flex-col items-center gap-4 mt-12">
+        <div className="flex flex-col items-center gap-6 mt-16">
           <motion.button
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05, backgroundColor: "#fff", color: "#000" }}
             whileTap={{ scale: 0.95 }}
             onClick={() => dispatch({ type: "SET_PHASE", phase: "category" })}
-            className="rounded-full bg-accent px-12 py-5 font-display text-xl font-black text-black shadow-[0_20px_40px_rgba(34,211,238,0.3)] transition-all"
+            className="rounded-sm border-2 border-safe px-16 py-6 font-mono text-xl font-black text-safe shadow-safe transition-all uppercase tracking-widest"
           >
-            BEGIN MISSION
+            EXECUTE::START
           </motion.button>
           
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-8">
             <button 
               onClick={() => setShowHistory(true)}
-              className="font-display text-[9px] font-black text-white/40 hover:text-accent tracking-[0.4em] transition-colors py-2 uppercase"
+              className="font-mono text-[10px] font-black text-white/20 hover:text-white tracking-[0.4em] transition-all py-2 uppercase border-b border-transparent hover:border-safe"
             >
-              Session History
+              [HISTORY_LOG]
             </button>
-            <div className="h-3 w-px bg-white/10" />
+            <div className="h-4 w-px bg-white/10" />
             <button 
               onClick={() => setShowHowTo(true)}
-              className="font-display text-[9px] font-black text-white/40 hover:text-accent tracking-[0.4em] transition-colors py-2 uppercase"
+              className="font-mono text-[10px] font-black text-white/20 hover:text-white tracking-[0.4em] transition-all py-2 uppercase border-b border-transparent hover:border-safe"
             >
-              How to Play
+              [PROTOCOL_SRC]
             </button>
           </div>
         </div>

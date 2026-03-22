@@ -16,9 +16,9 @@ const FlyingCoin = ({ startX, startY, onEnd }: { startX: number, startY: number,
       }}
       transition={{ duration: 1.2, ease: "easeOut" }}
       onAnimationComplete={onEnd}
-      className="fixed z-[100] w-7 h-7 rounded-full bg-gradient-to-tr from-yellow-400 to-yellow-600 shadow-[0_0_20px_rgba(250,204,21,0.7)] flex items-center justify-center border-2 border-yellow-200/50 pointer-events-none"
+      className="fixed z-[100] w-6 h-6 rounded-md bg-safe shadow-safe flex items-center justify-center border border-white/40 pointer-events-none"
     >
-      <span className="text-[10px] font-bold text-yellow-900">$</span>
+      <span className="text-[10px] font-black text-black leading-none">$</span>
     </motion.div>
   );
 };
@@ -32,14 +32,14 @@ const FallingCoin = ({ startX, startY, onEnd }: { startX: number, startY: number
         x: [startX, startX + (Math.random() - 0.5) * 50],
         y: [startY, startY + window.innerHeight],
         opacity: [1, 1, 0],
-        rotate: [0, 360],
+        rotate: [0, 180],
         scale: [1, 1.2, 0.8]
       }}
-      transition={{ duration: 1.2, ease: "easeIn" }}
+      transition={{ duration: 1, ease: "easeIn" }}
       onAnimationComplete={onEnd}
-      className="fixed z-[110] w-7 h-7 rounded-full bg-gradient-to-tr from-gray-500 to-gray-800 shadow-2xl flex items-center justify-center border-2 border-white/20 pointer-events-none"
+      className="fixed z-[110] w-6 h-6 rounded-md bg-risk shadow-risk flex items-center justify-center border border-white/20 pointer-events-none"
     >
-      <span className="text-[12px] font-black text-white/40">$</span>
+      <span className="text-[10px] font-black text-white/50 leading-none">$</span>
     </motion.div>
   );
 };
@@ -111,15 +111,17 @@ export default function HUD() {
       <header className="flex w-full items-start justify-between p-4 md:p-8">
         <div className="pointer-events-auto flex flex-col items-start gap-1">
           <motion.div 
-            animate={isVaultPulsing ? { scale: [1, 1.15, 1] } : {}}
-            className="glass-card flex flex-col items-start px-6 py-3 border-white/20 bg-black/60 shadow-2xl backdrop-blur-none min-w-[180px]"
+            animate={isVaultPulsing ? { borderColor: ["rgba(34,211,238,0.2)", "rgba(34,211,238,1)", "rgba(34,211,238,0.2)"] } : {}}
+            className="flex flex-col items-start px-2 py-4 border-l-4 border-safe bg-slate-950/40 backdrop-blur-sm min-w-[220px]"
           >
-            <span className="font-display text-[10px] font-black text-accent tracking-[0.4em] uppercase mb-1.5 opacity-100">Stable Vault</span>
-            <div className="flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-accent to-accent/60 border-2 border-accent shadow-[0_0_20px_rgba(34,211,238,0.4)]">
-                <span className="text-xs font-black text-black leading-none">{currentToken}</span>
+            <div className="flex items-center gap-2 mb-1 pl-4">
+              <span className="font-mono text-[9px] font-black text-safe uppercase tracking-[0.4em] opacity-80">VAULT://SECURE</span>
+            </div>
+            <div className="flex items-center gap-5 pl-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-slate-900 border border-safe/20 shadow-safe">
+                <span className="text-sm font-data font-black text-safe leading-none">{currentToken}</span>
               </div>
-              <span className="font-data text-3xl font-black text-white text-glow">${displayedBalance.toLocaleString()}</span>
+              <span className="font-data text-4xl font-black text-white tracking-tighter">${displayedBalance.toLocaleString()}</span>
             </div>
           </motion.div>
           
@@ -133,19 +135,19 @@ export default function HUD() {
                     exit={{ opacity: 0 }}
                     className="flex items-center gap-3"
                   >
-                    <span className="font-data text-[11px] font-black text-accent tracking-tighter">
-                      -${totalDistributed} ON PLATFORMS
+                    <span className="font-mono text-[10px] font-black text-safe tracking-tighter">
+                      -{totalDistributed} UNITS COMMITTED
                     </span>
                   </motion.div>
               ) : (
                 state.phase === "reveal" && state.lastWinAmount > 0 ? (
                   <motion.div
                     key="win"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="font-data text-sm font-black text-green-400 ml-2"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="font-mono text-xs font-black text-green-400 ml-4"
                   >
-                    +${state.lastWinAmount.toLocaleString()} WON
+                    +${state.lastWinAmount.toLocaleString()} RECONCILED
                   </motion.div>
                 ) : null
               )}

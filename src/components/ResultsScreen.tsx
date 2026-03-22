@@ -39,8 +39,8 @@ export default function ResultsScreen() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="relative z-10 w-full max-w-2xl text-center"
       >
-        <div className="inline-block glass-card px-6 py-2 mb-10 border-accent/40">
-          <span className="font-display text-xs font-black tracking-[0.3em] text-accent uppercase">Session Complete</span>
+        <div className="inline-block bg-slate-900 px-6 py-2 mb-10 border-l-4 border-safe">
+          <span className="font-mono text-[10px] font-black tracking-[0.4em] text-safe uppercase">SESSION_DEBRIEF::ANALYSIS_COMPLETE</span>
         </div>
 
         <motion.div
@@ -54,33 +54,33 @@ export default function ResultsScreen() {
           <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-primary/20 blur-[80px] rounded-full" />
           
           <div className="relative z-10 flex flex-col items-center">
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 mb-2">
-              <div className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl md:rounded-[2rem] bg-gradient-to-tr from-accent/60 to-accent shadow-[0_20px_40px_rgba(34,211,238,0.3)] border border-white/20">
-                <span className="text-xl md:text-2xl font-black text-white leading-none tracking-tighter">ALL</span>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-4">
+              <div className="flex h-20 w-20 md:h-24 md:w-24 items-center justify-center rounded-sm bg-slate-900 border border-safe shadow-safe">
+                <span className="text-2xl font-mono font-black text-safe leading-none">RECO</span>
               </div>
-              <span className="font-data text-6xl md:text-9xl font-black text-white tracking-tighter drop-shadow-2xl">
+              <span className="font-data text-7xl md:text-[10rem] font-black text-white tracking-widest leading-none drop-shadow-2xl">
                 ${state.totalScore.toLocaleString()}
               </span>
             </div>
-            <div className="font-display text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.5em] text-white/30 uppercase mt-4">Vault Reconciliation Successful</div>
+            <div className="font-mono text-[10px] font-black tracking-[0.6em] text-safe/30 uppercase mt-8 opacity-50">Vault_Integrity_Index: [SECURE]</div>
           </div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-10">
           {[
-            { label: "STABILITY", value: `${correctCount}/${state.history.length}`, color: "text-accent" },
-            { label: "VOIDS", value: `$${totalLost.toLocaleString()}`, color: "text-red-500" },
-            { label: "EFFICIENCY", value: `${Math.round((state.totalScore / (state.history.length * 1000 || 1)) * 100)}%`, color: "text-green-400" },
+            { label: "AVAILABILITY", value: `${correctCount}/${state.history.length}`, color: "text-safe" },
+            { label: "LEAKAGE", value: `$${totalLost.toLocaleString()}`, color: "text-risk" },
+            { label: "EFFICIENCY", value: `${Math.round((state.totalScore / (state.history.length * 1000 || 1)) * 100)}%`, color: "text-white" },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 + i * 0.1 }}
-              className="glass-card p-4 md:p-6 flex flex-row md:flex-col items-center justify-between md:justify-center border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors"
+              className="bg-slate-900 p-6 flex flex-row md:flex-col items-center justify-between border-l border-white/10 hover:border-safe/40 transition-all"
             >
-              <div className="font-display text-[9px] font-black text-white/20 tracking-[0.2em] uppercase order-first md:order-last md:mt-2">{stat.label}</div>
-              <div className={`font-data text-xl md:text-2xl font-black ${stat.color} tracking-tight`}>{stat.value}</div>
+              <div className="font-mono text-[9px] font-black text-white/20 tracking-[0.2em] uppercase order-first md:order-last md:mt-2">{stat.label}</div>
+              <div className={`font-data text-xl md:text-2xl font-black ${stat.color} tracking-widest`}>{stat.value}</div>
             </motion.div>
           ))}
         </div>
@@ -93,16 +93,16 @@ export default function ResultsScreen() {
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 1 + i * 0.05 }}
-                    className="flex items-center gap-3 md:gap-4 rounded-xl bg-white/5 p-3 md:p-4 border border-white/5 hover:border-white/10 transition-colors"
+                    className="flex items-center gap-4 border-b border-white/5 p-4 hover:bg-white/[0.02] transition-colors"
                     >
-                    <span className={`font-data text-[8px] md:text-[10px] font-black w-10 md:w-14 ${h.correct ? "text-accent" : "text-red-500"}`}>
+                    <span className={`font-mono text-[10px] font-black w-14 ${h.correct ? "text-safe" : "text-risk"}`}>
                         {h.correct ? "STABLE" : "VOID"}
                     </span>
-                    <span className="flex-1 text-left font-display text-xs md:text-sm font-bold text-white/70 truncate">
+                    <span className="flex-1 text-left font-mono text-xs font-bold text-white/40 truncate">
                         {h.question}
                     </span>
-                    <span className={`font-data text-xs md:text-sm font-black ${h.correct ? "text-accent" : "text-red-500"}`}>
-                        {h.correct ? "STABLE" : `-$${h.tokensLost}`}
+                    <span className={`font-data text-sm font-black ${h.correct ? "text-safe" : "text-risk"}`}>
+                        {h.correct ? "0.00" : `-${h.tokensLost}`}
                     </span>
                     </motion.div>
                 ))}
@@ -114,12 +114,12 @@ export default function ResultsScreen() {
         </div>
 
         <motion.button
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.05, backgroundColor: "#fff", color: "#000" }}
           whileTap={{ scale: 0.95 }}
           onClick={() => dispatch({ type: "RESET" })}
-          className="mt-10 md:mt-12 rounded-full bg-accent px-10 py-4 md:px-16 md:py-5 font-display text-lg md:text-xl font-black tracking-widest text-black shadow-[0_0_40px_rgba(34,211,238,0.3)] transition-all"
+          className="mt-12 border-2 border-safe px-16 py-6 font-mono text-xl font-black tracking-[0.4em] text-safe shadow-safe transition-all uppercase"
         >
-          NEW SESSION
+          EXECUTE::REPLAY
         </motion.button>
       </motion.div>
     </div>

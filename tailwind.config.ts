@@ -55,20 +55,15 @@ export default {
           DEFAULT: "hsl(var(--surface))",
           elevated: "hsl(var(--surface-elevated))",
         },
-        gold: {
-          DEFAULT: "hsl(var(--gold))",
-          dark: "hsl(var(--gold-dark))",
+        safe: "hsl(var(--safe))",
+        risk: "hsl(var(--risk))",
+        terminal: "hsl(var(--terminal-line))",
+        slate: {
+          950: "#020617",
+          900: "#0f172a",
+          800: "#1e293b",
+          700: "#334155",
         },
-        neon: {
-          DEFAULT: "hsl(var(--neon))",
-          glow: "hsl(var(--neon-glow))",
-        },
-        cyan: {
-          DEFAULT: "hsl(var(--cyan))",
-          glow: "hsl(var(--cyan-glow))",
-        },
-        void: "hsl(var(--void))",
-        stable: "hsl(var(--stable))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
