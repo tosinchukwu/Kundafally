@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGame } from "@/context/GameContext";
 import WalletButton from "./WalletButton";
@@ -7,19 +7,44 @@ const PRESETS = [10, 25, 50, 100];
 
 export default function GameplayScreen() {
   const { state, dispatch, currentQuestion, currentToken } = useGame();
-  const [prevTokens, setPrevTokens] = useState(state.tokens);
+  const [timeLeft, setTimeLeft] = useState(15);
+  const [timerActive, setTimerActive] = useState(true);
 
-  const [isSoundOn, setIsSoundOn] = useState(true);
-  const [showSettings, setShowSettings] = useState(false);
+  // Timer logic
+  useEffect(() => {
+    let interval: any;
+    if (timerActive && state.phase === "playing" && timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    } else if (timeLeft === 0 && state.phase === "playing") {
+      const totalDist = Object.values(state.distribution).reduce((a, b: any) => a + b, 0);
+      if (totalDist >= 50) {
+        dispatch({ type: "LOCK_ANSWERS" });
+      } else {
+        dispatch({ type: "LOCK_ANSWERS" }); // Reveal even if not enough bet
+      }
+    }
+    return () => clearInterval(interval);
+  }, [timeLeft, timerActive, state.phase, state.distribution, dispatch]);
 
-  React.useEffect(() => {
-    setPrevTokens(state.tokens);
-  }, [state.tokens]);
+  // Reset timer on new question
+  useEffect(() => {
+    if (state.phase === "playing") {
+      setTimeLeft(15);
+      setTimerActive(true);
+    } else {
+      setTimerActive(false);
+    }
+  }, [state.currentQuestionIndex, state.phase]);
 
   const totalDistributed = useMemo(
     () => Object.values(state.distribution).reduce((a: number, b: number) => a + b, 0),
     [state.distribution]
   );
+  
+  // Real-time Balance: Total - Distributed
+  const displayedBalance = state.tokens - totalDistributed;
   const available = state.tokens - totalDistributed;
 
   console.log("GameplayScreen active. Current question:", currentQuestion?.id);
@@ -42,10 +67,10 @@ export default function GameplayScreen() {
     );
   }
 
-  const addTokens = (label: string, amount: number) => {
-    if (amount > available) amount = available;
-    if (amount <= 0) return;
-    dispatch({ type: "DISTRIBUTE_TOKENS", label, amount });
+  const updateBet = (label: string, delta: number) => {
+    const currentAmount = state.distribution[label] || 0;
+    const newAmount = currentAmount + delta;
+    dispatch({ type: "SET_DISTRIBUTION", label, amount: newAmount });
   };
 
   const canLock = totalDistributed > 0;
@@ -54,46 +79,6 @@ export default function GameplayScreen() {
   return (
     <div className="game-container relative flex flex-col items-center min-h-screen w-full bg-transparent overflow-hidden">
 
-      {/* Settings Overlay */}
-      <AnimatePresence>
-        {showSettings && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-6"
-          >
-            <div className="glass-card w-full max-w-md p-8 relative border-white/10">
-              <button
-                onClick={() => setShowSettings(false)}
-                className="absolute top-4 right-4 text-white/40 hover:text-white"
-              >
-                ✕
-              </button>
-              <h3 className="font-display text-2xl font-black text-white mb-6 italic">SETTINGS</h3>
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <span className="text-white/60 font-display font-bold">SOUND EFFECTS</span>
-                  <button
-                    onClick={() => setIsSoundOn(!isSoundOn)}
-                    className={`h-6 w-12 rounded-full transition-colors relative ${isSoundOn ? "bg-accent" : "bg-white/10"}`}
-                  >
-                    <div className={`absolute top-1 h-4 w-4 rounded-full bg-white transition-all ${isSoundOn ? "right-1" : "left-1"}`} />
-                  </button>
-                </div>
-                <div className="pt-6 border-t border-white/5 text-center">
-                  <button
-                    onClick={() => dispatch({ type: "RESET" })}
-                    className="text-red-400 hover:text-red-300 font-display text-xs font-black tracking-widest uppercase"
-                  >
-                    Quit Game Session
-                  </button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Header Area */}
       <header className="relative z-10 flex w-full items-start justify-between p-4 md:p-8 pointer-events-none">
@@ -103,7 +88,7 @@ export default function GameplayScreen() {
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-accent/60 to-accent border border-accent/50">
               <span className="text-[10px] font-black text-white leading-none tracking-tighter">{currentToken}</span>
             </div>
-            <span className="font-data text-2xl font-black text-white">${state.tokens.toLocaleString()}</span>
+            <span className="font-data text-2xl font-black text-white">${displayedBalance.toLocaleString()}</span>
           </div>
           <div className="h-6 ml-2">
             <AnimatePresence mode="wait">
@@ -133,19 +118,9 @@ export default function GameplayScreen() {
         </div>
 
         {/* Utility Icons (Top Right) */}
-        <div className="pointer-events-auto flex gap-2">
-          <button
-            onClick={() => setIsSoundOn(!isSoundOn)}
-            className={`h-10 w-10 flex items-center justify-center glass-card border-white/10 transition-all ${isSoundOn ? "text-accent" : "text-white/20"}`}
-          >
-            <IconSound muted={!isSoundOn} />
-          </button>
-          <button
-            onClick={() => setShowSettings(true)}
-            className="h-10 w-10 flex items-center justify-center glass-card border-white/10 text-white/60"
-          >
-            <IconSettings />
-          </button>
+        <div className="pointer-events-auto flex items-center gap-4">
+          <WalletButton />
+          {/* Sound and Settings removed for now */}
         </div>
       </header>
 
@@ -162,217 +137,116 @@ export default function GameplayScreen() {
             <h2 className="text-center font-display text-lg md:text-3xl font-bold text-white leading-relaxed tracking-tight group-hover:text-glow transition-all">
               {currentQuestion.question}
             </h2>
+            <div className="flex flex-col items-center mt-4">
+              <div className={`
+                flex items-center justify-center h-16 w-16 rounded-full border-4 transition-all duration-300
+                ${timeLeft <= 5 ? "border-red-500 text-red-500 shadow-[0_0_20px_rgba(239,68,68,0.4)]" : "border-accent text-accent shadow-[0_0_15px_rgba(34,211,238,0.2)]"}
+              `}>
+                <span className="font-data text-2xl font-black">{timeLeft}s</span>
+              </div>
+              <span className="mt-1 font-display text-[8px] font-bold text-white/30 uppercase tracking-[0.3em]">Seconds Remaining</span>
+            </div>
           </div>
         </motion.div>
 
-        {/* Options Grid (Restored & Split) */}
         <div className="w-full grid grid-cols-2 gap-x-8 md:gap-x-24 relative z-20 mt-8">
-          {/* Left Column (A & B) */}
-          <div className="flex flex-col gap-4">
-            {currentQuestion.options.slice(0, 2).map((opt) => {
-              const isSelected = state.selectedPlatform === opt.label;
-              const hasTokens = (state.distribution[opt.label] || 0) > 0;
-              return (
-                <button
-                  key={opt.label}
-                  onClick={() => dispatch({ type: "SELECT_PLATFORM", label: isSelected ? null : opt.label })}
-                  className={`
-                    relative flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 group
-                    ${isSelected 
-                      ? "bg-accent/10 border-accent shadow-[0_0_20px_rgba(34,211,238,0.2)]" 
-                      : "bg-white/5 border-white/10 hover:bg-white/10"
-                    }
-                  `}
-                >
-                  <div className={`
-                     flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg font-display text-2xl font-black
-                     ${isSelected ? "bg-accent text-black shadow-lg" : "bg-white/5 text-white/20"}
-                  `}>
-                    {opt.label}
+          {/* Option Buttons */}
+          {currentQuestion.options.map((opt) => {
+            const isSelected = state.selectedPlatform === opt.label;
+            const hasTokens = (state.distribution[opt.label] || 0) > 0;
+            return (
+              <button
+                key={opt.label}
+                onClick={() => dispatch({ type: "SELECT_PLATFORM", label: isSelected ? null : opt.label })}
+                className={`
+                  relative flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 group mb-4
+                  ${isSelected 
+                    ? "bg-accent/10 border-accent shadow-[0_0_20px_rgba(34,211,238,0.2)]" 
+                    : "bg-white/5 border-white/10 hover:bg-white/10"
+                  }
+                `}
+              >
+                <div className={`
+                   flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg font-display text-2xl font-black
+                   ${isSelected ? "bg-accent text-black shadow-lg" : "bg-white/5 text-white/20"}
+                `}>
+                  {opt.label}
+                </div>
+                <div className="text-left flex-1 min-w-0">
+                  <span className={`block text-[10px] font-black tracking-widest uppercase mb-0.5 ${isSelected ? "text-accent" : "text-white/20"}`}>
+                    Option {opt.label}
+                  </span>
+                  <span className="font-display font-medium text-white/90 leading-snug truncate block">
+                    {opt.text}
+                  </span>
+                </div>
+                {hasTokens && (
+                  <div className="ml-auto bg-green-500/20 border border-green-500/40 px-2 py-1 rounded text-[10px] font-mono font-bold text-green-400">
+                    ${state.distribution[opt.label].toLocaleString()}
                   </div>
-                  <div className="text-left flex-1 min-w-0">
-                    <span className={`block text-[10px] font-black tracking-widest uppercase mb-0.5 ${isSelected ? "text-accent" : "text-white/20"}`}>
-                      Option {opt.label}
-                    </span>
-                    <span className="font-display font-medium text-white/90 leading-snug truncate block">
-                      {opt.text}
-                    </span>
-                  </div>
-                  {hasTokens && (
-                    <div className="ml-auto bg-gold/20 border border-gold/40 px-2 py-1 rounded text-[10px] font-mono font-bold text-gold">
-                      {state.distribution[opt.label].toLocaleString()}
-                    </div>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Right Column (C & D) */}
-          <div className="flex flex-col gap-4">
-            {currentQuestion.options.slice(2, 4).map((opt) => {
-              const isSelected = state.selectedPlatform === opt.label;
-              const hasTokens = (state.distribution[opt.label] || 0) > 0;
-              return (
-                <button
-                  key={opt.label}
-                  onClick={() => dispatch({ type: "SELECT_PLATFORM", label: isSelected ? null : opt.label })}
-                  className={`
-                    relative flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 group
-                    ${isSelected 
-                      ? "bg-accent/10 border-accent shadow-[0_0_20px_rgba(34,211,238,0.2)]" 
-                      : "bg-white/5 border-white/10 hover:bg-white/10"
-                    }
-                  `}
-                >
-                  <div className={`
-                     flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg font-display text-2xl font-black
-                     ${isSelected ? "bg-accent text-black shadow-lg" : "bg-white/5 text-white/20"}
-                  `}>
-                    {opt.label}
-                  </div>
-                  <div className="text-left flex-1 min-w-0">
-                    <span className={`block text-[10px] font-black tracking-widest uppercase mb-0.5 ${isSelected ? "text-accent" : "text-white/20"}`}>
-                      Option {opt.label}
-                    </span>
-                    <span className="font-display font-medium text-white/90 leading-snug truncate block">
-                      {opt.text}
-                    </span>
-                  </div>
-                  {hasTokens && (
-                    <div className="ml-auto bg-gold/20 border border-gold/40 px-2 py-1 rounded text-[10px] font-mono font-bold text-gold">
-                      {state.distribution[opt.label].toLocaleString()}
-                    </div>
-                  )}
-                </button>
-              );
-            })}
-          </div>
+                )}
+              </button>
+            );
+          })}
         </div>
-      </main>
 
-      {/* Footer Area - Bottom-Center Controls */}
-      <footer className="relative z-20 w-full flex flex-col items-center p-6 gap-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-
-        {/* Token Distribution Tray */}
+        {/* Center-Aligned Betting Controls (New Layout) */}
         <AnimatePresence>
-          {selectedPlate && available > 0 && (
+          {selectedPlate && state.phase === "playing" && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="flex items-center gap-2 p-2 glass-card bg-black/60 backdrop-blur-xl border-white/10 shadow-2xl"
+              exit={{ opacity: 0, y: 10 }}
+              className="mt-8 flex flex-col items-center gap-6 p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl w-full max-w-lg shadow-2xl"
             >
-              <div className="px-3 py-2 bg-accent/20 rounded-lg flex flex-col items-center min-w-[80px]">
-                <span className="font-display text-[10px] font-black text-accent uppercase tracking-tighter">PLATFORM {selectedPlate}</span>
-                <span className="font-data text-xs font-bold text-white">{available.toLocaleString()}</span>
+              <div className="flex flex-col items-center gap-1">
+                <span className="font-display text-[10px] font-black text-accent uppercase tracking-[0.3em]">MANAGING OPTION {selectedPlate}</span>
+                <span className="font-data text-5xl font-black text-white text-glow">${(state.distribution[selectedPlate] || 0).toLocaleString()}</span>
               </div>
-              <div className="flex gap-1.5">
-                {PRESETS.map((pct) => (
-                  <button
-                    key={pct}
-                    onClick={() => addTokens(selectedPlate, Math.min(Math.floor(state.tokens * (pct / 100)), available))}
-                    className="rounded-lg bg-white/5 px-4 py-2 font-data text-xs font-bold text-white border border-white/5 hover:bg-white/20 hover:border-accent/40 transition-all"
-                  >
-                    {pct}%
-                  </button>
-                ))}
+
+              <div className="flex items-center gap-8">
                 <button
-                  onClick={() => addTokens(selectedPlate, available)}
-                  className="rounded-lg bg-accent px-6 py-2 font-display text-xs font-black text-black hover:scale-105 active:scale-95 transition-all shadow-lg"
+                  onClick={(e) => { e.stopPropagation(); updateBet(selectedPlate, -50); }}
+                  disabled={(state.distribution[selectedPlate] || 0) <= 0}
+                  className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-4xl font-black text-white border border-white/10 hover:bg-red-500/30 hover:border-red-500 transition-all active:scale-90 disabled:opacity-10"
                 >
-                  MAX
+                  -
                 </button>
+                
+                <button
+                  onClick={() => canLock && dispatch({ type: "LOCK_ANSWERS" })}
+                  disabled={!canLock}
+                  className={`
+                    px-10 py-5 rounded-2xl font-display text-xl font-black tracking-widest transition-all
+                    ${canLock 
+                      ? "bg-red-600 text-white shadow-[0_0_40px_rgba(220,38,38,0.5)] hover:scale-105 active:scale-95" 
+                      : "bg-white/5 text-white/10 cursor-not-allowed"
+                    }
+                  `}
+                >
+                  LOCK SESSION
+                </button>
+
+                <button
+                  onClick={(e) => { e.stopPropagation(); updateBet(selectedPlate, 50); }}
+                  disabled={available < 50}
+                  className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-4xl font-black text-white border border-white/10 hover:bg-accent/30 hover:border-accent transition-all active:scale-90 disabled:opacity-10"
+                >
+                  +
+                </button>
+              </div>
+
+              <div className="flex flex-col items-center opacity-30">
+                <span className="font-display text-[8px] font-bold uppercase tracking-[0.4em]">Current Status</span>
+                <span className="font-data text-xs font-black italic">${totalDistributed.toLocaleString()} of ${state.tokens.toLocaleString()} Distributed</span>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
+      </main>
 
-        {/* LOCK SESSION Button */}
-        <div className="flex flex-col items-center gap-3">
-          <button
-            onClick={() => canLock && dispatch({ type: "LOCK_ANSWERS" })}
-            disabled={!canLock || totalDistributed < 50}
-            className={`
-              relative group flex items-center justify-center rounded-2xl px-16 py-5 font-display text-2xl font-black tracking-[0.2em] transition-all duration-500
-              ${(canLock && totalDistributed >= 50)
-                ? "bg-red-600 text-white shadow-[0_0_50px_rgba(220,38,38,0.4)] hover:scale-105 active:scale-95 cursor-pointer"
-                : "bg-white/5 text-white/10 border border-white/5 opacity-40 cursor-not-allowed"
-              }
-            `}
-          >
-            <span className="relative z-10">LOCK SESSION</span>
-            {(canLock && totalDistributed >= 50) && (
-              <motion.div
-                animate={{ opacity: [0, 0.4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="absolute inset-0 rounded-2xl bg-white"
-              />
-            )}
-            <div className="absolute -inset-1 bg-red-600/20 blur-xl group-hover:bg-red-600/30 transition-all duration-300" />
-          </button>
 
-          <p className="font-display text-[9px] font-bold text-white/20 uppercase tracking-[0.4em] text-glow italic">
-            "Protect your stack. Divide wisely or lose it all."
-          </p>
-        </div>
-
-        {/* Status Mini-Bar */}
-        <div className="w-full max-w-4xl flex items-center justify-between mt-2 px-4 opacity-50">
-          <div className="flex items-center gap-6">
-            <div className="flex flex-col">
-              <span className="font-data text-[7px] uppercase tracking-[0.2em]">Distributed</span>
-              <span className="font-data text-sm font-bold text-accent">{totalDistributed.toLocaleString()} ₿</span>
-            </div>
-            <div className="w-px h-6 bg-white/10" />
-            <div className="flex flex-col">
-              <span className="font-data text-[7px] uppercase tracking-[0.2em]">Objective</span>
-              <span className="font-data text-sm font-bold text-white">Q{state.questionsAnswered + 1}</span>
-            </div>
-          </div>
-          <WalletButton />
-        </div>
-      </footer>
+      <footer className="mt-auto h-20" />
     </div>
-  );
-}
-
-function IconSound({ muted }: { muted: boolean }) {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      {muted ? (
-        <>
-          <path d="M11 5L6 9H2v6h4l5 4V5z" />
-          <line x1="23" y1="9" x2="17" y2="15" />
-          <line x1="17" y1="9" x2="23" y2="15" />
-        </>
-      ) : (
-        <>
-          <path d="M11 5L6 9H2v6h4l5 4V5z" />
-          <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-          <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-        </>
-      )}
-    </svg>
-  );
-}
-
-function IconSettings() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="3" />
-      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-    </svg>
-  );
-}
-
-function IconFall({ active }: { active: boolean }) {
-  return (
-    <svg
-      width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-      className={active ? "animate-bounce" : ""}
-    >
-      <path d="M12 5v14M5 12l7 7 7-7" />
-    </svg>
   );
 }

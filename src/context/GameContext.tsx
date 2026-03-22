@@ -34,6 +34,7 @@ type GameAction =
   | { type: "RESET" }
   | { type: "SET_PHASE"; phase: GamePhase }
   | { type: "SELECT_PLATFORM"; label: string | null }
+  | { type: "SET_DISTRIBUTION"; label: string; amount: number }
   | { type: "OPEN_TRAPDOORS" };
 
 const STARTING_TOKENS = 1000;
@@ -107,6 +108,22 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, distribution: newDist };
     }
 
+    case "SET_DISTRIBUTION": {
+      const currentLabelAmount = state.distribution[action.label] || 0;
+      const otherDistributed = Object.values(state.distribution).reduce((a, b) => a + b, 0) - currentLabelAmount;
+      const availableTotal = state.tokens - otherDistributed;
+      
+      const clampedAmount = Math.max(0, Math.min(action.amount, availableTotal));
+      
+      const newDist = { ...state.distribution };
+      if (clampedAmount === 0) {
+        delete newDist[action.label];
+      } else {
+        newDist[action.label] = clampedAmount;
+      }
+      return { ...state, distribution: newDist };
+    }
+
     case "LOCK_ANSWERS": {
       const totalDistributed = Object.values(state.distribution).reduce((a, b) => a + b, 0);
       if (totalDistributed < MIN_BET) return state;
@@ -121,11 +138,9 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         ...state,
         phase: "reveal",
         revealedAnswer: correctLabel,
-        // Rules say only tokens on correct are kept? 
-        // But the user says "equivalent to $1000", which might mean points reset.
-        // Let's keep existing logic for "keeping" win, but NEXT_QUESTION will reset to 1000.
-        tokens: tokensOnCorrect, 
-        isEliminated: tokensOnCorrect === 0 && totalDistributed === state.tokens, // only if they went all in and lost
+        // Tokens kept = amount on correct platform + any undistributed tokens
+        tokens: tokensOnCorrect + (state.tokens - totalDistributed), 
+        isEliminated: tokensOnCorrect === 0 && totalDistributed === state.tokens, 
         selectedPlatform: null,
         questionsAnswered: state.questionsAnswered + 1,
         history: [
@@ -151,7 +166,6 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           currentQuestionIndex: nextQ,
           distribution: {},
           revealedAnswer: null,
-          tokens: STARTING_TOKENS, // Reset to $1000 each turn
           currentTokenIndex: (state.currentTokenIndex + 1) % TOKENS.length, // Rotate token
           totalScore: newTotalScore,
         };

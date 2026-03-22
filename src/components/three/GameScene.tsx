@@ -59,13 +59,7 @@ function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, o
         const answerText = optionMap[cfg.id] || "";
 
         return (
-          <group
-            key={cfg.id}
-            onClick={(e) => {
-              e.stopPropagation();
-              onPlatformClick?.(cfg.id);
-            }}
-          >
+          <group key={cfg.id}>
             <Platform3D
               position={cfg.position}
               label={cfg.label}

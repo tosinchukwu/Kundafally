@@ -77,38 +77,9 @@ export default function Platform3D({
     <group position={position} scale={scale} onClick={onClick}>
       {/* Platform Physics Base is at world space position, so we don't ref this group mesh for physics */}
       
-      {/* Vertical Backboard */}
-      <mesh position={[0, 1.2, -0.5]} castShadow>
-        <boxGeometry args={[1.6, 2.0, 0.15]} />
-        <meshStandardMaterial
-          color={backboardColor}
-          emissive={backboardColor}
-          emissiveIntensity={0.5}
-          metalness={0.8}
-          roughness={0.2}
-        />
-      </mesh>
+      {/* 3D Label & Backboard removed as requested */}
 
-      {/* Backboard neon edge */}
-      <mesh position={[0, 1.2, -0.42]}>
-        <boxGeometry args={[1.62, 2.02, 0.02]} />
-        <meshStandardMaterial
-          color={isCorrect ? "#22c55e" : "#A855F7"}
-          emissive={isCorrect ? "#22c55e" : "#A855F7"}
-          emissiveIntensity={2}
-        />
-      </mesh>
-
-      {/* Letter Label on backboard */}
-      <Text
-        position={[0, 1.2, -0.34]}
-        fontSize={1.0}
-        color={isCorrect ? "#22c55e" : "#e2e8f0"}
-        anchorX="center"
-        anchorY="middle"
-      >
-        {label}
-      </Text>
+      {/* 3D Label removed as requested */}
 
       {/* Platform Base - Physical Body */}
       <mesh ref={baseRef as any} castShadow receiveShadow>
@@ -178,22 +149,7 @@ export default function Platform3D({
         </mesh>
       ))}
 
-      {/* Answer text label below the platform - centered and shifted forward */}
-      {answerText && (
-        <Text
-          position={[0, -1.1, 0.8]}
-          fontSize={0.32}
-          color={isCorrect ? "#4ade80" : isSelected ? "#22d3ee" : "#d8b4fe"}
-          anchorX="center"
-          anchorY="top"
-          maxWidth={2.8}
-          textAlign="center"
-          outlineWidth={0.02}
-          outlineColor="#000000"
-        >
-          {answerText}
-        </Text>
-      )}
+      {/* Answer text removed as requested */}
     </group>
   );
 }
