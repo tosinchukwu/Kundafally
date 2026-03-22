@@ -178,10 +178,16 @@ export default function GameplayScreen() {
                     type="number"
                     value={state.distribution[selectedPlate] || 0}
                     onChange={(e) => {
-                      const val = parseInt(e.target.value) || 0;
+                      const rawVal = parseInt(e.target.value) || 0;
+                      // Snap to nearest 50
+                      let snappedVal = Math.round(rawVal / 50) * 50;
+                      
                       const currentOtherDist = totalDistributed - (state.distribution[selectedPlate] || 0);
                       const maxPossible = state.tokens - currentOtherDist;
-                      const finalVal = Math.max(0, Math.min(val, maxPossible));
+                      
+                      // Final validation
+                      const finalVal = Math.max(0, Math.min(snappedVal, Math.floor(maxPossible / 50) * 50));
+                      
                       dispatch({ type: "SET_DISTRIBUTION", label: selectedPlate, amount: finalVal });
                     }}
                     className="w-40 bg-transparent border-b-2 border-accent/30 focus:border-accent text-4xl font-black text-white text-center outline-none transition-all placeholder:text-white/10"
