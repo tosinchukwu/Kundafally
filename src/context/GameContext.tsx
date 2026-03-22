@@ -151,7 +151,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         revealedAnswer: correctLabel,
         // Tokens kept = amount on correct platform + any undistributed tokens
         tokens: tokensOnCorrect + (state.tokens - totalDistributed), 
-        isEliminated: tokensOnCorrect === 0 && totalDistributed === state.tokens, 
+        isEliminated: (tokensOnCorrect + (state.tokens - totalDistributed)) < MIN_BET, 
         selectedPlatform: null,
         questionsAnswered: state.questionsAnswered + 1,
         lastWinAmount: tokensOnCorrect,
@@ -171,7 +171,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const nextQ = state.currentQuestionIndex + 1;
       const newTotalScore = state.totalScore + state.tokens;
 
-      if (nextQ < 6) {
+      if (nextQ < 6 && !state.isEliminated) {
         return {
           ...state,
           phase: "playing",
