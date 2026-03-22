@@ -23,7 +23,7 @@ export default function Token3D({ position, label = "₿", falling = false, onFa
     mass: 1,
     position: [position[0], position[1], position[2]],
     args: [0.28, 0.28, 0.08, 32],
-    type: falling ? "Dynamic" : "Kinematic", // Kinematic when floating, Dynamic when falling
+    type: "Kinematic", // Force Kinematic to prevent falling
     rotation: [Math.PI / 2, 0, 0],
     onCollide: (e) => {
       // Optional: Add impact sounds or particles here

@@ -6,24 +6,15 @@ import WalletButton from "./WalletButton";
 const PRESETS = [10, 25, 50, 100];
 
 export default function GameplayScreen() {
-  const { state, dispatch, currentQuestion } = useGame();
+  const { state, dispatch, currentQuestion, currentToken } = useGame();
   const [prevTokens, setPrevTokens] = useState(state.tokens);
-  const [showBonus, setShowBonus] = useState<{ amount: number; id: number } | null>(null);
 
   const [isSoundOn, setIsSoundOn] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
 
   React.useEffect(() => {
-    if (state.tokens > prevTokens) {
-      const bonus = state.tokens - prevTokens;
-      setShowBonus({ amount: bonus, id: Date.now() });
-      const timer = setTimeout(() => setShowBonus(null), 1500);
-      setPrevTokens(state.tokens);
-      return () => clearTimeout(timer);
-    } else if (state.tokens < prevTokens) {
-      setPrevTokens(state.tokens);
-    }
-  }, [state.tokens, prevTokens]);
+    setPrevTokens(state.tokens);
+  }, [state.tokens]);
 
   const totalDistributed = useMemo(
     () => Object.values(state.distribution).reduce((a: number, b: number) => a + b, 0),
@@ -109,24 +100,14 @@ export default function GameplayScreen() {
         {/* Token Balance */}
         <div className="pointer-events-auto flex flex-col items-start gap-1">
           <div className="glass-card flex items-center gap-3 px-4 py-2 border-white/5 bg-white/5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-yellow-600 to-yellow-400 border border-yellow-300/50">
-              <span className="text-sm font-bold text-white">₿</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-accent/60 to-accent border border-accent/50">
+              <span className="text-[10px] font-black text-white leading-none tracking-tighter">{currentToken}</span>
             </div>
-            <span className="font-data text-2xl font-black text-white">{state.tokens.toLocaleString()}</span>
+            <span className="font-data text-2xl font-black text-white">${state.tokens.toLocaleString()}</span>
           </div>
           <div className="h-6 ml-2">
             <AnimatePresence mode="wait">
-              {showBonus ? (
-                <motion.span
-                  key={`bonus-${showBonus.id}`}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="font-data text-sm font-bold text-bonus"
-                >
-                  +{showBonus.amount} BONUS
-                </motion.span>
-              ) : totalDistributed > 0 ? (
+              {totalDistributed > 0 ? (
                 <motion.span
                   key="placed"
                   initial={{ opacity: 0, x: -10 }}
@@ -134,7 +115,7 @@ export default function GameplayScreen() {
                   exit={{ opacity: 0 }}
                   className="font-data text-[10px] font-bold text-accent"
                 >
-                  -{totalDistributed} PLACED
+                  -${totalDistributed} PLACED
                 </motion.span>
               ) : null}
             </AnimatePresence>
@@ -311,17 +292,17 @@ export default function GameplayScreen() {
         <div className="flex flex-col items-center gap-3">
           <button
             onClick={() => canLock && dispatch({ type: "LOCK_ANSWERS" })}
-            disabled={!canLock}
+            disabled={!canLock || totalDistributed < 50}
             className={`
               relative group flex items-center justify-center rounded-2xl px-16 py-5 font-display text-2xl font-black tracking-[0.2em] transition-all duration-500
-              ${canLock
+              ${(canLock && totalDistributed >= 50)
                 ? "bg-red-600 text-white shadow-[0_0_50px_rgba(220,38,38,0.4)] hover:scale-105 active:scale-95 cursor-pointer"
                 : "bg-white/5 text-white/10 border border-white/5 opacity-40 cursor-not-allowed"
               }
             `}
           >
             <span className="relative z-10">LOCK SESSION</span>
-            {canLock && (
+            {(canLock && totalDistributed >= 50) && (
               <motion.div
                 animate={{ opacity: [0, 0.4, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}

@@ -36,9 +36,10 @@ interface GameSceneProps {
   trapdoorPlatforms: string[];
   onPlatformClick?: (label: string) => void;
   selectedPlatform?: string | null;
+  currentToken?: string;
 }
 
-function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, onPlatformClick, selectedPlatform }: GameSceneProps) {
+function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, onPlatformClick, selectedPlatform, currentToken }: GameSceneProps) {
   const optionMap = useMemo(() => {
     const m: Record<string, string> = {};
     if (options && Array.isArray(options)) {
@@ -100,8 +101,8 @@ function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, o
                     cfg.position[1] + y,
                     cfg.position[2] + z,
                   ]}
-                  label="₿"
-                  falling={trapdoorOpen}
+                  label={currentToken || "₿"}
+                  falling={false} // Force disable falling
                 />
               );
             })}
@@ -116,10 +117,19 @@ import { Physics } from "@react-three/cannon";
 
 // ... existing code ...
 
-function SceneContent({ distribution, options, revealedAnswer, trapdoorPlatforms, onPlatformClick, selectedPlatform }: GameSceneProps) {
+function SceneContent({ distribution, options, revealedAnswer, trapdoorPlatforms, onPlatformClick, selectedPlatform, currentToken }: GameSceneProps) {
   return (
     <>
       <Environment />
+      <Platforms
+        distribution={distribution}
+        options={options}
+        revealedAnswer={revealedAnswer}
+        trapdoorPlatforms={trapdoorPlatforms}
+        onPlatformClick={onPlatformClick}
+        selectedPlatform={selectedPlatform}
+        currentToken={currentToken}
+      />
     </>
   );
 }
@@ -161,6 +171,7 @@ export default function GameScene({
   trapdoorPlatforms,
   onPlatformClick,
   selectedPlatform,
+  currentToken,
 }: GameSceneProps) {
   const showPlatforms = phase === "playing" || phase === "reveal";
 
@@ -189,6 +200,7 @@ export default function GameScene({
             trapdoorPlatforms={trapdoorPlatforms}
             onPlatformClick={onPlatformClick}
             selectedPlatform={selectedPlatform}
+            currentToken={currentToken}
           />
         )}
         {!showPlatforms && <Environment />}

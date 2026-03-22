@@ -2,6 +2,7 @@ import React, { createContext, useContext, useReducer, ReactNode } from "react";
 import { Category, Question } from "@/data/quizData";
 
 export type GamePhase = "menu" | "category" | "playing" | "reveal" | "results";
+export type Difficulty = "easy" | "medium" | "hard";
 
 interface GameState {
   phase: GamePhase;
@@ -9,8 +10,8 @@ interface GameState {
   startingTokens: number;
   sponsor: string;
   selectedCategories: Category[];
-  currentCategoryIndex: number;
-  currentQuestionIndex: number;
+  currentCategoryIndex: number; // For simplicity in 3-question mode, we might not need this as much
+  currentQuestionIndex: number; // 0, 1, 2
   distribution: Record<string, number>; // label -> tokens
   revealedAnswer: string | null;
   questionsAnswered: number;
@@ -18,10 +19,15 @@ interface GameState {
   isEliminated: boolean;
   selectedPlatform: string | null;
   trapdoorsOpen: boolean;
+  difficulty: Difficulty;
+  currentTokenIndex: number;
+  totalScore: number;
 }
 
+const TOKENS = ["BNB", "ETH", "BTC", "AVAX", "POL", "SOL"];
+
 type GameAction =
-  | { type: "START_GAME"; categories: Category[]; sponsor?: string }
+  | { type: "START_GAME"; categories: Category[]; difficulty: Difficulty; sponsor?: string }
   | { type: "DISTRIBUTE_TOKENS"; label: string; amount: number }
   | { type: "LOCK_ANSWERS" }
   | { type: "NEXT_QUESTION" }
@@ -31,7 +37,8 @@ type GameAction =
   | { type: "OPEN_TRAPDOORS" };
 
 const STARTING_TOKENS = 1000;
-const BONUS_RATE = 0.1;
+const MIN_BET = 50;
+const BONUS_RATE = 0; // Removing bonus for now as per "equivalent to $1000" requirement
 
 const initialState: GameState = {
   phase: "menu",
@@ -48,10 +55,16 @@ const initialState: GameState = {
   isEliminated: false,
   selectedPlatform: null,
   trapdoorsOpen: false,
+  difficulty: "easy",
+  currentTokenIndex: 0,
+  totalScore: 0,
 };
 
 function getCurrentQuestion(state: GameState): Question | null {
-  const cat = state.selectedCategories[state.currentCategoryIndex];
+  // In the new mode, we have a flat list of 3 questions from selected categories
+  // filtered by difficulty.
+  // For simplicity, let's assume selectedCategories contains the questions we need
+  const cat = state.selectedCategories[0]; // Logic refined in START_GAME
   if (!cat) return null;
   return cat.questions[state.currentQuestionIndex] || null;
 }
@@ -59,15 +72,27 @@ function getCurrentQuestion(state: GameState): Question | null {
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case "START_GAME": {
-      const randomizedCategories = action.categories.map(cat => ({
-        ...cat,
-        questions: [...cat.questions].sort(() => Math.random() - 0.5)
-      }));
+      // Pick 3 questions of the chosen difficulty from the 2 selected categories
+      const allQuestions = action.categories.flatMap(c => c.questions.filter(q => q.difficulty === action.difficulty));
+      const randomizedQuestions = allQuestions.sort(() => Math.random() - 0.5).slice(0, 3);
+      
+      // We package these into a single "virtual" category for the game logic
+      const virtualCategory: Category = {
+        id: "game-session",
+        name: "Current Quiz",
+        icon: "🎮",
+        questions: randomizedQuestions
+      };
+
       return {
         ...initialState,
         phase: "playing",
-        selectedCategories: randomizedCategories,
+        selectedCategories: [virtualCategory],
+        difficulty: action.difficulty,
         sponsor: action.sponsor || "KUNDAFALL",
+        tokens: STARTING_TOKENS,
+        currentTokenIndex: 0,
+        totalScore: 0,
       };
     }
 
@@ -83,26 +108,24 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     }
 
     case "LOCK_ANSWERS": {
+      const totalDistributed = Object.values(state.distribution).reduce((a, b) => a + b, 0);
+      if (totalDistributed < MIN_BET) return state;
+
       const question = getCurrentQuestion(state);
       if (!question) return state;
 
       const correctLabel = question.correctAnswer;
       const tokensOnCorrect = state.distribution[correctLabel] || 0;
-      const totalDistributed = Object.values(state.distribution).reduce((a, b) => a + b, 0);
-      const tokensLost = totalDistributed - tokensOnCorrect;
-      // RULE: Only tokens placed on the correct option are kept. 
-      // Undistributed tokens and tokens on wrong options are lost.
-      const remainingTokens = tokensOnCorrect;
-      const isEliminated = remainingTokens === 0;
-      const bonus = isEliminated ? 0 : Math.floor(remainingTokens * BONUS_RATE);
-      const newTokens = remainingTokens + bonus;
-
+      
       return {
         ...state,
         phase: "reveal",
         revealedAnswer: correctLabel,
-        tokens: newTokens,
-        isEliminated,
+        // Rules say only tokens on correct are kept? 
+        // But the user says "equivalent to $1000", which might mean points reset.
+        // Let's keep existing logic for "keeping" win, but NEXT_QUESTION will reset to 1000.
+        tokens: tokensOnCorrect, 
+        isEliminated: tokensOnCorrect === 0 && totalDistributed === state.tokens, // only if they went all in and lost
         selectedPlatform: null,
         questionsAnswered: state.questionsAnswered + 1,
         history: [
@@ -110,44 +133,31 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           {
             question: question.question,
             correct: tokensOnCorrect > 0,
-            tokensLost: state.tokens - tokensOnCorrect, // Total lost including undistributed
-            bonus,
+            tokensLost: state.tokens - tokensOnCorrect,
+            bonus: 0,
           },
         ],
       };
     }
 
     case "NEXT_QUESTION": {
-      if (state.isEliminated) {
-        return { ...state, phase: "results" };
-      }
-
-      const cat = state.selectedCategories[state.currentCategoryIndex];
       const nextQ = state.currentQuestionIndex + 1;
+      const newTotalScore = state.totalScore + state.tokens;
 
-      if (nextQ < cat.questions.length) {
+      if (nextQ < 3) {
         return {
           ...state,
           phase: "playing",
           currentQuestionIndex: nextQ,
           distribution: {},
           revealedAnswer: null,
+          tokens: STARTING_TOKENS, // Reset to $1000 each turn
+          currentTokenIndex: (state.currentTokenIndex + 1) % TOKENS.length, // Rotate token
+          totalScore: newTotalScore,
         };
       }
 
-      const nextCat = state.currentCategoryIndex + 1;
-      if (nextCat < state.selectedCategories.length) {
-        return {
-          ...state,
-          phase: "playing",
-          currentCategoryIndex: nextCat,
-          currentQuestionIndex: 0,
-          distribution: {},
-          revealedAnswer: null,
-        };
-      }
-
-      return { ...state, phase: "results", selectedPlatform: null };
+      return { ...state, phase: "results", selectedPlatform: null, totalScore: newTotalScore };
     }
 
     case "RESET":
@@ -171,14 +181,16 @@ const GameContext = createContext<{
   state: GameState;
   dispatch: React.Dispatch<GameAction>;
   currentQuestion: Question | null;
+  currentToken: string;
 } | null>(null);
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(gameReducer, initialState);
   const currentQuestion = getCurrentQuestion(state);
+  const currentToken = TOKENS[state.currentTokenIndex];
 
   return (
-    <GameContext.Provider value={{ state, dispatch, currentQuestion }}>
+    <GameContext.Provider value={{ state, dispatch, currentQuestion, currentToken }}>
       {children}
     </GameContext.Provider>
   );

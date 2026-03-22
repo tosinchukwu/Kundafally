@@ -1,7 +1,7 @@
 import React from "react";
 import { GameProvider, useGame } from "@/context/GameContext";
 import MenuScreen from "@/components/MenuScreen";
-import CategorySelect from "@/components/CategorySelect";
+import SelectionScreen from "@/components/SelectionScreen";
 import GameplayScreen from "@/components/GameplayScreen";
 import RevealScreen from "@/components/RevealScreen";
 import ResultsScreen from "@/components/ResultsScreen";
@@ -43,8 +43,9 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
 function GameRouter() {
   const { state, dispatch } = useGame();
 
-  console.log("GameRouter State:", { phase: state.phase, catIdx: state.currentCategoryIndex, qIdx: state.currentQuestionIndex });
-  const currentCategory = state.selectedCategories[state.currentCategoryIndex];
+  console.log("GameRouter State:", { phase: state.phase, qIdx: state.currentQuestionIndex });
+  // In our new logic, all 3 questions are in the first (and only) selected category
+  const currentCategory = state.selectedCategories[0];
   const currentQuestion = currentCategory?.questions[state.currentQuestionIndex];
   console.log("Current Question ID:", currentQuestion?.id);
 
@@ -69,7 +70,7 @@ function GameRouter() {
             case "menu":
               return <MenuScreen />;
             case "category":
-              return <CategorySelect />;
+              return <SelectionScreen />;
             case "playing":
               return <GameplayScreen />;
             case "reveal":

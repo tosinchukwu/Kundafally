@@ -61,7 +61,7 @@ export default function Platform3D({
   const backboardColor = isCorrect ? "#14532d" : "#1e1b4b";
 
   useFrame((state, delta) => {
-    const targetAngle = trapdoorOpen ? -Math.PI / 1.8 : 0;
+    const targetAngle = 0; // Force trapdoors to stay closed
     const speed = trapdoorOpen ? 5 : 3;
     
     // Animate physics bodies

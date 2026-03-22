@@ -1,8 +1,11 @@
+export type Difficulty = "easy" | "medium" | "hard";
+
 export interface Question {
   id: string;
   question: string;
   options: { label: string; text: string }[];
   correctAnswer: string;
+  difficulty: "easy" | "medium" | "hard";
 }
 
 export interface Category {
@@ -28,6 +31,7 @@ export const categories: Category[] = [
           { label: "D", text: "Russia" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "sp2",
@@ -39,6 +43,7 @@ export const categories: Category[] = [
           { label: "D", text: "Andy Murray" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sp3",
@@ -50,6 +55,7 @@ export const categories: Category[] = [
           { label: "D", text: "5" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sp4",
@@ -61,6 +67,7 @@ export const categories: Category[] = [
           { label: "D", text: "Justin Gatlin" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "sp5",
@@ -72,6 +79,7 @@ export const categories: Category[] = [
           { label: "D", text: "Rugby" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sp6",
@@ -83,6 +91,7 @@ export const categories: Category[] = [
           { label: "D", text: "12" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "sp7",
@@ -94,6 +103,7 @@ export const categories: Category[] = [
           { label: "D", text: "Brisbane" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sp9",
@@ -105,6 +115,7 @@ export const categories: Category[] = [
           { label: "D", text: "Argentina" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sp10",
@@ -116,6 +127,7 @@ export const categories: Category[] = [
           { label: "D", text: "Gerd Muller" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sp11",
@@ -127,6 +139,7 @@ export const categories: Category[] = [
           { label: "D", text: "Golden State Warriors" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "sp12",
@@ -138,6 +151,7 @@ export const categories: Category[] = [
           { label: "D", text: "Margaret Court" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sp13",
@@ -149,6 +163,7 @@ export const categories: Category[] = [
           { label: "D", text: "10 km" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sp14",
@@ -160,6 +175,7 @@ export const categories: Category[] = [
           { label: "D", text: "Mongolia" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "sp15",
@@ -171,6 +187,7 @@ export const categories: Category[] = [
           { label: "D", text: "1888" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sp16",
@@ -182,6 +199,7 @@ export const categories: Category[] = [
           { label: "D", text: "Sugar Ray Leonard" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "sp17",
@@ -193,6 +211,7 @@ export const categories: Category[] = [
           { label: "D", text: "None; these are continental" },
         ],
         correctAnswer: "D",
+        difficulty: "easy"
       },
       {
         id: "sp18",
@@ -204,6 +223,7 @@ export const categories: Category[] = [
           { label: "D", text: "24" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sp19",
@@ -215,6 +235,7 @@ export const categories: Category[] = [
           { label: "D", text: "Squash" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sp20",
@@ -226,6 +247,7 @@ export const categories: Category[] = [
           { label: "D", text: "Dallas Cowboys" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sp21",
@@ -237,6 +259,7 @@ export const categories: Category[] = [
           { label: "D", text: "Germany" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sp22",
@@ -248,6 +271,7 @@ export const categories: Category[] = [
           { label: "D", text: "Home Run" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sp23",
@@ -259,6 +283,7 @@ export const categories: Category[] = [
           { label: "D", text: "Both B and C" },
         ],
         correctAnswer: "D",
+        difficulty: "easy"
       },
       {
         id: "sp24",
@@ -270,6 +295,7 @@ export const categories: Category[] = [
           { label: "D", text: "American Football" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sp25",
@@ -281,6 +307,7 @@ export const categories: Category[] = [
           { label: "D", text: "Madrid" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sp26",
@@ -292,6 +319,7 @@ export const categories: Category[] = [
           { label: "D", text: "1" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sp27",
@@ -303,6 +331,7 @@ export const categories: Category[] = [
           { label: "D", text: "South Africa" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sp29",
@@ -314,6 +343,7 @@ export const categories: Category[] = [
           { label: "D", text: "USA" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sp30",
@@ -325,6 +355,7 @@ export const categories: Category[] = [
           { label: "D", text: "Michael Jordan" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sp31",
@@ -336,6 +367,7 @@ export const categories: Category[] = [
           { label: "D", text: "CURLING" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sp32",
@@ -347,6 +379,7 @@ export const categories: Category[] = [
           { label: "D", text: "England" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sp33",
@@ -358,6 +391,7 @@ export const categories: Category[] = [
           { label: "D", text: "75 meters" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sp34",
@@ -369,6 +403,7 @@ export const categories: Category[] = [
           { label: "D", text: "Vitaly Scherbo" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sp35",
@@ -380,6 +415,7 @@ export const categories: Category[] = [
           { label: "D", text: "All of the above" },
         ],
         correctAnswer: "D",
+        difficulty: "hard"
       },
       {
         id: "sp36",
@@ -391,6 +427,7 @@ export const categories: Category[] = [
           { label: "D", text: "Jesse Owens" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sp37",
@@ -402,6 +439,7 @@ export const categories: Category[] = [
           { label: "D", text: "India" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sp38",
@@ -413,6 +451,7 @@ export const categories: Category[] = [
           { label: "D", text: "Paavo Nurmi" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sp39",
@@ -424,6 +463,7 @@ export const categories: Category[] = [
           { label: "D", text: "Cricket" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "sp40",
@@ -435,6 +475,7 @@ export const categories: Category[] = [
           { label: "D", text: "1930s" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sp41",
@@ -446,6 +487,7 @@ export const categories: Category[] = [
           { label: "D", text: "Montevideo" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sp42",
@@ -457,6 +499,7 @@ export const categories: Category[] = [
           { label: "D", text: "Eddy Merckx" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sp43",
@@ -468,6 +511,7 @@ export const categories: Category[] = [
           { label: "D", text: "USA" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sp44",
@@ -479,6 +523,7 @@ export const categories: Category[] = [
           { label: "D", text: "The Golden Plate" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sp45",
@@ -490,6 +535,7 @@ export const categories: Category[] = [
           { label: "D", text: "Auto Racing" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "sp46",
@@ -501,6 +547,7 @@ export const categories: Category[] = [
           { label: "D", text: "All of the above" },
         ],
         correctAnswer: "D",
+        difficulty: "medium"
       },
       {
         id: "sp47",
@@ -512,6 +559,7 @@ export const categories: Category[] = [
           { label: "D", text: "Hicham El Guerrouj" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sp49",
@@ -523,6 +571,7 @@ export const categories: Category[] = [
           { label: "D", text: "1988" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sp50",
@@ -534,6 +583,7 @@ export const categories: Category[] = [
           { label: "D", text: "Canada" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sp51",
@@ -545,6 +595,7 @@ export const categories: Category[] = [
           { label: "D", text: "Zinedine Zidane" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sp52",
@@ -556,6 +607,7 @@ export const categories: Category[] = [
           { label: "D", text: "Billiards" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sp53",
@@ -567,6 +619,7 @@ export const categories: Category[] = [
           { label: "D", text: "Seoul" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sp54",
@@ -578,6 +631,7 @@ export const categories: Category[] = [
           { label: "D", text: "Thailand" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "sp55",
@@ -589,6 +643,7 @@ export const categories: Category[] = [
           { label: "D", text: "8" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sp56",
@@ -600,6 +655,7 @@ export const categories: Category[] = [
           { label: "D", text: "UK" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sp57",
@@ -611,6 +667,7 @@ export const categories: Category[] = [
           { label: "D", text: "Horse Racing" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sp58",
@@ -622,6 +679,7 @@ export const categories: Category[] = [
           { label: "D", text: "Larry Fitzgerald" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "sp59",
@@ -633,6 +691,7 @@ export const categories: Category[] = [
           { label: "D", text: "South Africa" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sp60",
@@ -644,6 +703,7 @@ export const categories: Category[] = [
           { label: "D", text: "140" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sp61",
@@ -655,6 +715,7 @@ export const categories: Category[] = [
           { label: "D", text: "Seoul" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sp62",
@@ -666,6 +727,7 @@ export const categories: Category[] = [
           { label: "D", text: "Jannik Sinner" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sp63",
@@ -677,6 +739,7 @@ export const categories: Category[] = [
           { label: "D", text: "Both A and C" },
         ],
         correctAnswer: "D",
+        difficulty: "hard"
       },
       {
         id: "sp64",
@@ -688,6 +751,7 @@ export const categories: Category[] = [
           { label: "D", text: "Tennis" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sp65",
@@ -699,6 +763,7 @@ export const categories: Category[] = [
           { label: "D", text: "Paavo Nurmi" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sp66",
@@ -710,6 +775,7 @@ export const categories: Category[] = [
           { label: "D", text: "Germany" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "sp67",
@@ -721,6 +787,7 @@ export const categories: Category[] = [
           { label: "D", text: "1979" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sp68",
@@ -732,6 +799,7 @@ export const categories: Category[] = [
           { label: "D", text: "Dodgeball" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sp69",
@@ -743,6 +811,7 @@ export const categories: Category[] = [
           { label: "D", text: "Dara Torres" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "sp70",
@@ -754,6 +823,7 @@ export const categories: Category[] = [
           { label: "D", text: "Sweden" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sp71",
@@ -765,6 +835,7 @@ export const categories: Category[] = [
           { label: "D", text: "August" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sp72",
@@ -776,6 +847,7 @@ export const categories: Category[] = [
           { label: "D", text: "Soccer" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sp73",
@@ -787,6 +859,7 @@ export const categories: Category[] = [
           { label: "D", text: "Marion Jones" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
     ],
   },
@@ -805,6 +878,7 @@ export const categories: Category[] = [
           { label: "D", text: "The Jazz Singer" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en10",
@@ -816,6 +890,7 @@ export const categories: Category[] = [
           { label: "D", text: "Katharine Hepburn" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "en11",
@@ -827,6 +902,7 @@ export const categories: Category[] = [
           { label: "D", text: "Narcos" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "en12",
@@ -838,6 +914,7 @@ export const categories: Category[] = [
           { label: "D", text: "Saoirse Ronan" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "en13",
@@ -849,6 +926,7 @@ export const categories: Category[] = [
           { label: "D", text: "Stevie Wonder" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "en14",
@@ -860,6 +938,7 @@ export const categories: Category[] = [
           { label: "D", text: "Snow White" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "en15",
@@ -871,6 +950,7 @@ export const categories: Category[] = [
           { label: "D", text: "Etta James" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en16",
@@ -882,6 +962,7 @@ export const categories: Category[] = [
           { label: "D", text: "5" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "en17",
@@ -893,6 +974,7 @@ export const categories: Category[] = [
           { label: "D", text: "Star Wars: The Force Awakens" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "en18",
@@ -904,6 +986,7 @@ export const categories: Category[] = [
           { label: "D", text: "Keyboard" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "en19",
@@ -915,6 +998,7 @@ export const categories: Category[] = [
           { label: "D", text: "Trey Parker" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "en20",
@@ -926,6 +1010,7 @@ export const categories: Category[] = [
           { label: "D", text: "Joaquin Phoenix" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "en21",
@@ -937,6 +1022,7 @@ export const categories: Category[] = [
           { label: "D", text: "Grey's Anatomy" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "en22",
@@ -948,6 +1034,7 @@ export const categories: Category[] = [
           { label: "D", text: "Cyndi Lauper" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "en23",
@@ -959,6 +1046,7 @@ export const categories: Category[] = [
           { label: "D", text: "It is never revealed" },
         ],
         correctAnswer: "D",
+        difficulty: "easy"
       },
       {
         id: "en24",
@@ -970,6 +1058,7 @@ export const categories: Category[] = [
           { label: "D", text: "Jordin Sparks" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en25",
@@ -981,6 +1070,7 @@ export const categories: Category[] = [
           { label: "D", text: "The Mummy" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "en26",
@@ -992,6 +1082,7 @@ export const categories: Category[] = [
           { label: "D", text: "Madonna" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "en27",
@@ -1003,6 +1094,7 @@ export const categories: Category[] = [
           { label: "D", text: "Mark Ruffalo" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en28",
@@ -1014,6 +1106,7 @@ export const categories: Category[] = [
           { label: "D", text: "Boardwalk Empire" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "en29",
@@ -1025,6 +1118,7 @@ export const categories: Category[] = [
           { label: "D", text: "Total Recall" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "en30",
@@ -1036,6 +1130,7 @@ export const categories: Category[] = [
           { label: "D", text: "Rick James" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "en31",
@@ -1047,6 +1142,7 @@ export const categories: Category[] = [
           { label: "D", text: "Twin Peaks" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "en32",
@@ -1058,6 +1154,7 @@ export const categories: Category[] = [
           { label: "D", text: "Once Upon a Time in Hollywood" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "en33",
@@ -1069,6 +1166,7 @@ export const categories: Category[] = [
           { label: "D", text: "Jay-Z" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en34",
@@ -1080,6 +1178,7 @@ export const categories: Category[] = [
           { label: "D", text: "Tom Cruise" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "en35",
@@ -1091,6 +1190,7 @@ export const categories: Category[] = [
           { label: "D", text: "Sherlock" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "en36",
@@ -1102,6 +1202,7 @@ export const categories: Category[] = [
           { label: "D", text: "Deadpool & Wolverine" },
         ],
         correctAnswer: "D",
+        difficulty: "medium"
       },
       {
         id: "en37",
@@ -1113,6 +1214,7 @@ export const categories: Category[] = [
           { label: "D", text: "Deep Purple" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "en38",
@@ -1124,6 +1226,7 @@ export const categories: Category[] = [
           { label: "D", text: "Clive Barker" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "en39",
@@ -1135,6 +1238,7 @@ export const categories: Category[] = [
           { label: "D", text: "Ice Age" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "en40",
@@ -1146,6 +1250,7 @@ export const categories: Category[] = [
           { label: "D", text: "K-2SO" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "en41",
@@ -1157,6 +1262,7 @@ export const categories: Category[] = [
           { label: "D", text: "Hailee Steinfeld" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "en42",
@@ -1168,6 +1274,7 @@ export const categories: Category[] = [
           { label: "D", text: "Star Trek: Lower Decks" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en43",
@@ -1179,6 +1286,7 @@ export const categories: Category[] = [
           { label: "D", text: "Sia" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "en44",
@@ -1190,6 +1298,7 @@ export const categories: Category[] = [
           { label: "D", text: "The Jungle Book" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "en45",
@@ -1201,6 +1310,7 @@ export const categories: Category[] = [
           { label: "D", text: "Epona" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en46",
@@ -1212,6 +1322,7 @@ export const categories: Category[] = [
           { label: "D", text: "Twin Peaks" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "en47",
@@ -1223,6 +1334,7 @@ export const categories: Category[] = [
           { label: "D", text: "Roger Moore" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "en48",
@@ -1234,6 +1346,7 @@ export const categories: Category[] = [
           { label: "D", text: "Mad Max" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en49",
@@ -1245,6 +1358,7 @@ export const categories: Category[] = [
           { label: "D", text: "Taylor Swift" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "en50",
@@ -1256,6 +1370,7 @@ export const categories: Category[] = [
           { label: "D", text: "Band of Brothers" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "en51",
@@ -1267,6 +1382,7 @@ export const categories: Category[] = [
           { label: "D", text: "Mick Jagger" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en52",
@@ -1278,6 +1394,7 @@ export const categories: Category[] = [
           { label: "D", text: "The Lion King" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "en53",
@@ -1289,6 +1406,7 @@ export const categories: Category[] = [
           { label: "D", text: "Brad Pitt" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "en54",
@@ -1300,6 +1418,7 @@ export const categories: Category[] = [
           { label: "D", text: "Solar Opposites" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "en55",
@@ -1311,6 +1430,7 @@ export const categories: Category[] = [
           { label: "D", text: "Miley Cyrus" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "en56",
@@ -1322,6 +1442,7 @@ export const categories: Category[] = [
           { label: "D", text: "The Hobbit" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "en57",
@@ -1333,6 +1454,7 @@ export const categories: Category[] = [
           { label: "D", text: "Bruno Mars" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en58",
@@ -1344,6 +1466,7 @@ export const categories: Category[] = [
           { label: "D", text: "Central City" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "en59",
@@ -1355,6 +1478,7 @@ export const categories: Category[] = [
           { label: "D", text: "Florence Pugh" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "en60",
@@ -1366,6 +1490,7 @@ export const categories: Category[] = [
           { label: "D", text: "Yellowjackets" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en61",
@@ -1377,6 +1502,7 @@ export const categories: Category[] = [
           { label: "D", text: "Francis Ford Coppola" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "en62",
@@ -1388,6 +1514,7 @@ export const categories: Category[] = [
           { label: "D", text: "Jimmy Page" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "en63",
@@ -1399,6 +1526,7 @@ export const categories: Category[] = [
           { label: "D", text: "Kathryn Janeway" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en64",
@@ -1410,6 +1538,7 @@ export const categories: Category[] = [
           { label: "D", text: "The Banshees of Inisherin" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "en65",
@@ -1421,6 +1550,7 @@ export const categories: Category[] = [
           { label: "D", text: "Robbie Williams" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "en66",
@@ -1432,6 +1562,7 @@ export const categories: Category[] = [
           { label: "D", text: "Cars" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en67",
@@ -1443,6 +1574,7 @@ export const categories: Category[] = [
           { label: "D", text: "The Sopranos" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "en68",
@@ -1454,6 +1586,7 @@ export const categories: Category[] = [
           { label: "D", text: "Billie Eilish" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "en69",
@@ -1465,6 +1598,7 @@ export const categories: Category[] = [
           { label: "D", text: "The Godfather" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "en70",
@@ -1476,6 +1610,7 @@ export const categories: Category[] = [
           { label: "D", text: "Jon Bernthal" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
     ],
   },
@@ -1494,6 +1629,7 @@ export const categories: Category[] = [
           { label: "D", text: "The Splurge" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth10",
@@ -1505,6 +1641,7 @@ export const categories: Category[] = [
           { label: "D", text: "EIP-20" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "eth11",
@@ -1516,6 +1653,7 @@ export const categories: Category[] = [
           { label: "D", text: "Move" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth12",
@@ -1527,6 +1665,7 @@ export const categories: Category[] = [
           { label: "D", text: "Finney" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth13",
@@ -1538,6 +1677,7 @@ export const categories: Category[] = [
           { label: "D", text: "Arbitrum" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "eth14",
@@ -1549,6 +1689,7 @@ export const categories: Category[] = [
           { label: "D", text: "A sidechain" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth15",
@@ -1560,6 +1701,7 @@ export const categories: Category[] = [
           { label: "D", text: "1 Billion" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "eth16",
@@ -1571,6 +1713,7 @@ export const categories: Category[] = [
           { label: "D", text: "Polygon PoS" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "eth17",
@@ -1582,6 +1725,7 @@ export const categories: Category[] = [
           { label: "D", text: "The amount of storage used" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth18",
@@ -1593,6 +1737,7 @@ export const categories: Category[] = [
           { label: "D", text: "Paris" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth19",
@@ -1604,6 +1749,7 @@ export const categories: Category[] = [
           { label: "D", text: "ERC-4626" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "eth20",
@@ -1615,6 +1761,7 @@ export const categories: Category[] = [
           { label: "D", text: "Anthony Di Iorio" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth21",
@@ -1626,6 +1773,7 @@ export const categories: Category[] = [
           { label: "D", text: "When gas fees become zero" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth22",
@@ -1637,6 +1785,7 @@ export const categories: Category[] = [
           { label: "D", text: "Erigon" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "eth23",
@@ -1648,6 +1797,7 @@ export const categories: Category[] = [
           { label: "D", text: "64 ETH" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "eth24",
@@ -1659,6 +1809,7 @@ export const categories: Category[] = [
           { label: "D", text: "Bogota" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth25",
@@ -1670,6 +1821,7 @@ export const categories: Category[] = [
           { label: "D", text: "Equihash" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "eth26",
@@ -1681,6 +1833,7 @@ export const categories: Category[] = [
           { label: "D", text: "To burn more ETH" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth27",
@@ -1692,6 +1845,7 @@ export const categories: Category[] = [
           { label: "D", text: "Ether Normalization Standard" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth28",
@@ -1703,6 +1857,7 @@ export const categories: Category[] = [
           { label: "D", text: "Circle" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "eth29",
@@ -1714,6 +1869,7 @@ export const categories: Category[] = [
           { label: "D", text: "Local Storage Transaction" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth30",
@@ -1725,6 +1881,7 @@ export const categories: Category[] = [
           { label: "D", text: "Mantle" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth31",
@@ -1736,6 +1893,7 @@ export const categories: Category[] = [
           { label: "D", text: "The first block of the Beacon Chain" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "eth32",
@@ -1747,6 +1905,7 @@ export const categories: Category[] = [
           { label: "D", text: "ERC-4626" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "eth33",
@@ -1758,6 +1917,7 @@ export const categories: Category[] = [
           { label: "D", text: "Berlin" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth34",
@@ -1769,6 +1929,7 @@ export const categories: Category[] = [
           { label: "D", text: "Interoperability" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "eth35",
@@ -1780,6 +1941,7 @@ export const categories: Category[] = [
           { label: "D", text: "Delegated Proof of Stake" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth36",
@@ -1791,6 +1953,7 @@ export const categories: Category[] = [
           { label: "D", text: "A hack attempt" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth37",
@@ -1802,6 +1965,7 @@ export const categories: Category[] = [
           { label: "D", text: "Offchain Labs" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "eth38",
@@ -1813,6 +1977,7 @@ export const categories: Category[] = [
           { label: "D", text: "Balancer" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth39",
@@ -1824,6 +1989,7 @@ export const categories: Category[] = [
           { label: "D", text: "A way to mine ETH" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth40",
@@ -1835,6 +2001,7 @@ export const categories: Category[] = [
           { label: "D", text: "A smart contract auditor" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "eth41",
@@ -1846,6 +2013,7 @@ export const categories: Category[] = [
           { label: "D", text: "A phase focusing on state expiry" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "eth42",
@@ -1857,6 +2025,7 @@ export const categories: Category[] = [
           { label: "D", text: "Machine Code" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth43",
@@ -1868,6 +2037,7 @@ export const categories: Category[] = [
           { label: "D", text: "A security audit" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "eth44",
@@ -1879,6 +2049,7 @@ export const categories: Category[] = [
           { label: "D", text: "A new type of NFT" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth45",
@@ -1890,6 +2061,7 @@ export const categories: Category[] = [
           { label: "D", text: "To retire old clients" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth46",
@@ -1901,6 +2073,7 @@ export const categories: Category[] = [
           { label: "D", text: "DAI" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "eth47",
@@ -1912,6 +2085,7 @@ export const categories: Category[] = [
           { label: "D", text: "A new type of address format" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth48",
@@ -1923,6 +2097,7 @@ export const categories: Category[] = [
           { label: "D", text: "Multi-Engine Verification" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth49",
@@ -1934,6 +2109,7 @@ export const categories: Category[] = [
           { label: "D", text: "PYUSD" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "eth50",
@@ -1945,6 +2121,7 @@ export const categories: Category[] = [
           { label: "D", text: "Weighted Ether" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth51",
@@ -1956,6 +2133,7 @@ export const categories: Category[] = [
           { label: "D", text: "Byzantium + Constantinople" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "eth52",
@@ -1967,6 +2145,7 @@ export const categories: Category[] = [
           { label: "D", text: "Vitalik's Thoughts" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "eth53",
@@ -1978,6 +2157,7 @@ export const categories: Category[] = [
           { label: "D", text: "History Expiry" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth54",
@@ -1989,6 +2169,7 @@ export const categories: Category[] = [
           { label: "D", text: "An automated trade" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth55",
@@ -2000,6 +2181,7 @@ export const categories: Category[] = [
           { label: "D", text: "Pudgy Penguins" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "eth56",
@@ -2011,6 +2193,7 @@ export const categories: Category[] = [
           { label: "D", text: "External Validator Monitor" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth57",
@@ -2022,6 +2205,7 @@ export const categories: Category[] = [
           { label: "D", text: "Scroll" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "eth58",
@@ -2033,6 +2217,7 @@ export const categories: Category[] = [
           { label: "D", text: "Staking on a Layer 2" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "eth59",
@@ -2044,6 +2229,7 @@ export const categories: Category[] = [
           { label: "D", text: "Privacy" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth60",
@@ -2055,6 +2241,7 @@ export const categories: Category[] = [
           { label: "D", text: "A massive gas spike" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "eth61",
@@ -2066,6 +2253,7 @@ export const categories: Category[] = [
           { label: "D", text: "Kovan" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "eth62",
@@ -2077,6 +2265,7 @@ export const categories: Category[] = [
           { label: "D", text: "A type of mortgage on-chain" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "eth63",
@@ -2088,6 +2277,7 @@ export const categories: Category[] = [
           { label: "D", text: "A way to mine ETH" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth64",
@@ -2099,6 +2289,7 @@ export const categories: Category[] = [
           { label: "D", text: "Ansgar Dietrichs" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "eth65",
@@ -2110,6 +2301,7 @@ export const categories: Category[] = [
           { label: "D", text: "The EVM" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "eth66",
@@ -2121,6 +2313,7 @@ export const categories: Category[] = [
           { label: "D", text: "Layer 0" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "eth67",
@@ -2132,6 +2325,7 @@ export const categories: Category[] = [
           { label: "D", text: "A private transaction" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "eth68",
@@ -2143,6 +2337,7 @@ export const categories: Category[] = [
           { label: "D", text: "Danksharding" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "eth69",
@@ -2154,6 +2349,7 @@ export const categories: Category[] = [
           { label: "D", text: "blockchainlabs" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "eth70",
@@ -2165,6 +2361,7 @@ export const categories: Category[] = [
           { label: "D", text: "A privacy tool" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
     ],
   },
@@ -2183,6 +2380,7 @@ export const categories: Category[] = [
           { label: "D", text: "2016" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc10",
@@ -2194,6 +2392,7 @@ export const categories: Category[] = [
           { label: "D", text: "12 seconds" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "btc11",
@@ -2205,6 +2404,7 @@ export const categories: Category[] = [
           { label: "D", text: "Bank of England raises rates" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "btc12",
@@ -2216,6 +2416,7 @@ export const categories: Category[] = [
           { label: "D", text: "How" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "btc13",
@@ -2227,6 +2428,7 @@ export const categories: Category[] = [
           { label: "D", text: "X11" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "btc14",
@@ -2238,6 +2440,7 @@ export const categories: Category[] = [
           { label: "D", text: "Decentralized Money" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "btc15",
@@ -2249,6 +2452,7 @@ export const categories: Category[] = [
           { label: "D", text: "A failed block" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc16",
@@ -2260,6 +2464,7 @@ export const categories: Category[] = [
           { label: "D", text: "A wallet app" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "btc17",
@@ -2271,6 +2476,7 @@ export const categories: Category[] = [
           { label: "D", text: "A type of miner" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc18",
@@ -2282,6 +2488,7 @@ export const categories: Category[] = [
           { label: "D", text: "Kraken" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc19",
@@ -2293,6 +2500,7 @@ export const categories: Category[] = [
           { label: "D", text: "The total supply" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "btc20",
@@ -2304,6 +2512,7 @@ export const categories: Category[] = [
           { label: "D", text: "A increase in total supply" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc21",
@@ -2315,6 +2524,7 @@ export const categories: Category[] = [
           { label: "D", text: "Security code" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc22",
@@ -2326,6 +2536,7 @@ export const categories: Category[] = [
           { label: "D", text: "It stays the same" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "btc23",
@@ -2337,6 +2548,7 @@ export const categories: Category[] = [
           { label: "D", text: "Roger Ver" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc24",
@@ -2348,6 +2560,7 @@ export const categories: Category[] = [
           { label: "D", text: "An exchange" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc25",
@@ -2359,6 +2572,7 @@ export const categories: Category[] = [
           { label: "D", text: "The time it took to mine" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "btc26",
@@ -2370,6 +2584,7 @@ export const categories: Category[] = [
           { label: "D", text: "A type of mining error" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc27",
@@ -2381,6 +2596,7 @@ export const categories: Category[] = [
           { label: "D", text: "Argentina" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc28",
@@ -2392,6 +2608,7 @@ export const categories: Category[] = [
           { label: "D", text: "Array of Silicon Integrated Chips" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "btc29",
@@ -2403,6 +2620,7 @@ export const categories: Category[] = [
           { label: "D", text: "Burning half the supply" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc30",
@@ -2414,6 +2632,7 @@ export const categories: Category[] = [
           { label: "D", text: "A hardware wallet brand" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc31",
@@ -2425,6 +2644,7 @@ export const categories: Category[] = [
           { label: "D", text: "A list of wallet addresses" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "btc32",
@@ -2436,6 +2656,7 @@ export const categories: Category[] = [
           { label: "D", text: "Sequential Witness" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc33",
@@ -2447,6 +2668,7 @@ export const categories: Category[] = [
           { label: "D", text: "Unified Token eXchange Organization" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "btc34",
@@ -2458,6 +2680,7 @@ export const categories: Category[] = [
           { label: "D", text: "Binance" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "btc35",
@@ -2469,6 +2692,7 @@ export const categories: Category[] = [
           { label: "D", text: "April 20" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "btc36",
@@ -2480,6 +2704,7 @@ export const categories: Category[] = [
           { label: "D", text: "A price drop of 51%" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc37",
@@ -2491,6 +2716,7 @@ export const categories: Category[] = [
           { label: "D", text: "The next halving date" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "btc38",
@@ -2502,6 +2728,7 @@ export const categories: Category[] = [
           { label: "D", text: "The name of BTC on exchanges" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc39",
@@ -2513,6 +2740,7 @@ export const categories: Category[] = [
           { label: "D", text: "Lower transaction volume" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc40",
@@ -2524,6 +2752,7 @@ export const categories: Category[] = [
           { label: "D", text: "Net once" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "btc41",
@@ -2535,6 +2764,7 @@ export const categories: Category[] = [
           { label: "D", text: "A banned exchange" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc42",
@@ -2546,6 +2776,7 @@ export const categories: Category[] = [
           { label: "D", text: "A type of hardware" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc43",
@@ -2557,6 +2788,7 @@ export const categories: Category[] = [
           { label: "D", text: "Texas" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "btc44",
@@ -2568,6 +2800,7 @@ export const categories: Category[] = [
           { label: "D", text: "Decentralized Coin Alliance" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc45",
@@ -2579,6 +2812,7 @@ export const categories: Category[] = [
           { label: "D", text: "BlackRock" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc46",
@@ -2590,6 +2824,7 @@ export const categories: Category[] = [
           { label: "D", text: "A new consensus" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "btc47",
@@ -2601,6 +2836,7 @@ export const categories: Category[] = [
           { label: "D", text: "A failed project" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc48",
@@ -2612,6 +2848,7 @@ export const categories: Category[] = [
           { label: "D", text: "Fast Order Matching" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "btc49",
@@ -2623,6 +2860,7 @@ export const categories: Category[] = [
           { label: "D", text: "Free Ultimate Decentralization" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "btc50",
@@ -2634,6 +2872,7 @@ export const categories: Category[] = [
           { label: "D", text: "Satisfactory" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc51",
@@ -2645,6 +2884,7 @@ export const categories: Category[] = [
           { label: "D", text: "A software with smart features" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc52",
@@ -2656,6 +2896,7 @@ export const categories: Category[] = [
           { label: "D", text: "Centralized exchanges" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "btc53",
@@ -2667,6 +2908,7 @@ export const categories: Category[] = [
           { label: "D", text: "A way to mine Bitcoin with CPU" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc54",
@@ -2678,6 +2920,7 @@ export const categories: Category[] = [
           { label: "D", text: "A type of miner firmware" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc55",
@@ -2689,6 +2932,7 @@ export const categories: Category[] = [
           { label: "D", text: "The name of a miner group" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "btc56",
@@ -2700,6 +2944,7 @@ export const categories: Category[] = [
           { label: "D", text: "A node identifier" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc57",
@@ -2711,6 +2956,7 @@ export const categories: Category[] = [
           { label: "D", text: "A failed project" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc58",
@@ -2722,6 +2968,7 @@ export const categories: Category[] = [
           { label: "D", text: "Speeding up the network" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "btc59",
@@ -2733,6 +2980,7 @@ export const categories: Category[] = [
           { label: "D", text: "The number of users" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc60",
@@ -2744,6 +2992,7 @@ export const categories: Category[] = [
           { label: "D", text: "The head of the SEC" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc61",
@@ -2755,6 +3004,7 @@ export const categories: Category[] = [
           { label: "D", text: "The time it takes to sync a node" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "btc62",
@@ -2766,6 +3016,7 @@ export const categories: Category[] = [
           { label: "D", text: "A type of miner group" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "btc63",
@@ -2777,6 +3028,7 @@ export const categories: Category[] = [
           { label: "D", text: "The name of a block explorer" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "btc64",
@@ -2788,6 +3040,7 @@ export const categories: Category[] = [
           { label: "D", text: "Every month" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "btc65",
@@ -2799,6 +3052,7 @@ export const categories: Category[] = [
           { label: "D", text: "A transaction with zero fee" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc66",
@@ -2810,6 +3064,7 @@ export const categories: Category[] = [
           { label: "D", text: "The name of a miner pool" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc67",
@@ -2821,6 +3076,7 @@ export const categories: Category[] = [
           { label: "D", text: "Unlimited" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "btc68",
@@ -2832,6 +3088,7 @@ export const categories: Category[] = [
           { label: "D", text: "Real Bitcoin Fund" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "btc69",
@@ -2843,6 +3100,7 @@ export const categories: Category[] = [
           { label: "D", text: "Mining difficulty" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "btc70",
@@ -2854,6 +3112,7 @@ export const categories: Category[] = [
           { label: "D", text: "Mining farm guide" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
     ],
   },
@@ -2872,6 +3131,7 @@ export const categories: Category[] = [
           { label: "D", text: "Skyline" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sol10",
@@ -2883,6 +3143,7 @@ export const categories: Category[] = [
           { label: "D", text: "Firewall" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sol11",
@@ -2894,6 +3155,7 @@ export const categories: Category[] = [
           { label: "D", text: "10,000" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sol12",
@@ -2905,6 +3167,7 @@ export const categories: Category[] = [
           { label: "D", text: "EigenDA" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sol13",
@@ -2916,6 +3179,7 @@ export const categories: Category[] = [
           { label: "D", text: "Droid" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sol14",
@@ -2927,6 +3191,7 @@ export const categories: Category[] = [
           { label: "D", text: "Solana Core" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sol15",
@@ -2938,6 +3203,7 @@ export const categories: Category[] = [
           { label: "D", text: "A wallet feature" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sol16",
@@ -2949,6 +3215,7 @@ export const categories: Category[] = [
           { label: "D", text: "MicroSOL" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sol17",
@@ -2960,6 +3227,7 @@ export const categories: Category[] = [
           { label: "D", text: "Kyle Samani" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sol18",
@@ -2971,6 +3239,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator group" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sol19",
@@ -2982,6 +3251,7 @@ export const categories: Category[] = [
           { label: "D", text: "BigTable" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sol20",
@@ -2993,6 +3263,7 @@ export const categories: Category[] = [
           { label: "D", text: "Sushiswap" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sol21",
@@ -3004,6 +3275,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator ranking system" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sol22",
@@ -3015,6 +3287,7 @@ export const categories: Category[] = [
           { label: "D", text: "MakerDAO" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sol23",
@@ -3026,6 +3299,7 @@ export const categories: Category[] = [
           { label: "D", text: "2020" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sol24",
@@ -3037,6 +3311,7 @@ export const categories: Category[] = [
           { label: "D", text: "The main block producer" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sol25",
@@ -3048,6 +3323,7 @@ export const categories: Category[] = [
           { label: "D", text: "The launch of the Saga phone" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sol26",
@@ -3059,6 +3335,7 @@ export const categories: Category[] = [
           { label: "D", text: "Apple" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sol27",
@@ -3070,6 +3347,7 @@ export const categories: Category[] = [
           { label: "D", text: "CowSwap" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sol28",
@@ -3081,6 +3359,7 @@ export const categories: Category[] = [
           { label: "D", text: "A new token standard" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sol29",
@@ -3092,6 +3371,7 @@ export const categories: Category[] = [
           { label: "D", text: "OKLink" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "sol30",
@@ -3103,6 +3383,7 @@ export const categories: Category[] = [
           { label: "D", text: "Validator commission" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sol31",
@@ -3114,6 +3395,7 @@ export const categories: Category[] = [
           { label: "D", text: "A yield farm" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sol32",
@@ -3125,6 +3407,7 @@ export const categories: Category[] = [
           { label: "D", text: "Secure Program Logic" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sol33",
@@ -3135,7 +3418,8 @@ export const categories: Category[] = [
           { label: "C", text: "MakerDAO (DAI)" },
           { label: "D", text: "Pax Gold" },
         ],
-        correctAnswer: "A" },
+        correctAnswer: "A",
+        difficulty: "medium" },
       {
         id: "sol34",
         question: "What is 'Jump Crypto's' contribution to Solana?",
@@ -3146,6 +3430,7 @@ export const categories: Category[] = [
           { label: "D", text: "The Saga phone hardware" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sol35",
@@ -3157,6 +3442,7 @@ export const categories: Category[] = [
           { label: "D", text: "A scaling solution" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sol36",
@@ -3168,6 +3454,7 @@ export const categories: Category[] = [
           { label: "D", text: "Auditing all smart contracts" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sol37",
@@ -3179,6 +3466,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator group" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sol38",
@@ -3190,6 +3478,7 @@ export const categories: Category[] = [
           { label: "D", text: "A hardware wallet brand" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sol39",
@@ -3201,6 +3490,7 @@ export const categories: Category[] = [
           { label: "D", text: "The date of a network fork" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sol40",
@@ -3212,6 +3502,7 @@ export const categories: Category[] = [
           { label: "D", text: "A network bug" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sol41",
@@ -3223,6 +3514,7 @@ export const categories: Category[] = [
           { label: "D", text: "A database system" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sol42",
@@ -3234,6 +3526,7 @@ export const categories: Category[] = [
           { label: "D", text: "Stream" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sol43",
@@ -3245,6 +3538,7 @@ export const categories: Category[] = [
           { label: "D", text: "Lower fees" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sol44",
@@ -3256,6 +3550,7 @@ export const categories: Category[] = [
           { label: "D", text: "A NFT creator tool" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sol45",
@@ -3267,6 +3562,7 @@ export const categories: Category[] = [
           { label: "D", text: "A developer tool" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sol46",
@@ -3278,6 +3574,7 @@ export const categories: Category[] = [
           { label: "D", text: "A gaming hub" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sol47",
@@ -3289,6 +3586,7 @@ export const categories: Category[] = [
           { label: "D", text: "A specialized Solana client" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sol48",
@@ -3300,6 +3598,7 @@ export const categories: Category[] = [
           { label: "D", text: "A specialized wallet" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sol49",
@@ -3311,6 +3610,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator client" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sol50",
@@ -3322,6 +3622,7 @@ export const categories: Category[] = [
           { label: "D", text: "Token-2022" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sol51",
@@ -3333,6 +3634,7 @@ export const categories: Category[] = [
           { label: "D", text: "Storing more ledger history" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sol52",
@@ -3344,6 +3646,7 @@ export const categories: Category[] = [
           { label: "D", text: "Encrypted NFT" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sol53",
@@ -3355,6 +3658,7 @@ export const categories: Category[] = [
           { label: "D", text: "CEO of Coinbase" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sol54",
@@ -3366,6 +3670,7 @@ export const categories: Category[] = [
           { label: "D", text: "A reward system for users" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sol55",
@@ -3377,6 +3682,7 @@ export const categories: Category[] = [
           { label: "D", text: "A wallet feature" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sol56",
@@ -3388,6 +3694,7 @@ export const categories: Category[] = [
           { label: "D", text: "A hardware wallet" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sol57",
@@ -3399,6 +3706,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator client" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sol58",
@@ -3410,6 +3718,7 @@ export const categories: Category[] = [
           { label: "D", text: "A specialized NFT market" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sol59",
@@ -3421,6 +3730,7 @@ export const categories: Category[] = [
           { label: "D", text: "A block producer" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sol60",
@@ -3432,6 +3742,7 @@ export const categories: Category[] = [
           { label: "D", text: "A specialized wallet" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sol61",
@@ -3443,6 +3754,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator tool" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sol62",
@@ -3454,6 +3766,7 @@ export const categories: Category[] = [
           { label: "D", text: "A marketing firm" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sol63",
@@ -3465,6 +3778,7 @@ export const categories: Category[] = [
           { label: "D", text: "Website standard" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sol64",
@@ -3476,6 +3790,7 @@ export const categories: Category[] = [
           { label: "D", text: "A browser extension" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sol65",
@@ -3487,6 +3802,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator name" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sol66",
@@ -3498,6 +3814,7 @@ export const categories: Category[] = [
           { label: "D", text: "A specialized miner" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sol67",
@@ -3509,6 +3826,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator client" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sol68",
@@ -3520,6 +3838,7 @@ export const categories: Category[] = [
           { label: "D", text: "Auditing" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sol69",
@@ -3531,6 +3850,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator tool" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sol70",
@@ -3542,6 +3862,7 @@ export const categories: Category[] = [
           { label: "D", text: "Single View Module" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
     ],
   },
@@ -3560,6 +3881,7 @@ export const categories: Category[] = [
           { label: "D", text: "Coinbase Connect" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "base10",
@@ -3571,6 +3893,7 @@ export const categories: Category[] = [
           { label: "D", text: "Brownie" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "base11",
@@ -3582,6 +3905,7 @@ export const categories: Category[] = [
           { label: "D", text: "Synapse" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base12",
@@ -3593,6 +3917,7 @@ export const categories: Category[] = [
           { label: "D", text: "Steemit" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "base13",
@@ -3604,6 +3929,7 @@ export const categories: Category[] = [
           { label: "D", text: "It uses Bitcoin security" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base14",
@@ -3615,6 +3941,7 @@ export const categories: Category[] = [
           { label: "D", text: "A marketing tool" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base15",
@@ -3626,6 +3953,7 @@ export const categories: Category[] = [
           { label: "D", text: "Trader Joe" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "base16",
@@ -3637,6 +3965,7 @@ export const categories: Category[] = [
           { label: "D", text: "Emilie Choi" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "base17",
@@ -3648,6 +3977,7 @@ export const categories: Category[] = [
           { label: "D", text: "A type of transaction" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base18",
@@ -3659,6 +3989,7 @@ export const categories: Category[] = [
           { label: "D", text: "Hyperlane" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "base19",
@@ -3670,6 +4001,7 @@ export const categories: Category[] = [
           { label: "D", text: "Base is only 2x cheaper" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base20",
@@ -3681,6 +4013,7 @@ export const categories: Category[] = [
           { label: "D", text: "Instant" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base21",
@@ -3692,6 +4025,7 @@ export const categories: Category[] = [
           { label: "D", text: "A city in Europe" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "base22",
@@ -3703,6 +4037,7 @@ export const categories: Category[] = [
           { label: "D", text: "Only in the US" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base23",
@@ -3714,6 +4049,7 @@ export const categories: Category[] = [
           { label: "D", text: "Link 2" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "base24",
@@ -3725,6 +4061,7 @@ export const categories: Category[] = [
           { label: "D", text: "Gemini" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "base25",
@@ -3736,6 +4073,7 @@ export const categories: Category[] = [
           { label: "D", text: "A useless image" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base26",
@@ -3747,6 +4085,7 @@ export const categories: Category[] = [
           { label: "D", text: "A wallet" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base27",
@@ -3758,6 +4097,7 @@ export const categories: Category[] = [
           { label: "D", text: "CBETH" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "base28",
@@ -3769,6 +4109,7 @@ export const categories: Category[] = [
           { label: "D", text: "Privacy by default" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base29",
@@ -3779,7 +4120,8 @@ export const categories: Category[] = [
           { label: "C", text: ".eth" },
           { label: "D", text: ".coin" },
         ],
-        correctAnswer: "A" },
+        correctAnswer: "A",
+        difficulty: "hard" },
       {
         id: "base30",
         question: "Which year did Base mainnet launch?",
@@ -3790,6 +4132,7 @@ export const categories: Category[] = [
           { label: "D", text: "2024" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "base31",
@@ -3801,6 +4144,7 @@ export const categories: Category[] = [
           { label: "D", text: "The entire year" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "base32",
@@ -3812,6 +4156,7 @@ export const categories: Category[] = [
           { label: "D", text: "A DAO" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base33",
@@ -3823,6 +4168,7 @@ export const categories: Category[] = [
           { label: "D", text: "US citizens only" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "base34",
@@ -3834,6 +4180,7 @@ export const categories: Category[] = [
           { label: "D", text: "Optimistic scan" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base35",
@@ -3845,6 +4192,7 @@ export const categories: Category[] = [
           { label: "D", text: "Paying users" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base36",
@@ -3856,6 +4204,7 @@ export const categories: Category[] = [
           { label: "D", text: "No stablecoins allowed" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "base37",
@@ -3867,6 +4216,7 @@ export const categories: Category[] = [
           { label: "D", text: "A wallet" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base38",
@@ -3878,6 +4228,7 @@ export const categories: Category[] = [
           { label: "D", text: "A new wallet standard" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base39",
@@ -3889,6 +4240,7 @@ export const categories: Category[] = [
           { label: "D", text: "To make money for Coinbase" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "base40",
@@ -3900,6 +4252,7 @@ export const categories: Category[] = [
           { label: "D", text: "A specialized app" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base41",
@@ -3911,6 +4264,7 @@ export const categories: Category[] = [
           { label: "D", text: "A wallet" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base42",
@@ -3922,6 +4276,7 @@ export const categories: Category[] = [
           { label: "D", text: "A bridge" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "base43",
@@ -3933,6 +4288,7 @@ export const categories: Category[] = [
           { label: "D", text: "A cloud provider" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base44",
@@ -3944,6 +4300,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator node" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base45",
@@ -3954,7 +4311,8 @@ export const categories: Category[] = [
           { label: "C", text: "Running the bridge" },
           { label: "D", text: "The main token" },
         ],
-        correctAnswer: "A" },
+        correctAnswer: "A",
+        difficulty: "easy" },
       {
         id: "base46",
         question: "What is the typical block time on Base?",
@@ -3965,6 +4323,7 @@ export const categories: Category[] = [
           { label: "D", text: "10 minutes" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base47",
@@ -3976,6 +4335,7 @@ export const categories: Category[] = [
           { label: "D", text: "Only for NFTs" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base48",
@@ -3987,6 +4347,7 @@ export const categories: Category[] = [
           { label: "D", text: ".ether" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "base49",
@@ -3998,6 +4359,7 @@ export const categories: Category[] = [
           { label: "D", text: "Optimism Foundation" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base50",
@@ -4009,6 +4371,7 @@ export const categories: Category[] = [
           { label: "D", text: "A chain with no fees" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base51",
@@ -4020,6 +4383,7 @@ export const categories: Category[] = [
           { label: "D", text: "A governance system" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "base52",
@@ -4031,6 +4395,7 @@ export const categories: Category[] = [
           { label: "D", text: "Only for viewing" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base53",
@@ -4042,6 +4407,7 @@ export const categories: Category[] = [
           { label: "D", text: "api.base.network" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base54",
@@ -4053,6 +4419,7 @@ export const categories: Category[] = [
           { label: "D", text: "A technical guide" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "base55",
@@ -4064,6 +4431,7 @@ export const categories: Category[] = [
           { label: "D", text: "A wallet" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base56",
@@ -4075,6 +4443,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base57",
@@ -4086,6 +4455,7 @@ export const categories: Category[] = [
           { label: "D", text: "It already happened" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "base58",
@@ -4097,6 +4467,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base59",
@@ -4108,6 +4479,7 @@ export const categories: Category[] = [
           { label: "D", text: "A wallet" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base60",
@@ -4119,6 +4491,7 @@ export const categories: Category[] = [
           { label: "D", text: "A new token" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "base61",
@@ -4130,6 +4503,7 @@ export const categories: Category[] = [
           { label: "D", text: "A paid subscription" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base62",
@@ -4141,6 +4515,7 @@ export const categories: Category[] = [
           { label: "D", text: "A daily fee" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base63",
@@ -4152,6 +4527,7 @@ export const categories: Category[] = [
           { label: "D", text: "Base" },
         ],
         correctAnswer: "D",
+        difficulty: "easy"
       },
       {
         id: "base64",
@@ -4163,6 +4539,7 @@ export const categories: Category[] = [
           { label: "D", text: "A gaming platform" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base65",
@@ -4174,6 +4551,7 @@ export const categories: Category[] = [
           { label: "D", text: "Governments" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base66",
@@ -4184,7 +4562,8 @@ export const categories: Category[] = [
           { label: "C", text: "Blue Dot" },
           { label: "D", text: "Base Bear" },
         ],
-        correctAnswer: "C" },
+        correctAnswer: "C",
+        difficulty: "easy" },
       {
         id: "base67",
         question: "Is Base open source?",
@@ -4195,6 +4574,7 @@ export const categories: Category[] = [
           { label: "D", text: "Hidden" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "base68",
@@ -4206,6 +4586,7 @@ export const categories: Category[] = [
           { label: "D", text: "Auditor" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "base69",
@@ -4217,6 +4598,7 @@ export const categories: Category[] = [
           { label: "D", text: "All of the above" },
         ],
         correctAnswer: "D",
+        difficulty: "easy"
       },
       {
         id: "base70",
@@ -4227,7 +4609,8 @@ export const categories: Category[] = [
           { label: "C", text: "Being successful" },
           { label: "D", text: "Using Coinbase" },
         ],
-        correctAnswer: "A" },
+        correctAnswer: "A",
+        difficulty: "medium" },
     ],
   },
   {
@@ -4245,6 +4628,7 @@ export const categories: Category[] = [
           { label: "D", text: "A browser extension" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol10",
@@ -4256,6 +4640,7 @@ export const categories: Category[] = [
           { label: "D", text: "Polygon Max" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol11",
@@ -4267,6 +4652,7 @@ export const categories: Category[] = [
           { label: "D", text: "Snapchat" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol12",
@@ -4278,6 +4664,7 @@ export const categories: Category[] = [
           { label: "D", text: "A data storage layer" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol13",
@@ -4289,6 +4676,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator group" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol14",
@@ -4300,6 +4688,7 @@ export const categories: Category[] = [
           { label: "D", text: "It doesn't" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol15",
@@ -4311,6 +4700,7 @@ export const categories: Category[] = [
           { label: "D", text: "SpaceX" },
         ],
         correctAnswer: "D",
+        difficulty: "hard"
       },
       {
         id: "pol16",
@@ -4322,6 +4712,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator license" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol17",
@@ -4333,6 +4724,7 @@ export const categories: Category[] = [
           { label: "D", text: "Founder of Binance" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol18",
@@ -4344,6 +4736,7 @@ export const categories: Category[] = [
           { label: "D", text: "A block producer" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol19",
@@ -4355,6 +4748,7 @@ export const categories: Category[] = [
           { label: "D", text: "A new UI" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol20",
@@ -4366,6 +4760,7 @@ export const categories: Category[] = [
           { label: "D", text: "OkLink" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol21",
@@ -4377,6 +4772,7 @@ export const categories: Category[] = [
           { label: "D", text: "Proof of Stake" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol22",
@@ -4388,6 +4784,7 @@ export const categories: Category[] = [
           { label: "D", text: "Pudgy Penguins" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol23",
@@ -4399,6 +4796,7 @@ export const categories: Category[] = [
           { label: "D", text: "Partially" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol24",
@@ -4410,6 +4808,7 @@ export const categories: Category[] = [
           { label: "D", text: "A marketing firm" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol25",
@@ -4421,6 +4820,7 @@ export const categories: Category[] = [
           { label: "D", text: "PLG" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol26",
@@ -4432,6 +4832,7 @@ export const categories: Category[] = [
           { label: "D", text: "PLYG" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol27",
@@ -4443,6 +4844,7 @@ export const categories: Category[] = [
           { label: "D", text: "10 minutes" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol28",
@@ -4454,6 +4856,7 @@ export const categories: Category[] = [
           { label: "D", text: "An NFT collection" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol29",
@@ -4464,7 +4867,8 @@ export const categories: Category[] = [
           { label: "C", text: "SushiSwap" },
           { label: "D", text: "PancakeSwap" },
         ],
-        correctAnswer: "A" },
+        correctAnswer: "A",
+        difficulty: "medium" },
       {
         id: "pol30",
         question: "What is 'Polygon Nightfall' focusing on?",
@@ -4475,6 +4879,7 @@ export const categories: Category[] = [
           { label: "D", text: "A specialized bridge" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol31",
@@ -4486,6 +4891,7 @@ export const categories: Category[] = [
           { label: "D", text: "Forever" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol32",
@@ -4497,6 +4903,7 @@ export const categories: Category[] = [
           { label: "D", text: "All of above (Multiple partners)" },
         ],
         correctAnswer: "D",
+        difficulty: "medium"
       },
       {
         id: "pol33",
@@ -4508,6 +4915,7 @@ export const categories: Category[] = [
           { label: "D", text: "A browser extension" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol34",
@@ -4519,6 +4927,7 @@ export const categories: Category[] = [
           { label: "D", text: "Gavin Wood" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol35",
@@ -4530,6 +4939,7 @@ export const categories: Category[] = [
           { label: "D", text: "A specialized node" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol36",
@@ -4541,6 +4951,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol37",
@@ -4552,6 +4963,7 @@ export const categories: Category[] = [
           { label: "D", text: "A NFT market" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol38",
@@ -4563,6 +4975,7 @@ export const categories: Category[] = [
           { label: "D", text: "An NFT artist" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol39",
@@ -4574,6 +4987,7 @@ export const categories: Category[] = [
           { label: "D", text: "A and B are both common" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol40",
@@ -4585,6 +4999,7 @@ export const categories: Category[] = [
           { label: "D", text: "A game" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol41",
@@ -4596,6 +5011,7 @@ export const categories: Category[] = [
           { label: "D", text: "A marketing event" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol42",
@@ -4607,6 +5023,7 @@ export const categories: Category[] = [
           { label: "D", text: "A wallet feature" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol43",
@@ -4618,6 +5035,7 @@ export const categories: Category[] = [
           { label: "D", text: "Investing in projects" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol44",
@@ -4629,6 +5047,7 @@ export const categories: Category[] = [
           { label: "D", text: "A wallet feature" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol45",
@@ -4639,7 +5058,8 @@ export const categories: Category[] = [
           { label: "C", text: "Zerion" },
           { label: "D", text: "Dune" },
         ],
-        correctAnswer: "A" },
+        correctAnswer: "A",
+        difficulty: "hard" },
       {
         id: "pol46",
         question: "What is 'Polygon Supernets'?",
@@ -4650,6 +5070,7 @@ export const categories: Category[] = [
           { label: "D", text: "A specialized app" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol47",
@@ -4661,6 +5082,7 @@ export const categories: Category[] = [
           { label: "D", text: "10,000" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol48",
@@ -4672,6 +5094,7 @@ export const categories: Category[] = [
           { label: "D", text: "PLG" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol49",
@@ -4683,6 +5106,7 @@ export const categories: Category[] = [
           { label: "D", text: "Buying Ethereum" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol50",
@@ -4694,6 +5118,7 @@ export const categories: Category[] = [
           { label: "D", text: "A bridge" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol51",
@@ -4705,6 +5130,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol52",
@@ -4716,6 +5142,7 @@ export const categories: Category[] = [
           { label: "D", text: "A wallet" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol53",
@@ -4727,6 +5154,7 @@ export const categories: Category[] = [
           { label: "D", text: "A node" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol54",
@@ -4738,6 +5166,7 @@ export const categories: Category[] = [
           { label: "D", text: "A NFT" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol55",
@@ -4749,6 +5178,7 @@ export const categories: Category[] = [
           { label: "D", text: "A node" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol56",
@@ -4760,6 +5190,7 @@ export const categories: Category[] = [
           { label: "D", text: "Validator names" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol57",
@@ -4771,6 +5202,7 @@ export const categories: Category[] = [
           { label: "D", text: "All of the above" },
         ],
         correctAnswer: "D",
+        difficulty: "hard"
       },
       {
         id: "pol58",
@@ -4782,6 +5214,7 @@ export const categories: Category[] = [
           { label: "D", text: "A bridge" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol59",
@@ -4793,6 +5226,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol60",
@@ -4804,6 +5238,7 @@ export const categories: Category[] = [
           { label: "D", text: "Odin" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol61",
@@ -4815,6 +5250,7 @@ export const categories: Category[] = [
           { label: "D", text: "Freya" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol62",
@@ -4826,6 +5262,7 @@ export const categories: Category[] = [
           { label: "D", text: "White ETH" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol63",
@@ -4837,6 +5274,7 @@ export const categories: Category[] = [
           { label: "D", text: "10:1" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol64",
@@ -4848,6 +5286,7 @@ export const categories: Category[] = [
           { label: "D", text: "A node" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "pol65",
@@ -4859,6 +5298,7 @@ export const categories: Category[] = [
           { label: "D", text: "Paying to post" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol66",
@@ -4870,6 +5310,7 @@ export const categories: Category[] = [
           { label: "D", text: "Points" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol67",
@@ -4881,6 +5322,7 @@ export const categories: Category[] = [
           { label: "D", text: "Bitcoin" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "pol68",
@@ -4892,6 +5334,7 @@ export const categories: Category[] = [
           { label: "D", text: "QSWAP" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "pol69",
@@ -4903,6 +5346,7 @@ export const categories: Category[] = [
           { label: "D", text: "Joining a DAO" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "pol70",
@@ -4914,6 +5358,7 @@ export const categories: Category[] = [
           { label: "D", text: "Closing down" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
     ],
   },
@@ -4932,6 +5377,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator client" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui9",
@@ -4943,6 +5389,7 @@ export const categories: Category[] = [
           { label: "D", text: "Lighthouse" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui10",
@@ -4954,6 +5401,7 @@ export const categories: Category[] = [
           { label: "D", text: "A block explorer" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui11",
@@ -4965,6 +5413,7 @@ export const categories: Category[] = [
           { label: "D", text: "The Sui Data Graph" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui12",
@@ -4976,6 +5425,7 @@ export const categories: Category[] = [
           { label: "D", text: "All of the above" },
         ],
         correctAnswer: "D",
+        difficulty: "hard"
       },
       {
         id: "sui13",
@@ -4987,6 +5437,7 @@ export const categories: Category[] = [
           { label: "D", text: "Privacy" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui14",
@@ -4998,6 +5449,7 @@ export const categories: Category[] = [
           { label: "D", text: "Sui New Script" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui15",
@@ -5009,6 +5461,7 @@ export const categories: Category[] = [
           { label: "D", text: "Gemini" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui16",
@@ -5020,6 +5473,7 @@ export const categories: Category[] = [
           { label: "D", text: "A hardware login" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui17",
@@ -5031,6 +5485,7 @@ export const categories: Category[] = [
           { label: "D", text: "A calculator" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui18",
@@ -5042,6 +5497,7 @@ export const categories: Category[] = [
           { label: "D", text: "Both A and B are used" },
         ],
         correctAnswer: "D",
+        difficulty: "hard"
       },
       {
         id: "sui19",
@@ -5053,6 +5509,7 @@ export const categories: Category[] = [
           { label: "D", text: "A marketing guide" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui20",
@@ -5064,6 +5521,7 @@ export const categories: Category[] = [
           { label: "D", text: "A researcher" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui21",
@@ -5075,6 +5533,7 @@ export const categories: Category[] = [
           { label: "D", text: "A token" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui22",
@@ -5086,6 +5545,7 @@ export const categories: Category[] = [
           { label: "D", text: "A block explorer" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui23",
@@ -5097,6 +5557,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui24",
@@ -5108,6 +5569,7 @@ export const categories: Category[] = [
           { label: "D", text: "A technical bug" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui25",
@@ -5119,6 +5581,7 @@ export const categories: Category[] = [
           { label: "D", text: "Wallets" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui26",
@@ -5130,6 +5593,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui27",
@@ -5141,6 +5605,7 @@ export const categories: Category[] = [
           { label: "D", text: "A wallet feature" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui28",
@@ -5152,6 +5617,7 @@ export const categories: Category[] = [
           { label: "D", text: "Managed manually" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui29",
@@ -5162,7 +5628,8 @@ export const categories: Category[] = [
           { label: "C", text: "Unlimited" },
           { label: "D", text: "1 trillion" },
         ],
-        correctAnswer: "A" },
+        correctAnswer: "A",
+        difficulty: "medium" },
       {
         id: "sui30",
         question: "What year did the Sui mainnet launch?",
@@ -5173,6 +5640,7 @@ export const categories: Category[] = [
           { label: "D", text: "2024" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui31",
@@ -5184,6 +5652,7 @@ export const categories: Category[] = [
           { label: "D", text: "Brian Armstrong" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui32",
@@ -5195,6 +5664,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui33",
@@ -5206,6 +5676,7 @@ export const categories: Category[] = [
           { label: "D", text: "A bridge" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui34",
@@ -5217,6 +5688,7 @@ export const categories: Category[] = [
           { label: "D", text: "SUIX" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui35",
@@ -5228,6 +5700,7 @@ export const categories: Category[] = [
           { label: "D", text: "AI processing" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui36",
@@ -5239,6 +5712,7 @@ export const categories: Category[] = [
           { label: "D", text: "Competitor" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui37",
@@ -5250,6 +5724,7 @@ export const categories: Category[] = [
           { label: "D", text: "10 minutes" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui38",
@@ -5261,6 +5736,7 @@ export const categories: Category[] = [
           { label: "D", text: "A bridge fee" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui39",
@@ -5272,6 +5748,7 @@ export const categories: Category[] = [
           { label: "D", text: "A group of traders" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui40",
@@ -5283,6 +5760,7 @@ export const categories: Category[] = [
           { label: "D", text: "A marketing slogan" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui41",
@@ -5294,6 +5772,7 @@ export const categories: Category[] = [
           { label: "D", text: "A technical bug" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui42",
@@ -5305,6 +5784,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator name" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui43",
@@ -5316,6 +5796,7 @@ export const categories: Category[] = [
           { label: "D", text: "Plan for 2025" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui44",
@@ -5327,6 +5808,7 @@ export const categories: Category[] = [
           { label: "D", text: "A marketing hub" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui45",
@@ -5337,7 +5819,8 @@ export const categories: Category[] = [
           { label: "C", text: "A game" },
           { label: "D", text: "A node" },
         ],
-        correctAnswer: "A" },
+        correctAnswer: "A",
+        difficulty: "hard" },
       {
         id: "sui46",
         question: "What is 'FlowX Finance'?",
@@ -5348,6 +5831,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui47",
@@ -5359,6 +5843,7 @@ export const categories: Category[] = [
           { label: "D", text: "A bridge" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui48",
@@ -5370,6 +5855,7 @@ export const categories: Category[] = [
           { label: "D", text: "A node name" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui49",
@@ -5381,6 +5867,7 @@ export const categories: Category[] = [
           { label: "D", text: "Reducing transaction size" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui50",
@@ -5392,6 +5879,7 @@ export const categories: Category[] = [
           { label: "D", text: "A marketing tool" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui51",
@@ -5403,6 +5891,7 @@ export const categories: Category[] = [
           { label: "D", text: "A node" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui52",
@@ -5414,6 +5903,7 @@ export const categories: Category[] = [
           { label: "D", text: "No relation" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui53",
@@ -5425,6 +5915,7 @@ export const categories: Category[] = [
           { label: "D", text: "A marketing agency" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui54",
@@ -5436,6 +5927,7 @@ export const categories: Category[] = [
           { label: "D", text: "An investor" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui55",
@@ -5447,6 +5939,7 @@ export const categories: Category[] = [
           { label: "D", text: "A new token" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui56",
@@ -5458,6 +5951,7 @@ export const categories: Category[] = [
           { label: "D", text: "Coinbase" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui57",
@@ -5469,6 +5963,7 @@ export const categories: Category[] = [
           { label: "D", text: "A wallet" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui58",
@@ -5480,6 +5975,7 @@ export const categories: Category[] = [
           { label: "D", text: "1 million (impossible today)" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui59",
@@ -5491,6 +5987,7 @@ export const categories: Category[] = [
           { label: "D", text: "Paid in Bitcoin" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui60",
@@ -5502,6 +5999,7 @@ export const categories: Category[] = [
           { label: "D", text: "Slower confirmation" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui61",
@@ -5513,6 +6011,7 @@ export const categories: Category[] = [
           { label: "D", text: "A node" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui62",
@@ -5524,6 +6023,7 @@ export const categories: Category[] = [
           { label: "D", text: "A fork" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui63",
@@ -5535,6 +6035,7 @@ export const categories: Category[] = [
           { label: "D", text: "A specialized app" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui64",
@@ -5546,6 +6047,7 @@ export const categories: Category[] = [
           { label: "D", text: "Java" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui65",
@@ -5557,6 +6059,7 @@ export const categories: Category[] = [
           { label: "D", text: "sui binary" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui66",
@@ -5568,6 +6071,7 @@ export const categories: Category[] = [
           { label: "D", text: "A marketing campaign" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui67",
@@ -5579,6 +6083,7 @@ export const categories: Category[] = [
           { label: "D", text: "A node license" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui68",
@@ -5590,6 +6095,7 @@ export const categories: Category[] = [
           { label: "D", text: "A validator client" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sui69",
@@ -5601,6 +6107,7 @@ export const categories: Category[] = [
           { label: "D", text: "News" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sui70",
@@ -5612,6 +6119,7 @@ export const categories: Category[] = [
           { label: "D", text: "The future is Sui" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sui8",
@@ -5623,6 +6131,7 @@ export const categories: Category[] = [
           { label: "D", text: "Ghost" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
     ],
   },
@@ -5641,6 +6150,7 @@ export const categories: Category[] = [
           { label: "D", text: "Biology" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sc10",
@@ -5652,6 +6162,7 @@ export const categories: Category[] = [
           { label: "D", text: "Mercury" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc11",
@@ -5663,6 +6174,7 @@ export const categories: Category[] = [
           { label: "D", text: "10,000 km/s" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sc12",
@@ -5674,6 +6186,7 @@ export const categories: Category[] = [
           { label: "D", text: "Kidneys" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "sc13",
@@ -5685,6 +6198,7 @@ export const categories: Category[] = [
           { label: "D", text: "200°C" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc14",
@@ -5696,6 +6210,7 @@ export const categories: Category[] = [
           { label: "D", text: "Neutron" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sc15",
@@ -5707,6 +6222,7 @@ export const categories: Category[] = [
           { label: "D", text: "Helium" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "sc16",
@@ -5718,6 +6234,7 @@ export const categories: Category[] = [
           { label: "D", text: "300" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc17",
@@ -5729,6 +6246,7 @@ export const categories: Category[] = [
           { label: "D", text: "Solar Flare" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sc18",
@@ -5740,6 +6258,7 @@ export const categories: Category[] = [
           { label: "D", text: "Volcanoes" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sc19",
@@ -5751,6 +6270,7 @@ export const categories: Category[] = [
           { label: "D", text: "Leaves" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc20",
@@ -5762,6 +6282,7 @@ export const categories: Category[] = [
           { label: "D", text: "10°C" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "sc21",
@@ -5773,6 +6294,7 @@ export const categories: Category[] = [
           { label: "D", text: "Shark" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sc22",
@@ -5784,6 +6306,7 @@ export const categories: Category[] = [
           { label: "D", text: "Pluto" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "sc23",
@@ -5795,6 +6318,7 @@ export const categories: Category[] = [
           { label: "D", text: "Plasma" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sc24",
@@ -5806,6 +6330,7 @@ export const categories: Category[] = [
           { label: "D", text: "Mars" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sc25",
@@ -5817,6 +6342,7 @@ export const categories: Category[] = [
           { label: "D", text: "Precipitation" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc26",
@@ -5828,6 +6354,7 @@ export const categories: Category[] = [
           { label: "D", text: "Vitamin E" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sc27",
@@ -5839,6 +6366,7 @@ export const categories: Category[] = [
           { label: "D", text: "Ecology" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sc28",
@@ -5850,6 +6378,7 @@ export const categories: Category[] = [
           { label: "D", text: "Benjamin Franklin" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc29",
@@ -5860,7 +6389,8 @@ export const categories: Category[] = [
           { label: "C", text: "Roots" },
           { label: "D", text: "Flowers" },
         ],
-        correctAnswer: "C" },
+        correctAnswer: "C",
+        difficulty: "medium" },
       {
         id: "sc30",
         question: "What is the chemical symbol for water?",
@@ -5871,6 +6401,7 @@ export const categories: Category[] = [
           { label: "D", text: "NaCl" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "sc31",
@@ -5882,6 +6413,7 @@ export const categories: Category[] = [
           { label: "D", text: "Owl" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc32",
@@ -5893,6 +6425,7 @@ export const categories: Category[] = [
           { label: "D", text: "Watt" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sc33",
@@ -5904,6 +6437,7 @@ export const categories: Category[] = [
           { label: "D", text: "Mars" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sc34",
@@ -5915,6 +6449,7 @@ export const categories: Category[] = [
           { label: "D", text: "Rib" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sc35",
@@ -5926,6 +6461,7 @@ export const categories: Category[] = [
           { label: "D", text: "Cycle" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sc36",
@@ -5937,6 +6473,7 @@ export const categories: Category[] = [
           { label: "D", text: "Fast and Slow" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sc37",
@@ -5948,6 +6485,7 @@ export const categories: Category[] = [
           { label: "D", text: "Carbon" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "sc38",
@@ -5959,6 +6497,7 @@ export const categories: Category[] = [
           { label: "D", text: "Neptune" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sc39",
@@ -5970,6 +6509,7 @@ export const categories: Category[] = [
           { label: "D", text: "Vacuole" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sc40",
@@ -5981,6 +6521,7 @@ export const categories: Category[] = [
           { label: "D", text: "Store energy" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc41",
@@ -5992,6 +6533,7 @@ export const categories: Category[] = [
           { label: "D", text: "Carbon Dioxide" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sc42",
@@ -6003,6 +6545,7 @@ export const categories: Category[] = [
           { label: "D", text: "12 hours" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "sc43",
@@ -6014,6 +6557,7 @@ export const categories: Category[] = [
           { label: "D", text: "Pb" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc44",
@@ -6025,6 +6569,7 @@ export const categories: Category[] = [
           { label: "D", text: "AB" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sc45",
@@ -6035,7 +6580,8 @@ export const categories: Category[] = [
           { label: "C", text: "Respiration" },
           { label: "D", text: "Digestion" },
         ],
-        correctAnswer: "A" },
+        correctAnswer: "A",
+        difficulty: "hard" },
       {
         id: "sc46",
         question: "Which instrument is used to measure air pressure?",
@@ -6046,6 +6592,7 @@ export const categories: Category[] = [
           { label: "D", text: "Anemometer" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc47",
@@ -6057,6 +6604,7 @@ export const categories: Category[] = [
           { label: "D", text: "Genetics" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sc48",
@@ -6068,6 +6616,7 @@ export const categories: Category[] = [
           { label: "D", text: "Decomposer" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "sc49",
@@ -6079,6 +6628,7 @@ export const categories: Category[] = [
           { label: "D", text: "Polaris" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "sc50",
@@ -6090,6 +6640,7 @@ export const categories: Category[] = [
           { label: "D", text: "Thermosphere" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sc51",
@@ -6101,6 +6652,7 @@ export const categories: Category[] = [
           { label: "D", text: "Newton" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sc52",
@@ -6112,6 +6664,7 @@ export const categories: Category[] = [
           { label: "D", text: "10" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc53",
@@ -6123,6 +6676,7 @@ export const categories: Category[] = [
           { label: "D", text: "Chemist" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sc54",
@@ -6134,6 +6688,7 @@ export const categories: Category[] = [
           { label: "D", text: "Magnesium" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sc55",
@@ -6145,6 +6700,7 @@ export const categories: Category[] = [
           { label: "D", text: "Psychology" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "sc56",
@@ -6156,6 +6712,7 @@ export const categories: Category[] = [
           { label: "D", text: "Lens" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sc57",
@@ -6167,6 +6724,7 @@ export const categories: Category[] = [
           { label: "D", text: "Kidney" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sc58",
@@ -6178,6 +6736,7 @@ export const categories: Category[] = [
           { label: "D", text: "Meteorologist" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc59",
@@ -6189,6 +6748,7 @@ export const categories: Category[] = [
           { label: "D", text: "Helium" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sc60",
@@ -6200,6 +6760,7 @@ export const categories: Category[] = [
           { label: "D", text: "Flash" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sc61",
@@ -6211,6 +6772,7 @@ export const categories: Category[] = [
           { label: "D", text: "Whirlpool" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc62",
@@ -6222,6 +6784,7 @@ export const categories: Category[] = [
           { label: "D", text: "Solutions" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sc63",
@@ -6233,6 +6796,7 @@ export const categories: Category[] = [
           { label: "D", text: "Copper" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sc64",
@@ -6244,6 +6808,7 @@ export const categories: Category[] = [
           { label: "D", text: "Condensing" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc65",
@@ -6255,6 +6820,7 @@ export const categories: Category[] = [
           { label: "D", text: "Lithosphere" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "sc66",
@@ -6266,6 +6832,7 @@ export const categories: Category[] = [
           { label: "D", text: "Deposition" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sc67",
@@ -6277,6 +6844,7 @@ export const categories: Category[] = [
           { label: "D", text: "Aluminum" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "sc68",
@@ -6288,6 +6856,7 @@ export const categories: Category[] = [
           { label: "D", text: "Amphibians" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "sc69",
@@ -6299,6 +6868,7 @@ export const categories: Category[] = [
           { label: "D", text: "Plasma" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "sc70",
@@ -6310,6 +6880,7 @@ export const categories: Category[] = [
           { label: "D", text: "Speed" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
     ],
   },
@@ -6328,6 +6899,7 @@ export const categories: Category[] = [
           { label: "D", text: "Nice" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo10",
@@ -6339,6 +6911,7 @@ export const categories: Category[] = [
           { label: "D", text: "Russia" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo11",
@@ -6350,6 +6923,7 @@ export const categories: Category[] = [
           { label: "D", text: "Kalahari" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "geo12",
@@ -6361,6 +6935,7 @@ export const categories: Category[] = [
           { label: "D", text: "Montreal" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "geo13",
@@ -6372,6 +6947,7 @@ export const categories: Category[] = [
           { label: "D", text: "Lhotse" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo14",
@@ -6383,6 +6959,7 @@ export const categories: Category[] = [
           { label: "D", text: "French" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "geo15",
@@ -6394,6 +6971,7 @@ export const categories: Category[] = [
           { label: "D", text: "Dead Sea" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo16",
@@ -6405,6 +6983,7 @@ export const categories: Category[] = [
           { label: "D", text: "Milan" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo17",
@@ -6416,6 +6995,7 @@ export const categories: Category[] = [
           { label: "D", text: "Montana" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "geo18",
@@ -6427,6 +7007,7 @@ export const categories: Category[] = [
           { label: "D", text: "Hamburg" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo19",
@@ -6438,6 +7019,7 @@ export const categories: Category[] = [
           { label: "D", text: "South America" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo20",
@@ -6449,6 +7031,7 @@ export const categories: Category[] = [
           { label: "D", text: "Thailand" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "geo21",
@@ -6460,6 +7043,7 @@ export const categories: Category[] = [
           { label: "D", text: "Alps" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "geo22",
@@ -6471,6 +7055,7 @@ export const categories: Category[] = [
           { label: "D", text: "Birmingham" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "geo23",
@@ -6482,6 +7067,7 @@ export const categories: Category[] = [
           { label: "D", text: "Sri Lanka" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "geo24",
@@ -6493,6 +7079,7 @@ export const categories: Category[] = [
           { label: "D", text: "Valencia" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo25",
@@ -6504,6 +7091,7 @@ export const categories: Category[] = [
           { label: "D", text: "India and Pakistan" },
         ],
         correctAnswer: "A",
+        difficulty: "hard"
       },
       {
         id: "geo26",
@@ -6515,6 +7103,7 @@ export const categories: Category[] = [
           { label: "D", text: "Perth" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "geo27",
@@ -6526,6 +7115,7 @@ export const categories: Category[] = [
           { label: "D", text: "Columbia River" },
         ],
         correctAnswer: "A",
+        difficulty: "medium"
       },
       {
         id: "geo28",
@@ -6537,6 +7127,7 @@ export const categories: Category[] = [
           { label: "D", text: "Rome" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo29",
@@ -6547,7 +7138,8 @@ export const categories: Category[] = [
           { label: "C", text: "Europe" },
           { label: "D", text: "South America" },
         ],
-        correctAnswer: "B" },
+        correctAnswer: "B",
+        difficulty: "easy" },
       {
         id: "geo30",
         question: "What is the capital of Russia?",
@@ -6558,6 +7150,7 @@ export const categories: Category[] = [
           { label: "D", text: "Minsk" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo31",
@@ -6569,6 +7162,7 @@ export const categories: Category[] = [
           { label: "D", text: "Brazil" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo32",
@@ -6580,6 +7174,7 @@ export const categories: Category[] = [
           { label: "D", text: "Guangzhou" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "geo33",
@@ -6591,6 +7186,7 @@ export const categories: Category[] = [
           { label: "D", text: "Valdivian" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo34",
@@ -6602,6 +7198,7 @@ export const categories: Category[] = [
           { label: "D", text: "Chennai" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo35",
@@ -6613,6 +7210,7 @@ export const categories: Category[] = [
           { label: "D", text: "Thar" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "geo36",
@@ -6624,6 +7222,7 @@ export const categories: Category[] = [
           { label: "D", text: "Egypt" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo37",
@@ -6635,6 +7234,7 @@ export const categories: Category[] = [
           { label: "D", text: "Salvador" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "geo38",
@@ -6646,6 +7246,7 @@ export const categories: Category[] = [
           { label: "D", text: "Japan" },
         ],
         correctAnswer: "C",
+        difficulty: "easy"
       },
       {
         id: "geo39",
@@ -6657,6 +7258,7 @@ export const categories: Category[] = [
           { label: "D", text: "Luxor" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo40",
@@ -6668,6 +7270,7 @@ export const categories: Category[] = [
           { label: "D", text: "Arctic" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo41",
@@ -6679,6 +7282,7 @@ export const categories: Category[] = [
           { label: "D", text: "Lake Michigan" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "geo42",
@@ -6690,6 +7294,7 @@ export const categories: Category[] = [
           { label: "D", text: "Naples" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo43",
@@ -6701,6 +7306,7 @@ export const categories: Category[] = [
           { label: "D", text: "Yen" },
         ],
         correctAnswer: "C",
+        difficulty: "hard"
       },
       {
         id: "geo44",
@@ -6712,6 +7318,7 @@ export const categories: Category[] = [
           { label: "D", text: "Madrid" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "geo45",
@@ -6722,7 +7329,8 @@ export const categories: Category[] = [
           { label: "C", text: "Seoul" },
           { label: "D", text: "Daegu" },
         ],
-        correctAnswer: "C" },
+        correctAnswer: "C",
+        difficulty: "medium" },
       {
         id: "geo46",
         question: "Which city is known as the 'Eternal City'?",
@@ -6733,6 +7341,7 @@ export const categories: Category[] = [
           { label: "D", text: "Istanbul" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo47",
@@ -6744,6 +7353,7 @@ export const categories: Category[] = [
           { label: "D", text: "Andes" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "geo48",
@@ -6755,6 +7365,7 @@ export const categories: Category[] = [
           { label: "D", text: "Antalya" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo49",
@@ -6766,6 +7377,7 @@ export const categories: Category[] = [
           { label: "D", text: "Bristol Channel" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo50",
@@ -6777,6 +7389,7 @@ export const categories: Category[] = [
           { label: "D", text: "Quebec City" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "geo51",
@@ -6788,6 +7401,7 @@ export const categories: Category[] = [
           { label: "D", text: "Italy" },
         ],
         correctAnswer: "C",
+        difficulty: "medium"
       },
       {
         id: "geo52",
@@ -6799,6 +7413,7 @@ export const categories: Category[] = [
           { label: "D", text: "Rhodes" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo53",
@@ -6810,6 +7425,7 @@ export const categories: Category[] = [
           { label: "D", text: "New York" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "geo54",
@@ -6821,6 +7437,7 @@ export const categories: Category[] = [
           { label: "D", text: "Danube" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo55",
@@ -6832,6 +7449,7 @@ export const categories: Category[] = [
           { label: "D", text: "Guadalajara" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo56",
@@ -6843,6 +7461,7 @@ export const categories: Category[] = [
           { label: "D", text: "Both same" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "geo57",
@@ -6854,6 +7473,7 @@ export const categories: Category[] = [
           { label: "D", text: "Rosario" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo58",
@@ -6865,6 +7485,7 @@ export const categories: Category[] = [
           { label: "D", text: "Madrid" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo59",
@@ -6876,6 +7497,7 @@ export const categories: Category[] = [
           { label: "D", text: "Tromso" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "geo60",
@@ -6887,6 +7509,7 @@ export const categories: Category[] = [
           { label: "D", text: "Osaka" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo61",
@@ -6898,6 +7521,7 @@ export const categories: Category[] = [
           { label: "D", text: "Pattaya" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo62",
@@ -6909,6 +7533,7 @@ export const categories: Category[] = [
           { label: "D", text: "Algeria" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "geo63",
@@ -6920,6 +7545,7 @@ export const categories: Category[] = [
           { label: "D", text: "Nakuru" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo64",
@@ -6931,6 +7557,7 @@ export const categories: Category[] = [
           { label: "D", text: "Mauritius" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo65",
@@ -6942,6 +7569,7 @@ export const categories: Category[] = [
           { label: "D", text: "Basel" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "geo66",
@@ -6953,6 +7581,7 @@ export const categories: Category[] = [
           { label: "D", text: "Zambezi" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo67",
@@ -6964,6 +7593,7 @@ export const categories: Category[] = [
           { label: "D", text: "Uppsala" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "geo68",
@@ -6975,6 +7605,7 @@ export const categories: Category[] = [
           { label: "D", text: "Panama" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "geo69",
@@ -6986,6 +7617,7 @@ export const categories: Category[] = [
           { label: "D", text: "Borneo" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "geo70",
@@ -6997,6 +7629,7 @@ export const categories: Category[] = [
           { label: "D", text: "Espoo" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
     ],
   },
@@ -7015,6 +7648,7 @@ export const categories: Category[] = [
           { label: "D", text: "John Adams" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi10",
@@ -7026,6 +7660,7 @@ export const categories: Category[] = [
           { label: "D", text: "1898" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi11",
@@ -7037,6 +7672,7 @@ export const categories: Category[] = [
           { label: "D", text: "Persian Empire" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi12",
@@ -7048,6 +7684,7 @@ export const categories: Category[] = [
           { label: "D", text: "Mikhail Gorbachev" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi13",
@@ -7059,6 +7696,7 @@ export const categories: Category[] = [
           { label: "D", text: "1980" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi14",
@@ -7070,6 +7708,7 @@ export const categories: Category[] = [
           { label: "D", text: "Amy Johnson" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi15",
@@ -7081,6 +7720,7 @@ export const categories: Category[] = [
           { label: "D", text: "Egyptians" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi16",
@@ -7092,6 +7732,7 @@ export const categories: Category[] = [
           { label: "D", text: "Anthony Eden" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi17",
@@ -7103,6 +7744,7 @@ export const categories: Category[] = [
           { label: "D", text: "18th Century" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi18",
@@ -7114,6 +7756,7 @@ export const categories: Category[] = [
           { label: "D", text: "John Glenn" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi19",
@@ -7125,6 +7768,7 @@ export const categories: Category[] = [
           { label: "D", text: "Vietnam War" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi20",
@@ -7136,6 +7780,7 @@ export const categories: Category[] = [
           { label: "D", text: "Queen Anne" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi21",
@@ -7147,6 +7792,7 @@ export const categories: Category[] = [
           { label: "D", text: "1815" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi22",
@@ -7158,6 +7804,7 @@ export const categories: Category[] = [
           { label: "D", text: "Edith Cavell" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi23",
@@ -7169,6 +7816,7 @@ export const categories: Category[] = [
           { label: "D", text: "Saudi Arabia" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi24",
@@ -7180,6 +7828,7 @@ export const categories: Category[] = [
           { label: "D", text: "Thabo Mbeki" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi25",
@@ -7191,6 +7840,7 @@ export const categories: Category[] = [
           { label: "D", text: "1512" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi26",
@@ -7202,6 +7852,7 @@ export const categories: Category[] = [
           { label: "D", text: "Heinrich Himmler" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi27",
@@ -7213,6 +7864,7 @@ export const categories: Category[] = [
           { label: "D", text: "Byzantine" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi28",
@@ -7224,6 +7876,7 @@ export const categories: Category[] = [
           { label: "D", text: "Dwight D. Eisenhower" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi29",
@@ -7234,7 +7887,8 @@ export const categories: Category[] = [
           { label: "C", text: "New York" },
           { label: "D", text: "Chicago" },
         ],
-        correctAnswer: "B" },
+        correctAnswer: "B",
+        difficulty: "hard" },
       {
         id: "hi30",
         question: "Who was the target of the Gunpowder Plot in 1605?",
@@ -7245,6 +7899,7 @@ export const categories: Category[] = [
           { label: "D", text: "King Henry VIII" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi31",
@@ -7256,6 +7911,7 @@ export const categories: Category[] = [
           { label: "D", text: "Tea Road" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi32",
@@ -7267,6 +7923,7 @@ export const categories: Category[] = [
           { label: "D", text: "1916" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi33",
@@ -7278,6 +7935,7 @@ export const categories: Category[] = [
           { label: "D", text: "Batu Khan" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi34",
@@ -7289,6 +7947,7 @@ export const categories: Category[] = [
           { label: "D", text: "Germany" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi35",
@@ -7300,6 +7959,7 @@ export const categories: Category[] = [
           { label: "D", text: "Indira Gandhi" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi36",
@@ -7311,6 +7971,7 @@ export const categories: Category[] = [
           { label: "D", text: "China" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi37",
@@ -7322,6 +7983,7 @@ export const categories: Category[] = [
           { label: "D", text: "Thomas Jefferson" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi38",
@@ -7333,6 +7995,7 @@ export const categories: Category[] = [
           { label: "D", text: "1976" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi39",
@@ -7344,6 +8007,7 @@ export const categories: Category[] = [
           { label: "D", text: "Women's suffrage" },
         ],
         correctAnswer: "A",
+        difficulty: "easy"
       },
       {
         id: "hi40",
@@ -7355,6 +8019,7 @@ export const categories: Category[] = [
           { label: "D", text: "Spain" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi41",
@@ -7366,6 +8031,7 @@ export const categories: Category[] = [
           { label: "D", text: "England" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi42",
@@ -7377,6 +8043,7 @@ export const categories: Category[] = [
           { label: "D", text: "Sardar Patel" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi43",
@@ -7388,6 +8055,7 @@ export const categories: Category[] = [
           { label: "D", text: "2010" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi44",
@@ -7399,6 +8067,7 @@ export const categories: Category[] = [
           { label: "D", text: "Louis XV" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi45",
@@ -7409,7 +8078,8 @@ export const categories: Category[] = [
           { label: "C", text: "UK and Germany" },
           { label: "D", text: "Germany and USSR" },
         ],
-        correctAnswer: "B" },
+        correctAnswer: "B",
+        difficulty: "easy" },
       {
         id: "hi46",
         question: "What year did the Apollo 11 moon landing take place?",
@@ -7420,6 +8090,7 @@ export const categories: Category[] = [
           { label: "D", text: "1960" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi47",
@@ -7431,6 +8102,7 @@ export const categories: Category[] = [
           { label: "D", text: "Fidel Castro" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi48",
@@ -7442,6 +8114,7 @@ export const categories: Category[] = [
           { label: "D", text: "France" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi49",
@@ -7453,6 +8126,7 @@ export const categories: Category[] = [
           { label: "D", text: "1910" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi50",
@@ -7464,6 +8138,7 @@ export const categories: Category[] = [
           { label: "D", text: "Peter the Great" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi51",
@@ -7475,6 +8150,7 @@ export const categories: Category[] = [
           { label: "D", text: "To transport troops" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi52",
@@ -7486,6 +8162,7 @@ export const categories: Category[] = [
           { label: "D", text: "Robespierre" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi53",
@@ -7497,6 +8174,7 @@ export const categories: Category[] = [
           { label: "D", text: "Syria" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi54",
@@ -7508,6 +8186,7 @@ export const categories: Category[] = [
           { label: "D", text: "Neil Armstrong" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi55",
@@ -7519,6 +8198,7 @@ export const categories: Category[] = [
           { label: "D", text: "1453 AD" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi56",
@@ -7530,6 +8210,7 @@ export const categories: Category[] = [
           { label: "D", text: "Mao Zedong" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi57",
@@ -7541,6 +8222,7 @@ export const categories: Category[] = [
           { label: "D", text: "1960" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi58",
@@ -7552,6 +8234,7 @@ export const categories: Category[] = [
           { label: "D", text: "Cyrus" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi59",
@@ -7563,6 +8246,7 @@ export const categories: Category[] = [
           { label: "D", text: "1999" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi60",
@@ -7574,6 +8258,7 @@ export const categories: Category[] = [
           { label: "D", text: "King George" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi61",
@@ -7585,6 +8270,7 @@ export const categories: Category[] = [
           { label: "D", text: "Booker T. Washington" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi62",
@@ -7596,6 +8282,7 @@ export const categories: Category[] = [
           { label: "D", text: "1959" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi63",
@@ -7607,6 +8294,7 @@ export const categories: Category[] = [
           { label: "D", text: "Victoria" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi64",
@@ -7618,6 +8306,7 @@ export const categories: Category[] = [
           { label: "D", text: "1799" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi65",
@@ -7629,6 +8318,7 @@ export const categories: Category[] = [
           { label: "D", text: "Rosalind Franklin" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi66",
@@ -7640,6 +8330,7 @@ export const categories: Category[] = [
           { label: "D", text: "Santa Maria" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi67",
@@ -7651,6 +8342,7 @@ export const categories: Category[] = [
           { label: "D", text: "1886" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
       {
         id: "hi68",
@@ -7662,6 +8354,7 @@ export const categories: Category[] = [
           { label: "D", text: "Czar Nicholas II" },
         ],
         correctAnswer: "B",
+        difficulty: "hard"
       },
       {
         id: "hi69",
@@ -7673,6 +8366,7 @@ export const categories: Category[] = [
           { label: "D", text: "1988" },
         ],
         correctAnswer: "B",
+        difficulty: "easy"
       },
       {
         id: "hi70",
@@ -7684,6 +8378,7 @@ export const categories: Category[] = [
           { label: "D", text: "Indians" },
         ],
         correctAnswer: "B",
+        difficulty: "medium"
       },
     ],
   },

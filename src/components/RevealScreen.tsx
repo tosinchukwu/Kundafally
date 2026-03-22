@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useGame } from "@/context/GameContext";
 
 export default function RevealScreen() {
-  const { state, dispatch, currentQuestion } = useGame();
+  const { state, dispatch, currentQuestion, currentToken } = useGame();
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch({ type: "OPEN_TRAPDOORS" });
@@ -77,7 +77,7 @@ export default function RevealScreen() {
           >
             {lastHistory?.correct ? (
               <div className="font-display text-xl md:text-2xl font-black text-accent tracking-tight flex items-center gap-2">
-                STABLE <span className="text-bonus animate-bounce">+{lastHistory.bonus}</span>
+                STABLE
               </div>
             ) : (
               <div className="font-display text-xl md:text-2xl font-black text-red-500 tracking-tight">
@@ -88,11 +88,11 @@ export default function RevealScreen() {
             <div className="mt-4 md:mt-6 flex flex-col items-center">
               <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-2">Vault Balance</span>
               <div className="flex items-center gap-3 md:gap-5">
-                <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl md:rounded-2xl bg-gradient-to-tr from-yellow-600 to-yellow-300 shadow-[0_0_20px_rgba(234,179,8,0.3)]">
-                  <span className="text-xl md:text-2xl font-bold text-white drop-shadow-md">₿</span>
+                <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl md:rounded-2xl bg-gradient-to-tr from-accent/60 to-accent shadow-[0_0_20px_rgba(34,211,238,0.3)]">
+                  <span className="text-[10px] md:text-sm font-black text-white leading-none tracking-tighter">{currentToken}</span>
                 </div>
                 <span className="font-data text-4xl md:text-5xl font-black text-white tracking-tighter">
-                  {state.tokens.toLocaleString()}
+                  ${state.tokens.toLocaleString()}
                 </span>
               </div>
             </div>

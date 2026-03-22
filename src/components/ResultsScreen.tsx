@@ -6,7 +6,6 @@ export default function ResultsScreen() {
 
   const correctCount = state.history.filter((h) => h.correct).length;
   const totalLost = state.history.reduce((a, h) => a + h.tokensLost, 0);
-  const totalBonus = state.history.reduce((a, h) => a + h.bonus, 0);
 
   return (
     <div className="game-container flex flex-col items-center justify-center px-4 pointer-events-auto">
@@ -35,11 +34,11 @@ export default function ResultsScreen() {
           
           <div className="relative z-10 flex flex-col items-center">
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 mb-2">
-              <div className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl md:rounded-[2rem] bg-gradient-to-tr from-yellow-600 to-yellow-300 shadow-[0_20px_40px_rgba(234,179,8,0.3)] border border-white/20">
-                <span className="text-3xl md:text-4xl font-bold text-white drop-shadow-xl">₿</span>
+              <div className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl md:rounded-[2rem] bg-gradient-to-tr from-accent/60 to-accent shadow-[0_20px_40px_rgba(34,211,238,0.3)] border border-white/20">
+                <span className="text-xl md:text-2xl font-black text-white leading-none tracking-tighter">ALL</span>
               </div>
               <span className="font-data text-6xl md:text-9xl font-black text-white tracking-tighter drop-shadow-2xl">
-                {state.tokens.toLocaleString()}
+                ${state.totalScore.toLocaleString()}
               </span>
             </div>
             <div className="font-display text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.5em] text-white/30 uppercase mt-4">Vault Reconciliation Successful</div>
@@ -49,8 +48,8 @@ export default function ResultsScreen() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-10">
           {[
             { label: "STABILITY", value: `${correctCount}/${state.history.length}`, color: "text-accent" },
-            { label: "VOIDS", value: totalLost.toLocaleString(), color: "text-red-500" },
-            { label: "DIVIDENDS", value: totalBonus.toLocaleString(), color: "text-green-400" },
+            { label: "VOIDS", value: `$${totalLost.toLocaleString()}`, color: "text-red-500" },
+            { label: "EFFICIENCY", value: `${Math.round((state.totalScore / (state.history.length * 1000 || 1)) * 100)}%`, color: "text-green-400" },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -82,7 +81,7 @@ export default function ResultsScreen() {
                         {h.question}
                     </span>
                     <span className={`font-data text-xs md:text-sm font-black ${h.correct ? "text-accent" : "text-red-500"}`}>
-                        {h.correct ? `+${h.bonus}` : `-${h.tokensLost}`}
+                        {h.correct ? "STABLE" : `-$${h.tokensLost}`}
                     </span>
                     </motion.div>
                 ))}
