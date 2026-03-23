@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGame } from "@/context/GameContext";
 
-const PRESETS = [10, 25, 50, 100];
+const PRESETS = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
 
 export default function GameplayScreen() {
   const { state, dispatch, currentQuestion, currentToken } = useGame();
@@ -221,6 +221,27 @@ export default function GameplayScreen() {
                   {!isInputValid && inputValue !== "0" && (
                     <span className="text-[8px] font-black text-red-500 uppercase tracking-widest animate-pulse">Range: $100 - $1000 ($100 steps)</span>
                   )}
+                </div>
+                
+                {/* Preset Buttons */}
+                <div className="flex flex-wrap justify-center gap-2 mt-2 max-w-sm">
+                  {PRESETS.map((p) => {
+                    const totalDist = Object.values(state.distribution).reduce((a: number, b: number) => a + b, 0);
+                    const currentOtherDist = totalDist - (state.distribution[selectedPlateLabel] || 0);
+                    const maxPossible = Math.min(1000, state.tokens - currentOtherDist);
+                    const isPossible = p <= maxPossible;
+
+                    return (
+                      <button
+                        key={p}
+                        onClick={() => isPossible && dispatch({ type: "SET_DISTRIBUTION", label: selectedPlateLabel, amount: p })}
+                        disabled={!isPossible}
+                        className={`px-2 py-1 rounded-md font-data text-[9px] font-black border transition-all ${isPossible ? "bg-white/5 border-white/10 text-white/40 hover:bg-accent/20 hover:text-accent hover:border-accent" : "bg-white/5 border-white/5 text-white/5 cursor-not-allowed"}`}
+                      >
+                        ${p}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
