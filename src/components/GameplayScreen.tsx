@@ -11,8 +11,23 @@ export default function GameplayScreen() {
   
   // Betting Input Local State
   const [inputValue, setInputValue] = useState<string>("0");
+  const [displayedQuestion, setDisplayedQuestion] = useState("");
 
   const selectedPlateLabel = state.selectedPlatform;
+
+  // Typewriter effect
+  useEffect(() => {
+    if (!currentQuestion) return;
+    setDisplayedQuestion("");
+    let i = 0;
+    const text = currentQuestion.question;
+    const intervalId = setInterval(() => {
+      setDisplayedQuestion(text.slice(0, i + 1));
+      i++;
+      if (i >= text.length) clearInterval(intervalId);
+    }, 20);
+    return () => clearInterval(intervalId);
+  }, [currentQuestion?.question]);
 
   // Sync local input with global state when selection changes
   useEffect(() => {
@@ -27,9 +42,9 @@ export default function GameplayScreen() {
     if (val === "" || /^\d+$/.test(val)) {
       setInputValue(val);
       
-      // If it's a valid multiple of 50, update global state immediately so LOCK can enable
+      // If it's a valid multiple of 100, update global state immediately so LOCK can enable
       const num = parseInt(val) || 0;
-      if (num >= 50 && num % 50 === 0 && selectedPlateLabel) {
+      if (num >= 100 && num % 100 === 0 && selectedPlateLabel) {
         const totalOtherDist = Object.entries(state.distribution)
           .filter(([label]) => label !== selectedPlateLabel)
           .reduce((a, [_, b]) => a + b, 0);
@@ -45,14 +60,14 @@ export default function GameplayScreen() {
     if (!selectedPlateLabel) return;
     const rawVal = parseInt(inputValue) || 0;
     
-    // Snap to nearest 50
-    const snappedVal = Math.round(rawVal / 50) * 50;
+    // Snap to nearest 100
+    const snappedVal = Math.round(rawVal / 100) * 100;
     
     const totalDist = Object.values(state.distribution).reduce((a: number, b: number) => a + b, 0);
     const currentOtherDist = totalDist - (state.distribution[selectedPlateLabel] || 0);
     const maxPossible = Math.min(1000, state.tokens - currentOtherDist);
     
-    const finalVal = Math.max(0, Math.min(snappedVal, Math.floor(maxPossible / 50) * 50));
+    const finalVal = Math.max(0, Math.min(snappedVal, Math.floor(maxPossible / 100) * 100));
     
     dispatch({ type: "SET_DISTRIBUTION", label: selectedPlateLabel, amount: finalVal });
     setInputValue(finalVal.toString());
@@ -67,8 +82,8 @@ export default function GameplayScreen() {
     const maxPossible = Math.min(1000, state.tokens - currentOtherDist);
     
     newAmount = Math.max(0, Math.min(newAmount, maxPossible));
-    // Snap delta updates to 50 if they aren't already
-    newAmount = Math.round(newAmount / 50) * 50;
+    // Snap delta updates to 100 if they aren't already
+    newAmount = Math.round(newAmount / 100) * 100;
     
     dispatch({ type: "SET_DISTRIBUTION", label, amount: newAmount });
   };
@@ -106,7 +121,7 @@ export default function GameplayScreen() {
 
   const isInputValid = useMemo(() => {
     const num = parseInt(inputValue) || 0;
-    return num >= 50 && num <= 1000 && num % 50 === 0;
+    return num >= 100 && num <= 1000 && num % 100 === 0;
   }, [inputValue]);
 
   const canLock = useMemo(() => {
@@ -116,18 +131,18 @@ export default function GameplayScreen() {
     // 2. All other platforms in state must be valid
     const othersValid = Object.entries(state.distribution).every(([label, val]) => {
       if (label === selectedPlateLabel) return true; // Handled by isInputValid
-      return val === 0 || (val >= 50 && val <= 1000 && val % 50 === 0);
+      return val === 0 || (val >= 100 && val <= 1000 && val % 100 === 0);
     });
     if (!othersValid) return false;
 
-    // 3. Total (including current typing) must be >= 50
+    // 3. MUST use current balance (100% distribution required)
     const currentNum = parseInt(inputValue) || 0;
     const totalOtherDist = Object.entries(state.distribution)
       .filter(([label]) => label !== selectedPlateLabel)
       .reduce((a, [_, b]) => a + b, 0);
     
-    return (currentNum + totalOtherDist) >= 50;
-  }, [inputValue, isInputValid, state.distribution, selectedPlateLabel]);
+    return (currentNum + totalOtherDist) === state.tokens;
+  }, [inputValue, isInputValid, state.distribution, selectedPlateLabel, state.tokens]);
 
   return (
     <div className="game-container relative flex flex-col items-center min-h-screen w-full bg-transparent overflow-hidden">
@@ -148,8 +163,8 @@ export default function GameplayScreen() {
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-accent rounded-full z-10">
               <span className="text-[9px] md:text-[10px] font-black text-black">Question {state.questionsAnswered + 1} of 6</span>
             </div>
-            <h2 className="font-display text-base md:text-3xl font-bold text-white mb-3 md:mb-4">
-              {currentQuestion.question}
+            <h2 className="font-display text-base md:text-3xl font-bold text-white mb-3 md:mb-4 min-h-[3em]">
+              {displayedQuestion}
             </h2>
             <div className="flex flex-col items-center">
               <div className={`h-12 w-12 md:h-16 md:w-16 rounded-full border-4 flex items-center justify-center ${timeLeft <= 5 ? "border-red-500 text-red-500 animate-pulse" : "border-accent text-accent"}`}>
@@ -162,8 +177,8 @@ export default function GameplayScreen() {
         <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1 md:gap-y-0 mt-4 md:mt-8">
           {currentQuestion.options.map((opt) => {
             const isSelected = selectedPlateLabel === opt.label;
-            const hasTokens = (state.distribution[opt.label] || 0) > 0;
-            const isPlatformValid = (state.distribution[opt.label] || 0) % 50 === 0;
+            const remains = state.distribution[opt.label] || 0;
+            const isPlatformValid = remains > 0 && remains % 100 === 0;
 
             return (
               <button
@@ -177,9 +192,9 @@ export default function GameplayScreen() {
                 <div className="text-left flex-1 min-w-0">
                   <span className="font-display font-medium text-white/90 truncate block">{opt.text}</span>
                 </div>
-                {hasTokens && (
+                {remains > 0 && (
                   <div className={`ml-auto px-2 py-1 rounded text-[10px] font-mono font-bold ${isPlatformValid ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400 animate-pulse"}`}>
-                    ${state.distribution[opt.label]}
+                    ${remains}
                   </div>
                 )}
               </button>
@@ -204,14 +219,14 @@ export default function GameplayScreen() {
                     />
                   </div>
                   {!isInputValid && inputValue !== "0" && (
-                    <span className="text-[8px] font-black text-red-500 uppercase tracking-widest animate-pulse">Range: $50 - $1000 ($50 steps)</span>
+                    <span className="text-[8px] font-black text-red-500 uppercase tracking-widest animate-pulse">Range: $100 - $1000 ($100 steps)</span>
                   )}
                 </div>
               </div>
 
               <div className="flex items-center gap-4 md:gap-8">
                 <button
-                  onClick={() => updateBet(selectedPlateLabel, -50)}
+                  onClick={() => updateBet(selectedPlateLabel, -100)}
                   disabled={(state.distribution[selectedPlateLabel] || 0) <= 0}
                   className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-white/5 text-2xl md:text-4xl text-white border border-white/10 hover:bg-red-500/30 transition-all active:scale-95"
                 >
@@ -221,21 +236,21 @@ export default function GameplayScreen() {
                 <button
                   onClick={() => canLock && dispatch({ type: "LOCK_ANSWERS" })}
                   disabled={!canLock}
-                  className={`px-6 py-3 md:px-10 md:py-5 rounded-xl md:rounded-2xl font-display text-base md:text-xl font-black transition-all ${canLock ? "bg-red-600 text-white shadow-xl hover:scale-105 active:scale-95" : "bg-white/5 text-white/5 cursor-not-allowed"}`}
+                  className={`px-6 py-3 md:px-10 md:py-5 rounded-xl md:rounded-2xl font-display text-base md:text-xl font-black transition-all ${canLock ? "bg-red-600 text-white shadow-xl hover:scale-105 active:scale-95" : "bg-white/5 text-white/10 cursor-not-allowed"}`}
                 >
-                  LOCK SESSION
+                  {available > 0 ? `DEPLOY $${available}` : "LOCK SESSION"}
                 </button>
 
                 <button
-                  onClick={() => updateBet(selectedPlateLabel, 50)}
-                  disabled={available < 50}
+                  onClick={() => updateBet(selectedPlateLabel, 100)}
+                  disabled={available < 100}
                   className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-white/5 text-2xl md:text-4xl text-white border border-white/10 hover:bg-accent/30 transition-all active:scale-95"
                 >
                   +
                 </button>
               </div>
-              <div className="opacity-30 text-[8px] uppercase font-black tracking-[0.3em] leading-none text-center">
-                Min Bet $50 — Snaps to $50 on exit
+              <div className={`text-[8px] uppercase font-black tracking-[0.3em] leading-none text-center ${available > 0 ? "text-yellow-500 animate-pulse" : "opacity-30"}`}>
+                {available > 0 ? `Alert: $${available} Tokens Not Deployed` : "Status: Optimal Distribution"}
               </div>
             </motion.div>
           )}

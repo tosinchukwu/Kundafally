@@ -72,7 +72,7 @@ export default function HUD() {
           'D': { x: window.innerWidth * 0.7, y: window.innerHeight * 0.8 },
         };
         const pos = optionMap[state.revealedAnswer] || { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-        const winEffectCount = Math.min(15, Math.ceil(state.lastWinAmount / 50));
+        const winEffectCount = Math.min(15, Math.ceil(state.lastWinAmount / 100));
         
         const newCoins = Array.from({ length: winEffectCount }).map((_, i) => ({
           id: Date.now() + i,
@@ -86,7 +86,7 @@ export default function HUD() {
         const vaultPos = { x: 80, y: 80 };
         // How much was lost? Everything distributed!
         const lostAmount = totalDistributed;
-        const lossEffectCount = Math.min(20, Math.ceil(lostAmount / 50));
+        const lossEffectCount = Math.min(20, Math.ceil(lostAmount / 100));
 
         if (lossEffectCount > 0) {
           const newLostCoins = Array.from({ length: lossEffectCount }).map((_, i) => ({
@@ -114,7 +114,7 @@ export default function HUD() {
             animate={isVaultPulsing ? { scale: [1, 1.15, 1] } : {}}
             className="glass-card flex flex-col items-start px-3 py-2 md:px-6 md:py-3 border-white/20 bg-black/60 shadow-2xl backdrop-blur-none min-w-[130px] md:min-w-[180px]"
           >
-            <span className="font-display text-[8px] md:text-[10px] font-black text-accent tracking-[0.4em] uppercase mb-1 md:mb-1.5 opacity-100">Stable Vault</span>
+            <span className="font-display text-[8px] md:text-[10px] font-black text-accent tracking-[0.4em] uppercase mb-1 md:mb-1.5 opacity-100">Mission Funds</span>
             <div className="flex items-center gap-2 md:gap-4">
               <div className="flex h-7 w-7 md:h-10 md:w-10 items-center justify-center rounded-full bg-gradient-to-tr from-accent to-accent/60 border-2 border-accent shadow-[0_0_20px_rgba(34,211,238,0.4)]">
                 <span className="text-[9px] md:text-xs font-black text-black leading-none">{currentToken}</span>
