@@ -29,7 +29,7 @@ interface GameState {
 const TOKENS = ["BNB", "ETH", "BTC", "AVAX", "POL", "SOL"];
 
 type GameAction =
-  | { type: "START_GAME"; categories: Category[]; sponsor?: string }
+  | { type: "START_GAME"; categories: Category[]; sponsor?: string; startingTokens?: number }
   | { type: "DISTRIBUTE_TOKENS"; label: string; amount: number }
   | { type: "LOCK_ANSWERS" }
   | { type: "NEXT_QUESTION" }
@@ -37,16 +37,17 @@ type GameAction =
   | { type: "SET_PHASE"; phase: GamePhase }
   | { type: "SELECT_PLATFORM"; label: string | null }
   | { type: "SET_DISTRIBUTION"; label: string; amount: number }
-  | { type: "OPEN_TRAPDOORS" };
+  | { type: "OPEN_TRAPDOORS" }
+  | { type: "SET_STARTING_TOKENS"; amount: number };
 
-const STARTING_TOKENS = 1000;
+const DEFAULT_STARTING_TOKENS = 1000;
 const MIN_BET = 100;
 const BONUS_RATE = 0.01; // 1% Bonus Protocol Active
 
 const initialState: GameState = {
   phase: "menu",
-  tokens: STARTING_TOKENS,
-  startingTokens: STARTING_TOKENS,
+  tokens: DEFAULT_STARTING_TOKENS,
+  startingTokens: DEFAULT_STARTING_TOKENS,
   sponsor: "KUNDAFALL",
   selectedCategories: [],
   currentCategoryIndex: 0,
@@ -98,13 +99,16 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         questions: randomizedQuestions
       };
 
+      const selectedTokens = action.startingTokens || DEFAULT_STARTING_TOKENS;
+
       return {
         ...initialState,
         phase: "playing",
         selectedCategories: [virtualCategory],
         difficulty: "easy", // Default start difficulty, will change per question but not used globally anymore
         sponsor: action.sponsor || "KUNDAFALL",
-        tokens: STARTING_TOKENS,
+        tokens: selectedTokens,
+        startingTokens: selectedTokens,
         currentTokenIndex: Math.floor(Math.random() * TOKENS.length),
         totalScore: 0,
       };
@@ -145,21 +149,26 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const correctLabel = question.correctAnswer;
       const tokensOnCorrect = state.distribution[correctLabel] || 0;
       const bonusAmount = Math.floor(tokensOnCorrect * BONUS_RATE);
-      const newTokens = tokensOnCorrect; // Bonus NOT added to active balance now
+      
+      // Budget Model Logic:
+      // 1. Remaining budget = current tokens - total distributed in this round
+      const newBudget = state.tokens - totalDistributed;
+      // 2. Total saved increases by what was on the correct platform
+      const newTotalSaved = state.totalScore + tokensOnCorrect;
       const newTotalBonus = state.totalBonus + bonusAmount;
       
-      // Eliminated if:
-      // 1. Didn't make a valid attempt (totalDistributed < 50)
-      // 2. OR final balance is below minimum bet
-      const isEliminated = totalDistributed < MIN_BET || newTokens < MIN_BET;
+      // No more elimination based on balance, just need at least one valid stake
+      const isEliminated = totalDistributed < MIN_BET && state.tokens >= MIN_BET;
 
       return {
         ...state,
         phase: "reveal",
         revealedAnswer: correctLabel,
-        tokens: newTokens,
+        tokens: newBudget, // This is the REMAINING budget
+        totalScore: newTotalSaved, // This is the SAVED amount
         totalBonus: newTotalBonus,
         isEliminated,
+        recordedElimination: isEliminated, // Keep track if they failed to stake
         selectedPlatform: null,
         questionsAnswered: state.questionsAnswered + 1,
         lastWinAmount: tokensOnCorrect,
@@ -177,9 +186,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
     case "NEXT_QUESTION": {
       const nextQ = state.currentQuestionIndex + 1;
-      const newTotalScore = state.totalScore + state.tokens;
 
-      if (nextQ < 6 && !state.isEliminated) {
+      if (nextQ < 6) {
         return {
           ...state,
           phase: "playing",
@@ -187,12 +195,11 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           distribution: {},
           revealedAnswer: null,
           lastWinAmount: 0,
-           // Keep same token for entire session
-          totalScore: newTotalScore,
+          isEliminated: false, // Reset elimination to allow continuing even if they missed a stake
         };
       }
 
-      return { ...state, phase: "results", selectedPlatform: null, totalScore: newTotalScore };
+      return { ...state, phase: "results", selectedPlatform: null };
     }
 
     case "RESET":
@@ -206,6 +213,9 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
     case "OPEN_TRAPDOORS":
       return { ...state, trapdoorsOpen: true };
+
+    case "SET_STARTING_TOKENS":
+      return { ...state, startingTokens: action.amount, tokens: action.amount };
 
     default:
       return state;

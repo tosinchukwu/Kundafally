@@ -110,25 +110,36 @@ export default function HUD() {
     <div className="fixed inset-0 z-50 pointer-events-none">
       <header className="flex w-full items-start justify-between p-4 md:p-8">
         <div className="pointer-events-auto flex flex-col items-start gap-1">
-          <motion.div 
-            animate={isVaultPulsing ? { scale: [1, 1.15, 1] } : {}}
-            className="glass-card flex flex-col items-start px-3 py-2 md:px-6 md:py-3 border-white/20 bg-black/60 shadow-2xl backdrop-blur-none min-w-[130px] md:min-w-[180px]"
-          >
-            <span className="font-display text-[8px] md:text-[10px] font-black text-accent tracking-[0.4em] uppercase mb-1 md:mb-1.5 opacity-100">Mission Funds</span>
-            <div className="flex items-center gap-2 md:gap-4">
-              <div className="flex h-7 w-7 md:h-10 md:w-10 items-center justify-center rounded-full bg-gradient-to-tr from-accent to-accent/60 border-2 border-accent shadow-[0_0_20px_rgba(34,211,238,0.4)]">
-                <span className="text-[9px] md:text-xs font-black text-black leading-none">{currentToken}</span>
+          <div className="flex flex-col gap-2">
+            <motion.div 
+              className="glass-card flex flex-col items-start px-3 py-2 md:px-6 md:py-3 border-white/20 bg-black/60 shadow-2xl backdrop-blur-none min-w-[130px] md:min-w-[180px]"
+            >
+              <span className="font-display text-[8px] md:text-[10px] font-black text-accent tracking-[0.4em] uppercase mb-1 md:mb-1.5 opacity-100">Budget Pool</span>
+              <div className="flex items-center gap-2 md:gap-4">
+                <div className="flex h-7 w-7 md:h-10 md:w-10 items-center justify-center rounded-full bg-gradient-to-tr from-accent to-accent/60 border-2 border-accent shadow-[0_0_20px_rgba(34,211,238,0.4)]">
+                  <span className="text-[9px] md:text-xs font-black text-black leading-none">{currentToken}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-data text-xl md:text-3xl font-black text-white text-glow leading-none">${displayedBalance.toLocaleString()}</span>
+                </div>
               </div>
-              <div className="flex flex-col">
-                <span className="font-data text-xl md:text-3xl font-black text-white text-glow leading-none">${displayedBalance.toLocaleString()}</span>
+            </motion.div>
+
+            <motion.div 
+              animate={isVaultPulsing ? { scale: [1, 1.05, 1], borderColor: ["rgba(34,197,94,0.2)", "rgba(34,197,94,0.6)", "rgba(34,197,94,0.2)"] } : {}}
+              className="glass-card flex flex-col items-start px-3 py-1.5 md:px-5 md:py-2 border-green-500/20 bg-green-500/5 shadow-xl backdrop-blur-none min-w-[130px] md:min-w-[180px]"
+            >
+              <span className="font-display text-[7px] md:text-[9px] font-black text-green-400 tracking-[0.4em] uppercase mb-0.5 opacity-100">Vaulted Stakes</span>
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="font-data text-lg md:text-2xl font-black text-white leading-none">${state.totalScore.toLocaleString()}</div>
                 {state.totalBonus > 0 && (
-                  <span className="font-data text-[10px] md:text-xs font-bold text-green-400 mt-1">
-                    +${state.totalBonus.toLocaleString()} VAULTED BONUS
+                  <span className="font-data text-[8px] md:text-[10px] font-bold text-green-400">
+                    +${state.totalBonus.toLocaleString()}
                   </span>
                 )}
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
           
           <div className="h-6 ml-2">
             <AnimatePresence mode="wait">

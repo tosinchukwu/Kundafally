@@ -4,7 +4,7 @@ import { useGame } from "@/context/GameContext";
 import WalletButton from "./WalletButton";
 
 export default function MenuScreen() {
-  const { dispatch } = useGame();
+  const { state, dispatch } = useGame();
   const [showHistory, setShowHistory] = useState(false);
   const [showHowTo, setShowHowTo] = useState(false);
 
@@ -22,9 +22,23 @@ export default function MenuScreen() {
     <div className="flex min-h-screen flex-col items-center justify-center px-4 spotlight pointer-events-auto">
       {/* Top bar with wallet */}
       <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-4">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <div className="h-2.5 w-2.5 rounded-full bg-accent animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
-          <span className="font-data text-xs text-accent">1,000 STARTING TOKENS</span>
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={() => dispatch({ type: "SET_STARTING_TOKENS", amount: Math.max(100, (state.startingTokens || 1000) - 100) })}
+              className="w-6 h-6 rounded bg-white/5 border border-white/10 flex items-center justify-center hover:bg-accent hover:text-black transition-colors pointer-events-auto"
+            >
+              -
+            </button>
+            <span className="font-data text-xs text-accent whitespace-nowrap">{state.startingTokens?.toLocaleString()} STARTING BUDGET</span>
+            <button 
+              onClick={() => dispatch({ type: "SET_STARTING_TOKENS", amount: Math.min(1000, (state.startingTokens || 1000) + 100) })}
+              className="w-6 h-6 rounded bg-white/5 border border-white/10 flex items-center justify-center hover:bg-accent hover:text-black transition-colors pointer-events-auto"
+            >
+              +
+            </button>
+          </div>
         </div>
         <WalletButton />
       </div>
@@ -78,7 +92,7 @@ export default function MenuScreen() {
            <div className="h-4 w-px bg-white/10" />
             <div className="text-center">
               <div className="font-data text-[10px] text-white/50 mb-1">STAKE</div>
-              <div className="font-data text-xs text-white font-black">$100 - $1000</div>
+              <div className="font-data text-xs text-white font-black">$100 - ${state.startingTokens?.toLocaleString()}</div>
             </div>
            <div className="h-4 w-px bg-white/10" />
            <div className="text-center">
@@ -155,15 +169,15 @@ export default function MenuScreen() {
                 <section>
                   <h4 className="font-display text-xs font-black text-accent tracking-[0.3em] uppercase mb-4">01. The Objective</h4>
                   <p className="font-display text-sm md:text-base text-white/70 leading-relaxed italic">
-                    You begin with <span className="text-white font-bold">$1,000</span>. Your goal is to keep as much as possible through <span className="text-white font-bold">6 Rounds</span>. <span className="text-white font-bold underline">You MUST use all available tokens in every round.</span> A <span className="text-green-400 font-bold">1% Survivor Bonus</span> is vaulted after every correct round and added to your final result.
+                    You begin with <span className="text-white font-bold">$1,000</span> (10 Tokens). Your goal is to keep as much as possible through <span className="text-white font-bold">6 Rounds</span>. Any token not staked before you <span className="text-white font-bold underline">Lock Session</span> is lost to the void. A <span className="text-green-400 font-bold">1% Survivor Bonus</span> is vaulted after every correct round.
                   </p>
                 </section>
 
                 <section>
                   <h4 className="font-display text-xs font-black text-accent tracking-[0.3em] uppercase mb-4">02. Risk Protocol</h4>
                   <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20">
-                    <div className="text-red-500 font-black text-[10px] mb-2">THE VOID (MANDATORY)</div>
-                    <p className="text-xs text-white/50 leading-loose">All tokens must be staked. Any token not staked before the timer expires is lost to the void. No money is safe until the mission ends.</p>
+                    <div className="text-red-500 font-black text-[10px] mb-2">THE VOID</div>
+                    <p className="text-xs text-white/50 leading-loose">Any tokens not distributed when you lock your choice are lost to the void. Protect your stack by placing tokens on the correct answers.</p>
                   </div>
                 </section>
 
@@ -172,7 +186,7 @@ export default function MenuScreen() {
                   <ul className="space-y-4 text-xs md:text-sm text-white/70 italic">
                     <li className="flex gap-4">
                       <span className="text-accent font-black">/</span>
-                      <span>Min stake is <span className="text-white font-bold">$100</span>. Max stake is <span className="text-white font-bold">$1,000</span> per platform.</span>
+                      <span>Min stake is <span className="text-white font-bold">$100</span> (1 Token). Max stake is <span className="text-white font-bold">$1,000</span> (10 Tokens) per platform.</span>
                     </li>
                     <li className="flex gap-4">
                       <span className="text-accent font-black">/</span>

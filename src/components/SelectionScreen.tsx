@@ -10,7 +10,7 @@ const DIFFICULTIES: { id: Difficulty; label: string; Desc: string; color: string
 ];
 
 export default function SelectionScreen() {
-  const { dispatch } = useGame();
+  const { state, dispatch } = useGame();
   const [selectedCats, setSelectedCats] = useState<string[]>([]);
 
   const toggleCategory = (id: string) => {
@@ -24,7 +24,7 @@ export default function SelectionScreen() {
   const handleStart = () => {
     if (selectedCats.length !== 2) return;
     const pickedCategories = categories.filter(c => selectedCats.includes(c.id));
-    dispatch({ type: "START_GAME", categories: pickedCategories });
+    dispatch({ type: "START_GAME", categories: pickedCategories, startingTokens: state.startingTokens });
   };
 
   const canStart = selectedCats.length === 2;

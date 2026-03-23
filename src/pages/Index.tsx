@@ -42,7 +42,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
 }
 
 function GameRouter() {
-  const { state, dispatch } = useGame();
+  const { state, dispatch, currentToken } = useGame();
 
   console.log("GameRouter State:", { phase: state.phase, qIdx: state.currentQuestionIndex });
   // In our new logic, all 3 questions are in the first (and only) selected category
@@ -62,6 +62,7 @@ function GameRouter() {
           trapdoorPlatforms={(state.trapdoorsOpen && state.revealedAnswer && currentQuestion) ? currentQuestion.options.filter(o => o.label !== state.revealedAnswer).map(o => o.label) : []}
           onPlatformClick={(label) => state.phase === "playing" && dispatch({ type: "SELECT_PLATFORM", label: state.selectedPlatform === label ? null : label })}
           selectedPlatform={state.selectedPlatform}
+          currentToken={currentToken}
         />
       </div>
 

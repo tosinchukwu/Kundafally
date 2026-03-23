@@ -1,6 +1,6 @@
 import React, { useMemo, Suspense } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
-import { PerspectiveCamera } from "@react-three/drei";
+import { PerspectiveCamera, Text } from "@react-three/drei";
 import * as THREE from "three";
 import { Physics, usePlane } from "@react-three/cannon";
 import Environment from "./Environment";
@@ -37,7 +37,55 @@ interface GameSceneProps {
   currentToken?: string;
 }
 
+import { useGame } from "@/context/GameContext";
+
+function SourceStack({ amount, token }: { amount: number, token: string }) {
+  const tokenCount = Math.floor(amount / 100);
+  const position: [number, number, number] = [0, 0, -2]; // Behind the platforms center
+
+  return (
+    <group position={position}>
+      {/* Optional: A small pedestal for the source stack */}
+      <mesh position={[0, -0.05, 0]}>
+        <cylinderGeometry args={[0.8, 1, 0.1, 32]} />
+        <meshStandardMaterial color="#1a1a1a" metalness={0.8} roughness={0.2} />
+      </mesh>
+      
+      {Array.from({ length: tokenCount }, (_, i) => {
+        const heightIdx = i; // Single vertical stack
+        const y = 0.05 + heightIdx * 0.1;
+
+        return (
+          <Token3D
+            key={`source-${i}`}
+            position={[0, y, 0]}
+            label={token}
+            falling={false}
+          />
+        );
+      })}
+      
+      {tokenCount > 0 && (
+         <Text
+           position={[0, (tokenCount * 0.1) + 0.5, 0]}
+           fontSize={0.4}
+           color="#22d3ee"
+           font="/fonts/Inter-Bold.woff"
+         >
+           POOL
+         </Text>
+      )}
+    </group>
+  );
+}
+
 function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, onPlatformClick, selectedPlatform, currentToken }: GameSceneProps) {
+  const { currentToken: stateToken, state } = useGame();
+  const activeToken = currentToken || stateToken || "₿";
+
+  const totalDistributed = Object.values(distribution).reduce((a, b) => a + b, 0);
+  const available = state.tokens - totalDistributed;
+
   const optionMap = useMemo(() => {
     const m: Record<string, string> = {};
     if (options && Array.isArray(options)) {
@@ -48,6 +96,7 @@ function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, o
 
   return (
     <>
+      <SourceStack amount={available} token={activeToken} />
       {PLATFORM_CONFIGS.map((cfg) => {
         const rawAmount = distribution[cfg.id] || 0;
         const tokenCount = Math.min(Math.ceil(rawAmount / 100), 12);
@@ -87,7 +136,7 @@ function Platforms({ distribution, options, revealedAnswer, trapdoorPlatforms, o
                     cfg.position[1] + y,
                     cfg.position[2] + z,
                   ]}
-                  label={currentToken || "₿"}
+                  label={activeToken}
                   falling={false}
                 />
               );

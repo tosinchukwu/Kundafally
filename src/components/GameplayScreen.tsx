@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGame } from "@/context/GameContext";
 
-const PRESETS = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+
 
 export default function GameplayScreen() {
   const { state, dispatch, currentQuestion, currentToken } = useGame();
@@ -65,7 +65,7 @@ export default function GameplayScreen() {
     
     const totalDist = Object.values(state.distribution).reduce((a: number, b: number) => a + b, 0);
     const currentOtherDist = totalDist - (state.distribution[selectedPlateLabel] || 0);
-    const maxPossible = Math.min(1000, state.tokens - currentOtherDist);
+    const maxPossible = Math.min(state.startingTokens, state.tokens - currentOtherDist);
     
     const finalVal = Math.max(0, Math.min(snappedVal, Math.floor(maxPossible / 100) * 100));
     
@@ -79,7 +79,7 @@ export default function GameplayScreen() {
     let newAmount = currentAmount + delta;
     
     const currentOtherDist = totalDist - (state.distribution[label] || 0);
-    const maxPossible = Math.min(1000, state.tokens - currentOtherDist);
+    const maxPossible = Math.min(state.startingTokens, state.tokens - currentOtherDist);
     
     newAmount = Math.max(0, Math.min(newAmount, maxPossible));
     // Snap delta updates to 100 if they aren't already
@@ -121,8 +121,8 @@ export default function GameplayScreen() {
 
   const isInputValid = useMemo(() => {
     const num = parseInt(inputValue) || 0;
-    return num >= 100 && num <= 1000 && num % 100 === 0;
-  }, [inputValue]);
+    return num >= 100 && num <= state.startingTokens && num % 100 === 0;
+  }, [inputValue, state.startingTokens]);
 
   const canLock = useMemo(() => {
     // 1. Current typing must be valid (or 0)
@@ -131,7 +131,7 @@ export default function GameplayScreen() {
     // 2. All other platforms in state must be valid
     const othersValid = Object.entries(state.distribution).every(([label, val]) => {
       if (label === selectedPlateLabel) return true; // Handled by isInputValid
-      return val === 0 || (val >= 100 && val <= 1000 && val % 100 === 0);
+      return val === 0 || (val >= 100 && val <= state.startingTokens && val % 100 === 0);
     });
     if (!othersValid) return false;
 
@@ -141,7 +141,7 @@ export default function GameplayScreen() {
       .filter(([label]) => label !== selectedPlateLabel)
       .reduce((a, [_, b]) => a + b, 0);
     
-    return (currentNum + totalOtherDist) === state.tokens;
+    return (currentNum + totalOtherDist) >= 100; // Just need at least one valid increment
   }, [inputValue, isInputValid, state.distribution, selectedPlateLabel, state.tokens]);
 
   return (
@@ -202,41 +202,35 @@ export default function GameplayScreen() {
           })}
         </div>
 
-        <AnimatePresence>
-          {selectedPlateLabel && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-4 md:mt-8 flex flex-col items-center gap-4 md:gap-6 p-4 md:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl w-full max-w-lg shadow-2xl">
+        {/* Persistent Staking Bar */}
+        <div className="w-full max-w-lg mt-8 mb-4 relative z-20 pointer-events-auto">
+          <div className="glass-card border-white/10 bg-black/60 backdrop-blur-3xl p-6 rounded-[2rem] shadow-2xl">
+            <div className="flex flex-col items-center gap-4">
               <div className="flex flex-col items-center gap-1">
-                <span className="font-display text-[10px] font-black text-accent uppercase tracking-widest">BET ON OPTION {selectedPlateLabel}</span>
-                <div className="flex flex-col items-center gap-1">
-                  <div className="flex items-center gap-1">
-                    <span className="font-data text-4xl font-black text-white">$</span>
-                    <input
-                      type="text"
-                      value={inputValue}
-                      onChange={handleBetChange}
-                      onBlur={handleBetBlur}
-                      className={`w-40 bg-transparent border-b-2 text-4xl font-black text-center outline-none transition-colors ${isInputValid || inputValue === "0" ? "border-accent/30 focus:border-accent text-white" : "border-red-500 text-red-500"}`}
-                    />
-                  </div>
-                  {!isInputValid && inputValue !== "0" && (
-                    <span className="text-[8px] font-black text-red-500 uppercase tracking-widest animate-pulse">Range: $100 - $1000 ($100 steps)</span>
-                  )}
-                </div>
+                <span className="font-display text-[9px] font-black text-accent uppercase tracking-[0.3em]">
+                  {selectedPlateLabel ? `STAKE ON OPTION ${selectedPlateLabel}` : "SELECT AN OPTION ABOVE TO STAKE"}
+                </span>
                 
-                {/* Preset Buttons */}
-                <div className="flex flex-wrap justify-center gap-2 mt-2 max-w-sm">
-                  {PRESETS.map((p) => {
-                    const totalDist = Object.values(state.distribution).reduce((a: number, b: number) => a + b, 0);
-                    const currentOtherDist = totalDist - (state.distribution[selectedPlateLabel] || 0);
-                    const maxPossible = Math.min(1000, state.tokens - currentOtherDist);
-                    const isPossible = p <= maxPossible;
+                {/* Preset Buttons - Always Clickable */}
+                <div className="flex flex-wrap justify-center gap-2 mt-2">
+                  {[100, 200, 300, 400, 500, 600, 700, 800, 900, 1000].map((p) => {
+                    const isPossible = p <= state.tokens;
+                    const isCurrent = selectedPlateLabel && (state.distribution[selectedPlateLabel] || 0) === p;
 
                     return (
                       <button
                         key={p}
-                        onClick={() => isPossible && dispatch({ type: "SET_DISTRIBUTION", label: selectedPlateLabel, amount: p })}
-                        disabled={!isPossible}
-                        className={`px-2 py-1 rounded-md font-data text-[9px] font-black border transition-all ${isPossible ? "bg-white/5 border-white/10 text-white/40 hover:bg-accent/20 hover:text-accent hover:border-accent" : "bg-white/5 border-white/5 text-white/5 cursor-not-allowed"}`}
+                        onClick={() => {
+                          if (!selectedPlateLabel) {
+                            // Optional: Could auto-select A or show a hint
+                            return;
+                          }
+                          if (isPossible) {
+                             dispatch({ type: "SET_DISTRIBUTION", label: selectedPlateLabel, amount: p });
+                          }
+                        }}
+                        disabled={!isPossible || !selectedPlateLabel}
+                        className={`px-3 py-2 rounded-xl font-data text-[10px] font-black border transition-all ${isCurrent ? "bg-accent border-accent text-black shadow-[0_0_15px_rgba(34,211,238,0.4)]" : (isPossible && selectedPlateLabel) ? "bg-white/5 border-white/10 text-white/50 hover:bg-accent/20 hover:text-accent hover:border-accent" : "bg-white/5 border-white/5 text-white/5 cursor-not-allowed"}`}
                       >
                         ${p}
                       </button>
@@ -245,11 +239,11 @@ export default function GameplayScreen() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 md:gap-8">
+              <div className="flex items-center gap-6">
                 <button
-                  onClick={() => updateBet(selectedPlateLabel, -100)}
-                  disabled={(state.distribution[selectedPlateLabel] || 0) <= 0}
-                  className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-white/5 text-2xl md:text-4xl text-white border border-white/10 hover:bg-red-500/30 transition-all active:scale-95"
+                  onClick={() => selectedPlateLabel && updateBet(selectedPlateLabel, -100)}
+                  disabled={!selectedPlateLabel || (state.distribution[selectedPlateLabel] || 0) <= 0}
+                  className="w-12 h-12 rounded-2xl bg-white/5 text-2xl text-white border border-white/10 hover:bg-red-500/30 transition-all active:scale-95 disabled:opacity-20"
                 >
                   -
                 </button>
@@ -257,25 +251,37 @@ export default function GameplayScreen() {
                 <button
                   onClick={() => canLock && dispatch({ type: "LOCK_ANSWERS" })}
                   disabled={!canLock}
-                  className={`px-6 py-3 md:px-10 md:py-5 rounded-xl md:rounded-2xl font-display text-base md:text-xl font-black transition-all ${canLock ? "bg-red-600 text-white shadow-xl hover:scale-105 active:scale-95" : "bg-white/5 text-white/10 cursor-not-allowed"}`}
+                  className={`px-8 py-4 rounded-2xl font-display text-lg font-black transition-all ${canLock ? "bg-red-600 text-white shadow-[0_10px_30px_rgba(220,38,38,0.4)] hover:scale-105 active:scale-95" : "bg-white/5 text-white/10 cursor-not-allowed"}`}
                 >
-                  {available > 0 ? "STAKE ALL TOKENS" : "LOCK SESSION"}
+                  LOCK SESSION
                 </button>
 
                 <button
-                  onClick={() => updateBet(selectedPlateLabel, 100)}
-                  disabled={available < 100}
-                  className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-white/5 text-2xl md:text-4xl text-white border border-white/10 hover:bg-accent/30 transition-all active:scale-95"
+                  onClick={() => selectedPlateLabel && updateBet(selectedPlateLabel, 100)}
+                  disabled={!selectedPlateLabel || available < 100}
+                  className="w-12 h-12 rounded-2xl bg-white/5 text-2xl text-white border border-white/10 hover:bg-accent/30 transition-all active:scale-95 disabled:opacity-20"
                 >
                   +
                 </button>
               </div>
-              <div className={`text-[8px] uppercase font-black tracking-[0.3em] leading-none text-center ${available > 0 ? "text-yellow-500 animate-pulse" : "opacity-30"}`}>
-                {available > 0 ? `Alert: $${available} Tokens Not Staked` : "Status: Optimal Stake"}
+
+              <div className="flex flex-col items-center gap-1.5 opacity-60">
+                <div className="flex items-center gap-4 text-[8px] font-black uppercase tracking-widest leading-none">
+                  <span className={available > 0 ? "text-yellow-500" : "text-white/40"}>
+                    UNSTAKED: ${available}
+                  </span>
+                  <div className="w-1 h-1 rounded-full bg-white/20" />
+                  <span className="text-white/40">
+                    ROUND TOTAL: ${totalDistributed}
+                  </span>
+                </div>
+                <div className="text-[7px] text-white/20 italic">
+                  $100 = 1 TOKEN • BUDGET MODEL ACTIVE
+                </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          </div>
+        </div>
       </main>
       <footer className="mt-auto h-20" />
     </div>
