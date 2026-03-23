@@ -40,15 +40,15 @@ export default function MenuScreen() {
           <div className="mt-1 font-data text-sm text-accent tracking-widest font-black italic">KUNDAFALL</div>
         </div>
 
-        <h1 className="font-display text-6xl font-black text-white md:text-9xl tracking-tighter italic">KUNDA</h1>
-        <h1 className="font-display -mt-4 text-6xl font-black md:text-9xl bg-gradient-to-r from-accent via-white to-accent bg-clip-text text-transparent italic drop-shadow-[0_0_30px_rgba(34,211,238,0.3)]">FALL</h1>
+        <h1 className="font-display text-5xl font-black text-white md:text-9xl tracking-tighter italic">KUNDA</h1>
+        <h1 className="font-display -mt-3 md:-mt-4 text-5xl font-black md:text-9xl bg-gradient-to-r from-accent via-white to-accent bg-clip-text text-transparent italic drop-shadow-[0_0_30px_rgba(34,211,238,0.3)]">FALL</h1>
 
-        <div className="flex flex-col items-center gap-4 mt-12">
+        <div className="flex flex-col items-center gap-3 md:gap-4 mt-8 md:mt-12">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => dispatch({ type: "SET_PHASE", phase: "category" })}
-            className="rounded-full bg-accent px-12 py-5 font-display text-xl font-black text-black shadow-[0_20px_40px_rgba(34,211,238,0.3)] transition-all"
+            className="rounded-full bg-accent px-10 py-4 md:px-12 md:py-5 font-display text-lg md:text-xl font-black text-black shadow-[0_20px_40px_rgba(34,211,238,0.3)] transition-all"
           >
             BEGIN MISSION
           </motion.button>
@@ -70,7 +70,7 @@ export default function MenuScreen() {
           </div>
         </div>
 
-        <div className="mt-16 flex items-center justify-center gap-10 opacity-40">
+        <div className="mt-8 md:mt-16 flex items-center justify-center gap-6 md:gap-10 opacity-40">
            <div className="text-center">
              <div className="font-data text-[10px] text-white/50 mb-1">STABILITY</div>
              <div className="font-data text-xs text-white font-black">6 ROUNDS</div>

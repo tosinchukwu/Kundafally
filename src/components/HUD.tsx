@@ -112,14 +112,14 @@ export default function HUD() {
         <div className="pointer-events-auto flex flex-col items-start gap-1">
           <motion.div 
             animate={isVaultPulsing ? { scale: [1, 1.15, 1] } : {}}
-            className="glass-card flex flex-col items-start px-6 py-3 border-white/20 bg-black/60 shadow-2xl backdrop-blur-none min-w-[180px]"
+            className="glass-card flex flex-col items-start px-3 py-2 md:px-6 md:py-3 border-white/20 bg-black/60 shadow-2xl backdrop-blur-none min-w-[130px] md:min-w-[180px]"
           >
-            <span className="font-display text-[10px] font-black text-accent tracking-[0.4em] uppercase mb-1.5 opacity-100">Stable Vault</span>
-            <div className="flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-accent to-accent/60 border-2 border-accent shadow-[0_0_20px_rgba(34,211,238,0.4)]">
-                <span className="text-xs font-black text-black leading-none">{currentToken}</span>
+            <span className="font-display text-[8px] md:text-[10px] font-black text-accent tracking-[0.4em] uppercase mb-1 md:mb-1.5 opacity-100">Stable Vault</span>
+            <div className="flex items-center gap-2 md:gap-4">
+              <div className="flex h-7 w-7 md:h-10 md:w-10 items-center justify-center rounded-full bg-gradient-to-tr from-accent to-accent/60 border-2 border-accent shadow-[0_0_20px_rgba(34,211,238,0.4)]">
+                <span className="text-[9px] md:text-xs font-black text-black leading-none">{currentToken}</span>
               </div>
-              <span className="font-data text-3xl font-black text-white text-glow">${displayedBalance.toLocaleString()}</span>
+              <span className="font-data text-xl md:text-3xl font-black text-white text-glow">${displayedBalance.toLocaleString()}</span>
             </div>
           </motion.div>
           

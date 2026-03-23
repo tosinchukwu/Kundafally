@@ -34,7 +34,7 @@ export default function SelectionScreen() {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-4xl w-full space-y-12"
+        className="max-w-4xl w-full space-y-6 md:space-y-12"
       >
         <div className="text-center space-y-4">
           <h1 className="font-display text-5xl md:text-7xl font-black italic text-white tracking-tighter text-glow">
@@ -62,14 +62,14 @@ export default function SelectionScreen() {
                   key={cat.id}
                   onClick={() => toggleCategory(cat.id)}
                   className={`
-                    flex flex-col items-center justify-center p-6 rounded-2xl border transition-all duration-500
+                    flex flex-col items-center justify-center p-3 md:p-6 rounded-2xl border transition-all duration-500
                     ${isSelected 
                       ? "bg-accent/20 border-accent shadow-[0_0_30px_rgba(34,211,238,0.2)]" 
                       : "bg-white/5 border-white/5 hover:bg-white/10 hover:scale-105"
                     }
                   `}
                 >
-                  <span className="text-4xl mb-4 grayscale-[0.5] group-hover:grayscale-0 transition-all">{cat.icon}</span>
+                  <span className="text-3xl md:text-4xl mb-2 md:mb-4 grayscale-[0.5] group-hover:grayscale-0 transition-all">{cat.icon}</span>
                   <span className={`font-display text-xs font-black uppercase tracking-widest ${isSelected ? "text-white" : "text-white/40"}`}>
                     {cat.name}
                   </span>
@@ -85,7 +85,7 @@ export default function SelectionScreen() {
             onClick={handleStart}
             disabled={!canStart}
             className={`
-              relative group flex items-center justify-center rounded-2xl px-24 py-6 font-display text-3xl font-black tracking-[0.2em] italic transition-all duration-500
+              relative group flex items-center justify-center rounded-2xl px-10 py-4 md:px-24 md:py-6 font-display text-xl md:text-3xl font-black tracking-[0.2em] italic transition-all duration-500
               ${canStart
                 ? "bg-accent text-black shadow-[0_0_50px_rgba(34,211,238,0.4)] hover:scale-105 active:scale-95 translate-y-0"
                 : "bg-white/5 text-white/10 border border-white/5 opacity-40 cursor-not-allowed translate-y-4"

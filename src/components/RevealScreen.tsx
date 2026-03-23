@@ -25,16 +25,16 @@ export default function RevealScreen() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        className="pointer-events-none relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center pt-10 px-4"
+        className="pointer-events-none relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center pt-6 md:pt-10 px-4"
       >
         {/* Reveal badge */}
-        <div className="pointer-events-auto mb-6 inline-block glass-card px-6 py-2 border-accent/40">
-          <span className="font-display text-sm font-black tracking-[0.2em] text-accent uppercase">Reveal Phase</span>
+        <div className="pointer-events-auto mb-4 md:mb-6 inline-block glass-card px-4 py-1.5 md:px-6 md:py-2 border-accent/40">
+          <span className="font-display text-[10px] md:text-sm font-black tracking-[0.2em] text-accent uppercase">Reveal Phase</span>
         </div>
 
         {/* Question text */}
         <h2
-          className="font-display text-center text-2xl md:text-3xl font-bold text-white leading-tight mb-4"
+          className="font-display text-center text-xl md:text-3xl font-bold text-white leading-tight mb-2 md:mb-4"
           style={{ textWrap: "balance" } as React.CSSProperties}
         >
           {currentQuestion.question}
@@ -83,13 +83,13 @@ export default function RevealScreen() {
         </motion.div>
       </motion.div>
       {/* Continue Button Area */}
-      <div className="mt-auto mb-12 flex flex-col items-center gap-6 z-20">
+      <div className="mt-8 md:mt-12 mb-8 flex flex-col items-center gap-6 z-20">
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => dispatch({ type: "NEXT_QUESTION" })}
           className={`
-            pointer-events-auto rounded-full px-12 py-4 md:px-16 md:py-5 font-display text-lg md:text-xl font-black tracking-widest transition-all
+            pointer-events-auto rounded-full px-10 py-3.5 md:px-16 md:py-5 font-display text-base md:text-xl font-black tracking-widest transition-all
             ${state.isEliminated
               ? "bg-red-500 text-white shadow-[0_0_30px_rgba(239,68,68,0.4)]"
               : "bg-accent text-black shadow-[0_0_30px_rgba(34,211,238,0.4)]"

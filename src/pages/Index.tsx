@@ -51,7 +51,7 @@ function GameRouter() {
   console.log("Current Question ID:", currentQuestion?.id);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-transparent">
+    <div className="relative min-h-screen w-full overflow-x-hidden overflow-y-auto bg-transparent" style={{ WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
       {/* Persistent 3D Background */}
       <div className="absolute inset-0 z-0">
         <GameScene

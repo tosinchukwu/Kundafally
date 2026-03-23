@@ -133,33 +133,33 @@ export default function GameplayScreen() {
     <div className="game-container relative flex flex-col items-center min-h-screen w-full bg-transparent overflow-hidden">
       <header className="relative z-10 w-full p-4 md:p-8 flex justify-center">
         <div className="flex flex-col items-center">
-          <div className="logo-frame bg-black/40 backdrop-blur-xl border border-white/5 px-6 py-2 shadow-2xl">
-            <h1 className="font-display text-3xl font-black italic tracking-tighter text-white">KUNDA FALL</h1>
+          <div className="logo-frame bg-black/40 backdrop-blur-xl border border-white/5 px-4 py-1.5 md:px-6 md:py-2 shadow-2xl">
+            <h1 className="font-display text-2xl md:text-3xl font-black italic tracking-tighter text-white">KUNDA FALL</h1>
           </div>
-          <p className="mt-2 font-display text-[8px] font-bold text-white/30 uppercase tracking-[0.4em]">
+          <p className="mt-1 md:mt-2 font-display text-[7px] md:text-[8px] font-bold text-white/30 uppercase tracking-[0.4em]">
             Shield Your Stack
           </p>
         </div>
       </header>
 
       <main className="flex-1 flex flex-col items-center w-full max-w-4xl relative z-10 px-4 mt-2 pointer-events-auto">
-        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="w-full mb-6 text-center">
-          <div className="glass-card border-white/5 bg-black/40 backdrop-blur-2xl p-6 md:p-10 relative">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-accent rounded-full z-10">
-              <span className="text-[10px] font-black text-black">Question {state.questionsAnswered + 1} of 6</span>
+        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="w-full mb-4 md:mb-6 text-center">
+          <div className="glass-card border-white/5 bg-black/40 backdrop-blur-2xl p-4 md:p-10 relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-accent rounded-full z-10">
+              <span className="text-[9px] md:text-[10px] font-black text-black">Question {state.questionsAnswered + 1} of 6</span>
             </div>
-            <h2 className="font-display text-lg md:text-3xl font-bold text-white mb-4">
+            <h2 className="font-display text-base md:text-3xl font-bold text-white mb-3 md:mb-4">
               {currentQuestion.question}
             </h2>
             <div className="flex flex-col items-center">
-              <div className={`h-16 w-16 rounded-full border-4 flex items-center justify-center ${timeLeft <= 5 ? "border-red-500 text-red-500 animate-pulse" : "border-accent text-accent"}`}>
-                <span className="font-data text-2xl font-black">{timeLeft}</span>
+              <div className={`h-12 w-12 md:h-16 md:w-16 rounded-full border-4 flex items-center justify-center ${timeLeft <= 5 ? "border-red-500 text-red-500 animate-pulse" : "border-accent text-accent"}`}>
+                <span className="font-data text-xl md:text-2xl font-black">{timeLeft}</span>
               </div>
             </div>
           </div>
         </motion.div>
 
-        <div className="w-full grid grid-cols-2 gap-x-8 mt-8">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1 md:gap-y-0 mt-4 md:mt-8">
           {currentQuestion.options.map((opt) => {
             const isSelected = selectedPlateLabel === opt.label;
             const hasTokens = (state.distribution[opt.label] || 0) > 0;
@@ -169,9 +169,9 @@ export default function GameplayScreen() {
               <button
                 key={opt.label}
                 onClick={() => dispatch({ type: "SELECT_PLATFORM", label: isSelected ? null : opt.label })}
-                className={`relative flex items-center gap-4 p-4 rounded-xl border transition-all mb-4 ${isSelected ? "bg-accent/10 border-accent" : "bg-white/5 border-white/10"}`}
+                className={`relative flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-xl border transition-all mb-3 md:mb-4 ${isSelected ? "bg-accent/10 border-accent" : "bg-white/5 border-white/10"}`}
               >
-                <div className={`h-12 w-12 flex items-center justify-center rounded-lg font-display text-2xl font-black ${isSelected ? "bg-accent text-black" : "bg-white/5 text-white/20"}`}>
+                <div className={`h-10 w-10 md:h-12 md:w-12 flex items-center justify-center rounded-lg font-display text-xl md:text-2xl font-black ${isSelected ? "bg-accent text-black" : "bg-white/5 text-white/20"}`}>
                   {opt.label}
                 </div>
                 <div className="text-left flex-1 min-w-0">
@@ -189,7 +189,7 @@ export default function GameplayScreen() {
 
         <AnimatePresence>
           {selectedPlateLabel && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-8 flex flex-col items-center gap-6 p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl w-full max-w-lg shadow-2xl">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mt-4 md:mt-8 flex flex-col items-center gap-4 md:gap-6 p-4 md:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl w-full max-w-lg shadow-2xl">
               <div className="flex flex-col items-center gap-1">
                 <span className="font-display text-[10px] font-black text-accent uppercase tracking-widest">BET ON OPTION {selectedPlateLabel}</span>
                 <div className="flex flex-col items-center gap-1">
@@ -209,11 +209,11 @@ export default function GameplayScreen() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-4 md:gap-8">
                 <button
                   onClick={() => updateBet(selectedPlateLabel, -50)}
                   disabled={(state.distribution[selectedPlateLabel] || 0) <= 0}
-                  className="w-16 h-16 rounded-2xl bg-white/5 text-4xl text-white border border-white/10 hover:bg-red-500/30 transition-all active:scale-95"
+                  className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-white/5 text-2xl md:text-4xl text-white border border-white/10 hover:bg-red-500/30 transition-all active:scale-95"
                 >
                   -
                 </button>
@@ -221,7 +221,7 @@ export default function GameplayScreen() {
                 <button
                   onClick={() => canLock && dispatch({ type: "LOCK_ANSWERS" })}
                   disabled={!canLock}
-                  className={`px-10 py-5 rounded-2xl font-display text-xl font-black transition-all ${canLock ? "bg-red-600 text-white shadow-xl hover:scale-105 active:scale-95" : "bg-white/5 text-white/5 cursor-not-allowed"}`}
+                  className={`px-6 py-3 md:px-10 md:py-5 rounded-xl md:rounded-2xl font-display text-base md:text-xl font-black transition-all ${canLock ? "bg-red-600 text-white shadow-xl hover:scale-105 active:scale-95" : "bg-white/5 text-white/5 cursor-not-allowed"}`}
                 >
                   LOCK SESSION
                 </button>
@@ -229,7 +229,7 @@ export default function GameplayScreen() {
                 <button
                   onClick={() => updateBet(selectedPlateLabel, 50)}
                   disabled={available < 50}
-                  className="w-16 h-16 rounded-2xl bg-white/5 text-4xl text-white border border-white/10 hover:bg-accent/30 transition-all active:scale-95"
+                  className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-white/5 text-2xl md:text-4xl text-white border border-white/10 hover:bg-accent/30 transition-all active:scale-95"
                 >
                   +
                 </button>
