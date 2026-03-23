@@ -23,6 +23,7 @@ interface GameState {
   currentTokenIndex: number;
   totalScore: number;
   lastWinAmount: number;
+  totalBonus: number;
 }
 
 const TOKENS = ["BNB", "ETH", "BTC", "AVAX", "POL", "SOL"];
@@ -61,6 +62,7 @@ const initialState: GameState = {
   currentTokenIndex: 0,
   totalScore: 0,
   lastWinAmount: 0,
+  totalBonus: 0,
 };
 
 function getCurrentQuestion(state: GameState): Question | null {
@@ -143,7 +145,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const correctLabel = question.correctAnswer;
       const tokensOnCorrect = state.distribution[correctLabel] || 0;
       const bonusAmount = Math.floor(tokensOnCorrect * BONUS_RATE);
-      const newTokens = tokensOnCorrect + bonusAmount;
+      const newTokens = tokensOnCorrect; // Bonus NOT added to active balance now
+      const newTotalBonus = state.totalBonus + bonusAmount;
       
       // Eliminated if:
       // 1. Didn't make a valid attempt (totalDistributed < 50)
@@ -155,6 +158,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         phase: "reveal",
         revealedAnswer: correctLabel,
         tokens: newTokens,
+        totalBonus: newTotalBonus,
         isEliminated,
         selectedPlatform: null,
         questionsAnswered: state.questionsAnswered + 1,

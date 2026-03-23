@@ -8,10 +8,11 @@ export default function ResultsScreen() {
   useEffect(() => {
     try {
       const history = JSON.parse(localStorage.getItem("kunda_history") || "[]");
+      const finalScore = state.tokens + state.totalBonus;
       const newEntry = {
         id: Date.now(),
         date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        score: state.totalScore,
+        score: finalScore,
         correct: state.history.filter(h => h.correct).length,
         total: state.history.length,
         token: currentToken
@@ -59,10 +60,15 @@ export default function ResultsScreen() {
                 <span className="text-xl md:text-2xl font-black text-white leading-none tracking-tighter">ALL</span>
               </div>
               <span className="font-data text-6xl md:text-9xl font-black text-white tracking-tighter drop-shadow-2xl">
-                ${state.totalScore.toLocaleString()}
+                ${(state.tokens + state.totalBonus).toLocaleString()}
               </span>
             </div>
-            <div className="font-display text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.5em] text-white/30 uppercase mt-4">Vault Reconciliation Successful</div>
+            <div className="flex items-center gap-4 text-white/40 font-data text-[10px] md:text-xs">
+              <span>BALANCE: ${state.tokens.toLocaleString()}</span>
+              <span>+</span>
+              <span>BONUS: ${state.totalBonus.toLocaleString()}</span>
+            </div>
+            <div className="font-display text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.5em] text-accent/50 uppercase mt-4">Mission Success: Vault Reconciled</div>
           </div>
         </motion.div>
 
@@ -70,7 +76,7 @@ export default function ResultsScreen() {
           {[
             { label: "STABILITY", value: `${correctCount}/${state.history.length}`, color: "text-accent" },
             { label: "VOIDS", value: `$${totalLost.toLocaleString()}`, color: "text-red-500" },
-            { label: "EFFICIENCY", value: `${Math.round((state.totalScore / (state.history.length * 1000 || 1)) * 100)}%`, color: "text-green-400" },
+            { label: "EFFICIENCY", value: `${Math.round(((state.tokens + state.totalBonus) / 1000) * 100)}%`, color: "text-green-400" },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}

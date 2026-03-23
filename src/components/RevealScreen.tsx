@@ -57,7 +57,7 @@ export default function RevealScreen() {
             className="mb-4 glass-card px-6 py-2 border-green-500/50 bg-green-500/10"
           >
             <span className="font-display text-sm font-black tracking-widest text-green-400 uppercase">
-              Correct Platform {lastHistory?.bonus > 0 && <span className="text-white/60 ml-2">(+${lastHistory.bonus} Bonus)</span>}
+              Correct Platform {lastHistory?.bonus > 0 && <span className="text-white/60 ml-2">(+${lastHistory.bonus} Vaulted)</span>}
             </span>
           </motion.div>
         )}

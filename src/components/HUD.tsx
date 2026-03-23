@@ -119,7 +119,14 @@ export default function HUD() {
               <div className="flex h-7 w-7 md:h-10 md:w-10 items-center justify-center rounded-full bg-gradient-to-tr from-accent to-accent/60 border-2 border-accent shadow-[0_0_20px_rgba(34,211,238,0.4)]">
                 <span className="text-[9px] md:text-xs font-black text-black leading-none">{currentToken}</span>
               </div>
-              <span className="font-data text-xl md:text-3xl font-black text-white text-glow">${displayedBalance.toLocaleString()}</span>
+              <div className="flex flex-col">
+                <span className="font-data text-xl md:text-3xl font-black text-white text-glow leading-none">${displayedBalance.toLocaleString()}</span>
+                {state.totalBonus > 0 && (
+                  <span className="font-data text-[10px] md:text-xs font-bold text-green-400 mt-1">
+                    +${state.totalBonus.toLocaleString()} VAULTED BONUS
+                  </span>
+                )}
+              </div>
             </div>
           </motion.div>
           

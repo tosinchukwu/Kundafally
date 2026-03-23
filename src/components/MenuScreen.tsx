@@ -82,8 +82,8 @@ export default function MenuScreen() {
             </div>
            <div className="h-4 w-px bg-white/10" />
            <div className="text-center">
-             <div className="font-data text-[10px] text-white/50 mb-1">BONUS</div>
-             <div className="font-data text-xs text-white font-black">1% RECOVERY</div>
+             <div className="font-data text-[10px] text-white/50 mb-1">VAULT</div>
+             <div className="font-data text-xs text-white font-black">END BONUS</div>
            </div>
         </div>
       </motion.div>
@@ -155,7 +155,7 @@ export default function MenuScreen() {
                 <section>
                   <h4 className="font-display text-xs font-black text-accent tracking-[0.3em] uppercase mb-4">01. The Objective</h4>
                   <p className="font-display text-sm md:text-base text-white/70 leading-relaxed italic">
-                    You begin with <span className="text-white font-bold">$1,000</span>. Your goal is to keep as much as possible through <span className="text-white font-bold">6 Rounds</span>. <span className="text-white font-bold underline">You MUST use all available tokens in every round.</span> A <span className="text-green-400 font-bold">1% Survivor Bonus</span> is added to your stable funds after every correct round.
+                    You begin with <span className="text-white font-bold">$1,000</span>. Your goal is to keep as much as possible through <span className="text-white font-bold">6 Rounds</span>. <span className="text-white font-bold underline">You MUST use all available tokens in every round.</span> A <span className="text-green-400 font-bold">1% Survivor Bonus</span> is vaulted after every correct round and added to your final result.
                   </p>
                 </section>
 
