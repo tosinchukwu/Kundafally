@@ -40,7 +40,7 @@ type GameAction =
 
 const STARTING_TOKENS = 1000;
 const MIN_BET = 100;
-const BONUS_RATE = 0; // Removing bonus for now as per "equivalent to $1000" requirement
+const BONUS_RATE = 0.01; // 1% Bonus Protocol Active
 
 const initialState: GameState = {
   phase: "menu",
@@ -142,7 +142,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
       const correctLabel = question.correctAnswer;
       const tokensOnCorrect = state.distribution[correctLabel] || 0;
-      const newTokens = tokensOnCorrect;
+      const bonusAmount = Math.floor(tokensOnCorrect * BONUS_RATE);
+      const newTokens = tokensOnCorrect + bonusAmount;
       
       // Eliminated if:
       // 1. Didn't make a valid attempt (totalDistributed < 50)
@@ -164,7 +165,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
             question: question.question,
             correct: tokensOnCorrect > 0,
             tokensLost: totalDistributed - tokensOnCorrect,
-            bonus: 0,
+            bonus: bonusAmount,
           },
         ],
       };
