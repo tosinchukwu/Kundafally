@@ -163,7 +163,7 @@ export default function MenuScreen() {
                   <h4 className="font-display text-xs font-black text-accent tracking-[0.3em] uppercase mb-4">02. Risk Protocol</h4>
                   <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20">
                     <div className="text-red-500 font-black text-[10px] mb-2">THE VOID (MANDATORY)</div>
-                    <p className="text-xs text-white/50 leading-loose">All tokens must be placed on platforms. Any token not deployed before the timer expires is lost to the void. No money is safe until the mission ends.</p>
+                    <p className="text-xs text-white/50 leading-loose">All tokens must be staked. Any token not staked before the timer expires is lost to the void. No money is safe until the mission ends.</p>
                   </div>
                 </section>
 
@@ -172,11 +172,11 @@ export default function MenuScreen() {
                   <ul className="space-y-4 text-xs md:text-sm text-white/70 italic">
                     <li className="flex gap-4">
                       <span className="text-accent font-black">/</span>
-                      <span>Min bet is <span className="text-white font-bold">$100</span>. Max bet is <span className="text-white font-bold">$1,000</span> per platform.</span>
+                      <span>Min stake is <span className="text-white font-bold">$100</span>. Max stake is <span className="text-white font-bold">$1,000</span> per platform.</span>
                     </li>
                     <li className="flex gap-4">
                       <span className="text-accent font-black">/</span>
-                      <span>All bets must be in <span className="text-white font-bold">multiples of $100</span>.</span>
+                      <span>All stakes must be in <span className="text-white font-bold">multiples of $100</span>.</span>
                     </li>
                     <li className="flex gap-4">
                       <span className="text-accent font-black">/</span>
@@ -188,7 +188,7 @@ export default function MenuScreen() {
                 <section>
                   <h4 className="font-display text-xs font-black text-accent tracking-[0.3em] uppercase mb-4">04. Game Over</h4>
                   <p className="font-display text-xs text-red-400 leading-relaxed">
-                    If your balance falls below <span className="font-bold underline">$100</span> or you fail to place a valid bet before the timer expires, the mission is <span className="font-bold uppercase">Terminated</span>.
+                    If your balance falls below <span className="font-bold underline">$100</span> or you fail to place a valid stake before the timer expires, the mission is <span className="font-bold uppercase">Terminated</span>.
                   </p>
                 </section>
               </div>

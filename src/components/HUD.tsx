@@ -134,7 +134,7 @@ export default function HUD() {
                     className="flex items-center gap-3"
                   >
                     <span className="font-data text-[11px] font-black text-accent tracking-tighter">
-                      -${totalDistributed} ON PLATFORMS
+                      -${totalDistributed} STAKED
                     </span>
                   </motion.div>
               ) : (

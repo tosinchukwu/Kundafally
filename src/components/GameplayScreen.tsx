@@ -259,7 +259,7 @@ export default function GameplayScreen() {
                   disabled={!canLock}
                   className={`px-6 py-3 md:px-10 md:py-5 rounded-xl md:rounded-2xl font-display text-base md:text-xl font-black transition-all ${canLock ? "bg-red-600 text-white shadow-xl hover:scale-105 active:scale-95" : "bg-white/5 text-white/10 cursor-not-allowed"}`}
                 >
-                  {available > 0 ? `DEPLOY $${available}` : "LOCK SESSION"}
+                  {available > 0 ? "STAKE ALL TOKENS" : "LOCK SESSION"}
                 </button>
 
                 <button
@@ -271,7 +271,7 @@ export default function GameplayScreen() {
                 </button>
               </div>
               <div className={`text-[8px] uppercase font-black tracking-[0.3em] leading-none text-center ${available > 0 ? "text-yellow-500 animate-pulse" : "opacity-30"}`}>
-                {available > 0 ? `Alert: $${available} Tokens Not Deployed` : "Status: Optimal Distribution"}
+                {available > 0 ? `Alert: $${available} Tokens Not Staked` : "Status: Optimal Stake"}
               </div>
             </motion.div>
           )}
