@@ -46,4 +46,4 @@ If your balance falls below **$50** or you fail to place a valid bet before the 
 ## 📊 Scoring & Strategy
 
 For a detailed breakdown of the mathematical formulas, hedging strategies, and elimination rules, please see:
-[SCORING_STRATEGY.md](/SCORING_STRATEGY.md)
+[SCORING_STRATEGY.md](public/SCORING_STRATEGY.md)
