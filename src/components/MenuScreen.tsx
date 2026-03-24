@@ -25,19 +25,7 @@ export default function MenuScreen() {
         <div className="flex items-center gap-4">
           <div className="h-2.5 w-2.5 rounded-full bg-accent animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
           <div className="flex items-center gap-2">
-            <button 
-              onClick={() => dispatch({ type: "SET_STARTING_TOKENS", amount: Math.max(100, (state.startingTokens || 1000) - 100) })}
-              className="w-6 h-6 rounded bg-white/5 border border-white/10 flex items-center justify-center hover:bg-accent hover:text-black transition-colors pointer-events-auto"
-            >
-              -
-            </button>
-            <span className="font-data text-xs text-accent whitespace-nowrap">{state.startingTokens?.toLocaleString()} STARTING BUDGET</span>
-            <button 
-              onClick={() => dispatch({ type: "SET_STARTING_TOKENS", amount: Math.min(1000, (state.startingTokens || 1000) + 100) })}
-              className="w-6 h-6 rounded bg-white/5 border border-white/10 flex items-center justify-center hover:bg-accent hover:text-black transition-colors pointer-events-auto"
-            >
-              +
-            </button>
+            <span className="font-data text-xs text-accent whitespace-nowrap uppercase tracking-widest">Mission Budget: $1,000</span>
           </div>
         </div>
         <WalletButton />

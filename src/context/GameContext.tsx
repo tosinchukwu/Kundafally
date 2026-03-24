@@ -152,13 +152,14 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       
       // Budget Model Logic:
       // 1. Remaining budget = current tokens - total distributed in this round
-      const newBudget = state.tokens - totalDistributed;
+      const newBudget = Math.max(0, state.tokens - totalDistributed);
       // 2. Total saved increases by what was on the correct platform
       const newTotalSaved = state.totalScore + tokensOnCorrect;
       const newTotalBonus = state.totalBonus + bonusAmount;
       
-      // No more elimination based on balance, just need at least one valid stake
-      const isEliminated = totalDistributed < MIN_BET && state.tokens >= MIN_BET;
+      // We are eliminated (early end) ONLY if we have $0 left AND it's not the last question
+      // But user says: "once a user exhausted the $1000 ... the game ends once the answer ... reveal"
+      const isEliminated = newBudget === 0;
 
       return {
         ...state,
@@ -187,7 +188,10 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     case "NEXT_QUESTION": {
       const nextQ = state.currentQuestionIndex + 1;
 
-      if (nextQ < 6) {
+      // End game if:
+      // 1. We reached the end (round 6)
+      // 2. OR we are out of tokens (budget exhausted)
+      if (nextQ < 6 && state.tokens > 0) {
         return {
           ...state,
           phase: "playing",
@@ -195,11 +199,11 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           distribution: {},
           revealedAnswer: null,
           lastWinAmount: 0,
-          isEliminated: false, // Reset elimination to allow continuing even if they missed a stake
+          isEliminated: false,
         };
       }
 
-      return { ...state, phase: "results", selectedPlatform: null };
+      return { ...state, phase: "results", selectedPlatform: null, isEliminated: state.tokens === 0 };
     }
 
     case "RESET":
@@ -215,7 +219,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, trapdoorsOpen: true };
 
     case "SET_STARTING_TOKENS":
-      return { ...state, startingTokens: action.amount, tokens: action.amount };
+      // Fixed at 1000 per user request
+      return { ...state, startingTokens: 1000, tokens: 1000 };
 
     default:
       return state;
