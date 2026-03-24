@@ -34,6 +34,8 @@ export default function GameplayScreen() {
     if (selectedPlateLabel) {
       const val = state.distribution[selectedPlateLabel] || 0;
       setInputValue(val.toString());
+    } else {
+      setInputValue("0");
     }
   }, [selectedPlateLabel, state.distribution]);
 
@@ -126,19 +128,21 @@ export default function GameplayScreen() {
 
   const canLock = useMemo(() => {
     // 1. Current typing must be valid (or 0)
-    if (inputValue !== "0" && !isInputValid) return false;
+    // If no selection, we don't care about inputValue itself
+    if (selectedPlateLabel && inputValue !== "0" && !isInputValid) return false;
     
     // 2. All other platforms in state must be valid
     const othersValid = Object.entries(state.distribution).every(([label, val]) => {
-      if (label === selectedPlateLabel) return true;
+      // If no selection, ALL must be valid
+      if (selectedPlateLabel && label === selectedPlateLabel) return true;
       return val === 0 || (val >= 100 && val % 100 === 0);
     });
     if (!othersValid) return false;
 
     // 3. MUST use current balance (100% distribution required)
-    const currentNum = parseInt(inputValue) || 0;
+    const currentNum = selectedPlateLabel ? (parseInt(inputValue) || 0) : 0;
     const totalOtherDist = Object.entries(state.distribution)
-      .filter(([label]) => label !== selectedPlateLabel)
+      .filter(([label]) => !selectedPlateLabel || label !== selectedPlateLabel)
       .reduce((a, [_, b]) => a + b, 0);
     
     // Force full distribution
