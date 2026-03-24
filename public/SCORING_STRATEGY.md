@@ -1,6 +1,6 @@
 # KUNDA FALL: Scoring & Game Mechanics Strategy
 
-This document outlines the core mathematical and strategic design of the **Kunda Fall** game session. Developers should refer to this when modifying the `GameContext` reducer or the `HUD` / `Results` components.
+This Document outlines the core mathematical and strategic design of the **Kunda Fall** game session. Developers should refer to this when modifying the `GameContext` reducer or the `HUD` / `Results` components.
 
 ---
 
