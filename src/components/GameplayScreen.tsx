@@ -207,13 +207,13 @@ export default function GameplayScreen() {
           <div className="glass-card border-white/10 bg-black/60 backdrop-blur-3xl p-6 rounded-[2rem] shadow-2xl">
             <div className="flex flex-col items-center gap-4">
               <div className="flex flex-col items-center gap-1">
-                <span className="font-display text-[9px] font-black text-accent uppercase tracking-[0.3em]">
-                  {selectedPlateLabel ? `STAKE ON OPTION ${selectedPlateLabel}` : "SELECT AN OPTION ABOVE TO STAKE"}
+                <span className="font-display text-[10px] md:text-sm font-black text-accent uppercase tracking-[0.3em] mb-2">
+                  {selectedPlateLabel ? `STAKE ON OPTION ${selectedPlateLabel}` : "SELECT AN OPTION ABOVE • ALLOCATE $100 - $500"}
                 </span>
                 
-                {/* Preset Buttons - Always Clickable */}
-                <div className="flex flex-wrap justify-center gap-2 mt-2">
-                  {[100, 200, 300, 400, 500, 600, 700, 800, 900, 1000].map((p) => {
+                {/* Preset Buttons - Rebalanced for 100-500 */}
+                <div className="flex flex-wrap justify-center gap-2 mt-2 w-full max-w-sm">
+                  {[100, 200, 300, 400, 500].map((p) => {
                     const isPossible = p <= state.tokens;
                     const isCurrent = selectedPlateLabel && (state.distribution[selectedPlateLabel] || 0) === p;
 
@@ -221,18 +221,31 @@ export default function GameplayScreen() {
                       <button
                         key={p}
                         onClick={() => {
-                          if (!selectedPlateLabel) {
-                            // Optional: Could auto-select A or show a hint
-                            return;
-                          }
+                          if (!selectedPlateLabel) return;
                           if (isPossible) {
                              dispatch({ type: "SET_DISTRIBUTION", label: selectedPlateLabel, amount: p });
                           }
                         }}
                         disabled={!isPossible || !selectedPlateLabel}
-                        className={`px-3 py-2 rounded-xl font-data text-[10px] font-black border transition-all ${isCurrent ? "bg-accent border-accent text-black shadow-[0_0_15px_rgba(34,211,238,0.4)]" : (isPossible && selectedPlateLabel) ? "bg-white/5 border-white/10 text-white/50 hover:bg-accent/20 hover:text-accent hover:border-accent" : "bg-white/5 border-white/5 text-white/5 cursor-not-allowed"}`}
+                        className={`
+                          px-2 py-3 rounded-xl font-data text-[10px] md:text-xs font-black border transition-all relative overflow-hidden
+                          ${isCurrent 
+                            ? "bg-accent border-accent text-black shadow-[0_0_20px_rgba(34,211,238,0.5)] z-10 scale-110" 
+                            : (isPossible && selectedPlateLabel) 
+                              ? "bg-white/5 border-white/10 text-white/50 hover:bg-accent/20 hover:text-accent hover:border-accent" 
+                              : "bg-white/5 border-white/5 text-white/5 cursor-not-allowed"
+                          }
+                          ${isPossible && selectedPlateLabel && !isCurrent ? "border-accent/30 text-accent/70 shadow-[inset_0_0_10px_rgba(34,211,238,0.1)]" : ""}
+                        `}
                       >
-                        ${p}
+                        <span className="relative z-10">${p}</span>
+                        {isPossible && selectedPlateLabel && !isCurrent && (
+                          <motion.div
+                            animate={{ opacity: [0.1, 0.3, 0.1] }}
+                            transition={{ duration: 3, repeat: Infinity }}
+                            className="absolute inset-0 bg-accent/5 backdrop-blur-sm"
+                          />
+                        )}
                       </button>
                     );
                   })}
