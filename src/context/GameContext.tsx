@@ -24,6 +24,7 @@ interface GameState {
   totalScore: number;
   lastWinAmount: number;
   totalBonus: number;
+  recordedElimination: boolean;
 }
 
 const TOKENS = ["BNB", "ETH", "BTC", "AVAX", "POL", "SOL"];
@@ -42,7 +43,7 @@ type GameAction =
 
 const DEFAULT_STARTING_TOKENS = 1000;
 const MIN_BET = 100;
-const BONUS_RATE = 0.01; // 1% Bonus Protocol Active
+const BONUS_RATE = 0.05; // 5% Bonus Protocol Active
 
 const initialState: GameState = {
   phase: "menu",
@@ -64,6 +65,7 @@ const initialState: GameState = {
   totalScore: 0,
   lastWinAmount: 0,
   totalBonus: 0,
+  recordedElimination: false,
 };
 
 function getCurrentQuestion(state: GameState): Question | null {

@@ -157,7 +157,7 @@ export default function MenuScreen() {
                 <section>
                   <h4 className="font-display text-xs font-black text-accent tracking-[0.3em] uppercase mb-4">01. The Objective</h4>
                   <p className="font-display text-sm md:text-base text-white/70 leading-relaxed italic">
-                    You begin with <span className="text-white font-bold">$1,000</span> (10 Tokens). Your goal is to keep as much as possible through <span className="text-white font-bold">6 Rounds</span>. Any token not staked before you <span className="text-white font-bold underline">Lock Session</span> is lost to the void. A <span className="text-green-400 font-bold">1% Survivor Bonus</span> is vaulted after every correct round.
+                    You begin with <span className="text-white font-bold">$1,000</span> (10 Tokens). Your goal is to keep as much as possible through <span className="text-white font-bold">6 Rounds</span>. Any token not staked before you <span className="text-white font-bold underline">Lock Session</span> is lost to the void. A <span className="text-green-400 font-bold">5% Survivor Bonus</span> is vaulted after every correct round.
                   </p>
                 </section>
 
