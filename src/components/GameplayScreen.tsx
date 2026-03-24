@@ -145,8 +145,9 @@ export default function GameplayScreen() {
       .filter(([label]) => !selectedPlateLabel || label !== selectedPlateLabel)
       .reduce((a, [_, b]) => a + b, 0);
     
-    // Force full distribution
-    return (currentNum + totalOtherDist) === state.tokens && state.tokens > 0;
+    // Force full distribution (of all available $100 units)
+    const maxStakePossible = Math.floor(state.tokens / 100) * 100;
+    return (currentNum + totalOtherDist) === maxStakePossible && state.tokens >= 100;
   }, [inputValue, isInputValid, state.distribution, selectedPlateLabel, state.tokens]);
 
   return (
@@ -266,13 +267,26 @@ export default function GameplayScreen() {
                   -
                 </button>
                 
-                <button
-                  onClick={() => canLock && dispatch({ type: "LOCK_ANSWERS" })}
-                  disabled={!canLock}
-                  className={`px-8 py-4 rounded-2xl font-display text-lg font-black transition-all ${canLock ? "bg-red-600 text-white shadow-[0_10px_30px_rgba(220,38,38,0.4)] hover:scale-105 active:scale-95" : "bg-white/5 text-white/10 cursor-not-allowed"}`}
-                >
-                  LOCK SESSION
-                </button>
+                <div className="flex flex-col items-center gap-2">
+                  {!canLock && state.tokens >= 100 && (
+                    <motion.div 
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-full mb-1"
+                    >
+                      <span className="text-[9px] font-black text-red-500 uppercase tracking-widest">
+                        STAKE NEEDED: ${Math.floor(state.tokens / 100) * 100 - (selectedPlateLabel ? (parseInt(inputValue) || 0) : 0) - Object.entries(state.distribution).filter(([l]) => l !== selectedPlateLabel).reduce((a, [_, b]) => a + b, 0)}
+                      </span>
+                    </motion.div>
+                  )}
+                  <button
+                    onClick={() => canLock && dispatch({ type: "LOCK_ANSWERS" })}
+                    disabled={!canLock}
+                    className={`px-8 py-4 rounded-2xl font-display text-lg font-black transition-all ${canLock ? "bg-red-600 text-white shadow-[0_10px_30px_rgba(220,38,38,0.4)] hover:scale-105 active:scale-95" : "bg-white/5 text-white/10 cursor-not-allowed"}`}
+                  >
+                    LOCK SESSION
+                  </button>
+                </div>
 
                 <button
                   onClick={() => selectedPlateLabel && updateBet(selectedPlateLabel, 100)}
