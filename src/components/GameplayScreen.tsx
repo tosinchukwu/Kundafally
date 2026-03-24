@@ -6,7 +6,7 @@ import { useGame } from "@/context/GameContext";
 
 export default function GameplayScreen() {
   const { state, dispatch, currentQuestion, currentToken } = useGame();
-  const [timeLeft, setTimeLeft] = useState(45);
+  const [timeLeft, setTimeLeft] = useState(30);
   const [timerActive, setTimerActive] = useState(true);
   
   // Betting Input Local State
@@ -105,7 +105,7 @@ export default function GameplayScreen() {
 
   useEffect(() => {
     if (state.phase === "playing") {
-      setTimeLeft(45);
+      setTimeLeft(30);
       setTimerActive(true);
     } else {
       setTimerActive(false);

@@ -41,25 +41,29 @@ export default function ResultsScreen() {
         className="relative z-10 w-full max-w-2xl text-center"
       >
         <div className="inline-block glass-card px-6 py-2 mb-10 border-accent/40">
-          <span className="font-display text-xs font-black tracking-[0.3em] text-accent uppercase">Session Complete</span>
+          <span className={`font-display text-xs font-black tracking-[0.3em] uppercase ${state.isEliminated ? "text-red-500" : "text-accent"}`}>
+            {state.isEliminated ? "Mission Terminated" : "Session Complete"}
+          </span>
         </div>
 
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.6, type: "spring", stiffness: 100 }}
-          className="glass-card p-8 md:p-12 mb-6 md:mb-10 overflow-hidden relative border-white/5 bg-white/[0.03] backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.6)]"
+          className={`glass-card p-8 md:p-12 mb-6 md:mb-10 overflow-hidden relative border-white/5 bg-white/[0.03] backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.6)] ${state.isEliminated ? "border-red-500/20" : ""}`}
         >
           {/* Decorative Glow */}
-          <div className="absolute -top-24 -left-24 w-48 h-48 bg-accent/20 blur-[80px] rounded-full" />
-          <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-primary/20 blur-[80px] rounded-full" />
+          <div className={`absolute -top-24 -left-24 w-48 h-48 blur-[80px] rounded-full ${state.isEliminated ? "bg-red-500/20" : "bg-accent/20"}`} />
+          <div className={`absolute -bottom-24 -right-24 w-48 h-48 blur-[80px] rounded-full ${state.isEliminated ? "bg-primary/20" : "bg-primary/20"}`} />
           
           <div className="relative z-10 flex flex-col items-center">
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 mb-2">
-              <div className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl md:rounded-[2rem] bg-gradient-to-tr from-accent/60 to-accent shadow-[0_20px_40px_rgba(34,211,238,0.3)] border border-white/20">
-                <span className="text-xl md:text-2xl font-black text-white leading-none tracking-tighter">ALL</span>
+              <div className={`flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl md:rounded-[2rem] border border-white/20 shadow-2xl transition-all ${state.tokens === 0 ? "bg-red-500/60 shadow-red-500/30" : "bg-gradient-to-tr from-accent/60 to-accent shadow-accent/30"}`}>
+                <span className="text-xl md:text-2xl font-black text-white leading-none tracking-tighter">
+                  {state.tokens === 0 ? "VOID" : "SAFE"}
+                </span>
               </div>
-              <span className="font-data text-6xl md:text-9xl font-black text-white tracking-tighter drop-shadow-2xl">
+              <span className={`font-data text-6xl md:text-9xl font-black tracking-tighter drop-shadow-2xl ${state.tokens === 0 ? "text-red-500" : "text-white"}`}>
                 ${(state.totalScore + state.totalBonus).toLocaleString()}
               </span>
             </div>
@@ -68,7 +72,9 @@ export default function ResultsScreen() {
               <span>+</span>
               <span>BONUS: ${state.totalBonus.toLocaleString()}</span>
             </div>
-            <div className="font-display text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.5em] text-accent/50 uppercase mt-4">Mission Success: Vault Reconciled</div>
+            <div className={`font-display text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.5em] uppercase mt-4 ${state.isEliminated ? "text-red-500/50" : "text-accent/50"}`}>
+              {state.tokens === 0 ? "Mission Failure: Vault Depleted" : "Mission Success: Vault Reconciled"}
+            </div>
           </div>
         </motion.div>
 

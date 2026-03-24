@@ -182,7 +182,7 @@ export default function MenuScreen() {
                     </li>
                     <li className="flex gap-4">
                       <span className="text-accent font-black">/</span>
-                      <span>You have exactly <span className="text-white font-bold">45 Seconds</span> per round to distribute your tokens.</span>
+                      <span>You have exactly <span className="text-white font-bold">30 Seconds</span> per round to distribute your tokens.</span>
                     </li>
                   </ul>
                 </section>

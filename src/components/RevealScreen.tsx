@@ -11,6 +11,16 @@ export default function RevealScreen() {
     return () => clearTimeout(timer);
   }, [dispatch]);
 
+  // Auto-advance to results if eliminated
+  useEffect(() => {
+    if (state.isEliminated && state.trapdoorsOpen) {
+      const timer = setTimeout(() => {
+        dispatch({ type: "NEXT_QUESTION" });
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [state.isEliminated, state.trapdoorsOpen, dispatch]);
+
   if (!currentQuestion) return null;
 
   const correctLabel = state.revealedAnswer!;
