@@ -43,7 +43,7 @@ type GameAction =
 
 const DEFAULT_STARTING_TOKENS = 1000;
 const MIN_BET = 100;
-const BONUS_RATE = 0.05; // 5% Bonus Protocol Active
+const BONUS_RATE = 0.01; // 1% Bonus Protocol Active
 
 const initialState: GameState = {
   phase: "menu",
@@ -152,26 +152,28 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const tokensOnCorrect = state.distribution[correctLabel] || 0;
       const bonusAmount = Math.floor(tokensOnCorrect * BONUS_RATE);
       
-      // Budget Model Logic:
-      // 1. Remaining budget = current tokens - total distributed in this round
-      const newBudget = Math.max(0, state.tokens - totalDistributed);
-      // 2. Total saved increases by what was on the correct platform
-      const newTotalSaved = state.totalScore + tokensOnCorrect;
+      // Advance Logic:
+      // 1. Unstaked money is safe (usually forced to 0 by UI, but logic should be robust)
+      const unstaked = Math.max(0, state.tokens - totalDistributed);
+      
+      // 2. Next budget = Unstaked + Correct Stakes + Bonus
+      const nextBudget = unstaked + tokensOnCorrect + bonusAmount;
+      
+      // 3. Vaulted amount (totalScore) is what we currently have in hand
+      const newTotalSaved = nextBudget;
       const newTotalBonus = state.totalBonus + bonusAmount;
       
-      // We are eliminated (early end) ONLY if we have $0 left AND it's not the last question
-      // But user says: "once a user exhausted the $1000 ... the game ends once the answer ... reveal"
-      const isEliminated = newBudget === 0;
+      const isEliminated = nextBudget === 0;
 
       return {
         ...state,
         phase: "reveal",
         revealedAnswer: correctLabel,
-        tokens: newBudget, // This is the REMAINING budget
-        totalScore: newTotalSaved, // This is the SAVED amount
+        tokens: nextBudget, 
+        totalScore: newTotalSaved, 
         totalBonus: newTotalBonus,
         isEliminated,
-        recordedElimination: isEliminated, // Keep track if they failed to stake
+        recordedElimination: isEliminated,
         selectedPlatform: null,
         questionsAnswered: state.questionsAnswered + 1,
         lastWinAmount: tokensOnCorrect,

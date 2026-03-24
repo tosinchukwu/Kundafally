@@ -130,8 +130,8 @@ export default function GameplayScreen() {
     
     // 2. All other platforms in state must be valid
     const othersValid = Object.entries(state.distribution).every(([label, val]) => {
-      if (label === selectedPlateLabel) return true; // Handled by isInputValid
-      return val === 0 || (val >= 100 && val <= state.startingTokens && val % 100 === 0);
+      if (label === selectedPlateLabel) return true;
+      return val === 0 || (val >= 100 && val % 100 === 0);
     });
     if (!othersValid) return false;
 
@@ -141,7 +141,8 @@ export default function GameplayScreen() {
       .filter(([label]) => label !== selectedPlateLabel)
       .reduce((a, [_, b]) => a + b, 0);
     
-    return (currentNum + totalOtherDist) >= 100; // Just need at least one valid increment
+    // Force full distribution
+    return (currentNum + totalOtherDist) === state.tokens && state.tokens > 0;
   }, [inputValue, isInputValid, state.distribution, selectedPlateLabel, state.tokens]);
 
   return (
@@ -208,7 +209,7 @@ export default function GameplayScreen() {
             <div className="flex flex-col items-center gap-4">
               <div className="flex flex-col items-center gap-1">
                 <span className="font-display text-[10px] md:text-sm font-black text-accent uppercase tracking-[0.3em] mb-2">
-                  {selectedPlateLabel ? `STAKE ON OPTION ${selectedPlateLabel}` : "SELECT AN OPTION ABOVE • ALLOCATE $100 - $500"}
+                  {selectedPlateLabel ? `STAKE ON OPTION ${selectedPlateLabel}` : "SELECT AN OPTION • STAKE YOUR FULL BUDGET"}
                 </span>
                 
                 {/* Preset Buttons - Rebalanced for 100-500 */}
@@ -288,8 +289,8 @@ export default function GameplayScreen() {
                     ROUND TOTAL: ${totalDistributed}
                   </span>
                 </div>
-                <div className="text-[7px] text-white/20 italic">
-                  $100 = 1 TOKEN • BUDGET MODEL ACTIVE
+                <div className="text-[7px] text-white/20 italic uppercase tracking-widest">
+                  $100 = 1 TOKEN • FULL STAKE REQUIRED • 1% BONUS ACTIVE
                 </div>
               </div>
             </div>
