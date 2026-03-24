@@ -4,7 +4,7 @@ import { Category, Question } from "@/data/quizData";
 export type GamePhase = "menu" | "category" | "playing" | "reveal" | "results";
 export type Difficulty = "easy" | "medium" | "hard";
 
-interface GameState {
+export interface GameState {
   phase: GamePhase;
   tokens: number;
   startingTokens: number;
@@ -29,7 +29,7 @@ interface GameState {
 
 const TOKENS = ["BNB", "ETH", "BTC", "AVAX", "POL", "SOL"];
 
-type GameAction =
+export type GameAction =
   | { type: "START_GAME"; categories: Category[]; sponsor?: string; startingTokens?: number }
   | { type: "DISTRIBUTE_TOKENS"; label: string; amount: number }
   | { type: "LOCK_ANSWERS" }
@@ -41,9 +41,9 @@ type GameAction =
   | { type: "OPEN_TRAPDOORS" }
   | { type: "SET_STARTING_TOKENS"; amount: number };
 
-const DEFAULT_STARTING_TOKENS = 1000;
-const MIN_BET = 100;
-const BONUS_RATE = 0.01; // 1% Bonus Protocol Active
+export const DEFAULT_STARTING_TOKENS = 1000;
+export const MIN_BET = 100;
+export const BONUS_RATE = 0.01; // 1% Bonus Protocol Active
 
 const initialState: GameState = {
   phase: "menu",
@@ -77,7 +77,7 @@ function getCurrentQuestion(state: GameState): Question | null {
   return cat.questions[state.currentQuestionIndex] || null;
 }
 
-function gameReducer(state: GameState, action: GameAction): GameState {
+export function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case "START_GAME": {
       // Pick 1 Easy, 1 Medium, 1 Hard from the first 2 categories
@@ -211,7 +211,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         };
       }
 
-      return { ...state, phase: "results", selectedPlatform: null, isEliminated: state.tokens === 0 };
+      return { ...state, phase: "results", selectedPlatform: null, isEliminated: state.tokens < MIN_BET };
     }
 
     case "RESET":
