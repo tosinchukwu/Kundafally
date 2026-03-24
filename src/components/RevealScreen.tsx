@@ -93,6 +93,28 @@ export default function RevealScreen() {
             </span>
           </span>
         </motion.div>
+
+        {/* MISSION TERMINATED OVERLAY */}
+        {state.isEliminated && state.trapdoorsOpen && (
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm pointer-events-none"
+          >
+            <div className="glass-card border-red-500/50 bg-black/80 p-8 md:p-12 text-center shadow-[0_0_100px_rgba(239,68,68,0.2)]">
+              <motion.div
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 1, repeat: Infinity }}
+                className="font-display text-4xl md:text-6xl font-black text-red-500 italic tracking-tighter mb-4"
+              >
+                MISSION TERMINATED
+              </motion.div>
+              <p className="font-display text-sm md:text-lg font-bold text-white/60 uppercase tracking-widest">
+                Vault Integrity Compromised
+              </p>
+            </div>
+          </motion.div>
+        )}
       </motion.div>
       {/* Continue Button Area */}
       <div className="mt-8 md:mt-12 mb-8 flex flex-col items-center gap-6 z-20">

@@ -8,7 +8,7 @@ export default function ResultsScreen() {
   useEffect(() => {
     try {
       const history = JSON.parse(localStorage.getItem("kunda_history") || "[]");
-      const finalScore = state.totalScore + state.totalBonus;
+      const finalScore = state.tokens;
       const newEntry = {
         id: Date.now(),
         date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -58,22 +58,22 @@ export default function ResultsScreen() {
           
           <div className="relative z-10 flex flex-col items-center">
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 mb-2">
-              <div className={`flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl md:rounded-[2rem] border border-white/20 shadow-2xl transition-all ${state.tokens === 0 ? "bg-red-500/60 shadow-red-500/30" : "bg-gradient-to-tr from-accent/60 to-accent shadow-accent/30"}`}>
+              <div className={`flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl md:rounded-[2rem] border border-white/20 shadow-2xl transition-all ${state.isEliminated ? "bg-red-500/60 shadow-red-500/30" : "bg-gradient-to-tr from-accent/60 to-accent shadow-accent/30"}`}>
                 <span className="text-xl md:text-2xl font-black text-white leading-none tracking-tighter">
-                  {state.tokens === 0 ? "VOID" : "SAFE"}
+                  {state.isEliminated ? "VOID" : "SAFE"}
                 </span>
               </div>
-              <span className={`font-data text-6xl md:text-9xl font-black tracking-tighter drop-shadow-2xl ${state.tokens === 0 ? "text-red-500" : "text-white"}`}>
-                ${(state.totalScore + state.totalBonus).toLocaleString()}
+              <span className={`font-data text-6xl md:text-9xl font-black tracking-tighter drop-shadow-2xl ${state.isEliminated ? "text-red-500" : "text-white"}`}>
+                ${state.tokens.toLocaleString()}
               </span>
             </div>
             <div className="flex items-center gap-4 text-white/40 font-data text-[10px] md:text-xs">
-              <span>VAULTED: ${state.totalScore.toLocaleString()}</span>
+              <span>VAULTED: ${(state.tokens - state.totalBonus).toLocaleString()}</span>
               <span>+</span>
               <span>BONUS: ${state.totalBonus.toLocaleString()}</span>
             </div>
             <div className={`font-display text-[8px] md:text-[10px] font-black tracking-[0.3em] md:tracking-[0.5em] uppercase mt-4 ${state.isEliminated ? "text-red-500/50" : "text-accent/50"}`}>
-              {state.tokens === 0 ? "Mission Failure: Vault Depleted" : "Mission Success: Vault Reconciled"}
+              {state.isEliminated ? "Mission Failure: Vault Depleted" : "Mission Success: Vault Reconciled"}
             </div>
           </div>
         </motion.div>

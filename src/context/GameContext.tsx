@@ -140,7 +140,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       } else {
         newDist[action.label] = clampedAmount;
       }
-      return { ...state, distribution: newDist };
+      return { ...state, distribution: newDist, selectedPlatform: action.label };
     }
 
     case "LOCK_ANSWERS": {
@@ -159,18 +159,22 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       // 2. Next budget = Unstaked + Correct Stakes + Bonus
       const nextBudget = unstaked + tokensOnCorrect + bonusAmount;
       
-      // 3. Vaulted amount (totalScore) is what we currently have in hand
-      const newTotalSaved = nextBudget;
+      // 3. Score tracking: 
+      // totalScore should be the base amount (unstaked + correct)
+      // totalBonus should be the accumulated bonuses
+      // The sum (totalScore + totalBonus) will equal tokens (nextBudget)
+      const newTotalBase = unstaked + tokensOnCorrect;
       const newTotalBonus = state.totalBonus + bonusAmount;
       
-      const isEliminated = nextBudget === 0;
+      // 4. Elimination threshold: Game ends if you can't make the MIN_BET ($100) next round
+      const isEliminated = nextBudget < MIN_BET;
 
       return {
         ...state,
         phase: "reveal",
         revealedAnswer: correctLabel,
         tokens: nextBudget, 
-        totalScore: newTotalSaved, 
+        totalScore: nextBudget, // We'll update ResultsScreen to use tokens directly as final score
         totalBonus: newTotalBonus,
         isEliminated,
         recordedElimination: isEliminated,
@@ -194,8 +198,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
       // End game if:
       // 1. We reached the end (round 6)
-      // 2. OR we are out of tokens (budget exhausted)
-      if (nextQ < 6 && state.tokens > 0) {
+      // 2. OR we are out of tokens (budget exhausted below min bet)
+      if (nextQ < 6 && state.tokens >= MIN_BET) {
         return {
           ...state,
           phase: "playing",
