@@ -99,22 +99,34 @@ export default function RevealScreen() {
           <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm pointer-events-none"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md pointer-events-none"
           >
-            <div className="glass-card border-red-500/50 bg-black/80 p-8 md:p-12 text-center shadow-[0_0_100px_rgba(239,68,68,0.2)]">
+            <div className="glass-card border-red-500 bg-black/90 p-10 md:p-16 text-center shadow-[0_0_100px_rgba(239,68,68,0.4)] max-w-lg">
               <motion.div
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 1, repeat: Infinity }}
-                className="font-display text-4xl md:text-6xl font-black text-red-500 italic tracking-tighter mb-4"
+                animate={{ opacity: [0.6, 1, 0.6], scale: [1, 1.05, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="font-display text-5xl md:text-7xl font-black text-red-500 italic tracking-tighter mb-6"
               >
                 MISSION TERMINATED
               </motion.div>
-              <p className="font-display text-sm md:text-lg font-bold text-white/60 uppercase tracking-widest">
-                Vault Integrity Compromised
+              <div className="h-1 w-full bg-red-500/20 mb-6 overflow-hidden">
+                <motion.div 
+                  initial={{ x: "-100%" }}
+                  animate={{ x: "100%" }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  className="h-full w-1/3 bg-red-500 shadow-[0_0_20px_rgba(239,68,68,0.8)]"
+                />
+              </div>
+              <p className="font-display text-sm md:text-xl font-bold text-white uppercase tracking-[0.3em] mb-2">
+                Vault Integrity: 0%
+              </p>
+              <p className="font-display text-[10px] md:text-xs font-medium text-red-400/60 uppercase tracking-widest">
+                Terminating Session... Generating Reports
               </p>
             </div>
           </motion.div>
         )}
+
       </motion.div>
       {/* Continue Button Area */}
       <div className="mt-8 md:mt-12 mb-8 flex flex-col items-center gap-6 z-20">

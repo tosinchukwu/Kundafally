@@ -168,13 +168,21 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       
       // 4. Elimination threshold: Game ends if you can't make the MIN_BET ($100) next round
       const isEliminated = nextBudget < MIN_BET;
+      
+      console.log("Staking Result:", { 
+        tokensOnCorrect, 
+        bonusAmount, 
+        unstaked, 
+        nextBudget, 
+        isEliminated 
+      });
 
       return {
         ...state,
         phase: "reveal",
         revealedAnswer: correctLabel,
         tokens: nextBudget, 
-        totalScore: nextBudget, // We'll update ResultsScreen to use tokens directly as final score
+        totalScore: nextBudget, 
         totalBonus: newTotalBonus,
         isEliminated,
         recordedElimination: isEliminated,

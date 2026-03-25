@@ -15,6 +15,16 @@ export default function GameplayScreen() {
 
   const selectedPlateLabel = state.selectedPlatform;
 
+  // Safety check: if playing but tokens < MIN_BET, go to results
+  useEffect(() => {
+    const MIN_BET = 100;
+    if (state.phase === "playing" && state.tokens < MIN_BET) {
+      console.warn("Safety check triggered: Balance too low for round. Redirecting to results.");
+      dispatch({ type: "NEXT_QUESTION" });
+    }
+  }, [state.phase, state.tokens, dispatch]);
+
+
   // Typewriter effect
   useEffect(() => {
     if (!currentQuestion) return;
