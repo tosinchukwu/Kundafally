@@ -43,7 +43,7 @@ If your balance falls below **$50** or you fail to place a valid bet before the 
 - **Local History**: Tracks your last 20 game sessions in local storage.
 - **Visual Feedback**: Coins rise to the vault on wins and fall to the void on losses.
 
-## 📊 Scoring & Strategy
+## 📊 Scoring & Strategies
 
 For a detailed breakdown of the mathematical formulas, hedging strategies, and elimination rules, please see:
 [SCORING_STRATEGY.md](public/SCORING_STRATEGY.md)
