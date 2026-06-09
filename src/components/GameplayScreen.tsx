@@ -102,7 +102,7 @@ export default function GameplayScreen() {
 
   // Timer logic
   useEffect(() => {
-    let interval: any;
+    let interval: ReturnType<typeof setInterval> | undefined;
     if (timerActive && state.phase === "playing" && timeLeft > 0) {
       interval = setInterval(() => {
         setTimeLeft((prev) => prev - 1);
@@ -128,8 +128,6 @@ export default function GameplayScreen() {
   );
   
   const available = state.tokens - totalDistributed;
-
-  if (!currentQuestion) return null;
 
   const isInputValid = useMemo(() => {
     const num = parseInt(inputValue) || 0;
@@ -159,6 +157,8 @@ export default function GameplayScreen() {
     const maxStakePossible = Math.floor(state.tokens / 100) * 100;
     return (currentNum + totalOtherDist) === maxStakePossible && state.tokens >= 100;
   }, [inputValue, isInputValid, state.distribution, selectedPlateLabel, state.tokens]);
+
+  if (!currentQuestion) return null;
 
   return (
     <div className="game-container relative flex flex-col items-center min-h-screen w-full bg-transparent overflow-hidden">

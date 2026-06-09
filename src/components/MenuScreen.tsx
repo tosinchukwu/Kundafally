@@ -3,12 +3,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useGame } from "@/context/GameContext";
 import WalletButton from "./WalletButton";
 
+interface HistoryItem {
+  id: string;
+  date: string;
+  correct: number;
+  total: number;
+  token: string;
+  score: number;
+}
+
 export default function MenuScreen() {
   const { state, dispatch } = useGame();
   const [showHistory, setShowHistory] = useState(false);
   const [showHowTo, setShowHowTo] = useState(false);
 
-  const getHistory = () => {
+  const getHistory = (): HistoryItem[] => {
     try {
       return JSON.parse(localStorage.getItem("kunda_history") || "[]");
     } catch {
@@ -110,7 +119,7 @@ export default function MenuScreen() {
               </div>
 
               <div className="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
-                {history.length > 0 ? history.map((h: any) => (
+                {history.length > 0 ? history.map((h) => (
                   <div key={h.id} className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5">
                     <div className="flex flex-col">
                       <span className="font-data text-[10px] text-white/30 uppercase">{h.date}</span>
