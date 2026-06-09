@@ -36,12 +36,6 @@ If your balance falls below **$50** or you fail to place a valid bet before the 
 3. Start the dev server: `npm run dev`
 4. Open the game: `http://localhost:5173`
 
-## 💎 Features
-
-- **Dynamic 3D Environment**: Interactive platforms and falling physics.
-- **Vault Centric UI**: Real-time balance reconciliation with "stable" and "risk" zones.
-- **Local History**: Tracks your last 20 game sessions in local storage.
-- **Visual Feedback**: Coins rise to the vault on wins and fall to the void on losses.
 
 ## 📊 Scoring & Strategies
 
